@@ -1,0 +1,13 @@
+{
+  "sn_gamestate_commit": "REQUIRED_FULL_GIT_SHA",
+  "tracklab_version": "REQUIRED_RESOLVED_VERSION",
+  "dataset_version": "REQUIRED_DATASET_VERSION",
+  "models": {
+    "detector": {"name": "REQUIRED_MODEL_NAME", "weights_sha256": "REQUIRED_SHA256"},
+    "reid": {"name": "REQUIRED_MODEL_NAME", "weights_sha256": "REQUIRED_SHA256"},
+    "tracker": {"name": "REQUIRED_CONFIG_NAME", "config_sha256": "REQUIRED_SHA256"},
+    "camera_calibration": {"name": "REQUIRED_MODEL_NAME", "weights_sha256": "REQUIRED_SHA256"},
+    "team_assignment": {"name": "REQUIRED_CONFIG_NAME", "config_sha256": "REQUIRED_SHA256"}
+  },
+  "jersey_recognition_enabled": false
+}

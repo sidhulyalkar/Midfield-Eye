@@ -1,0 +1,6 @@
+# Verify these names against the pinned upstream commit before execution.
+# The intent is to retain only geometry-relevant perception modules and skip jersey OCR.
+# Pass each active line as: --override '<line>'
+# pipeline.modules.jersey_number.enabled=false
+# state.save=true
+# state.save_path=/output/tracker_state.pkl

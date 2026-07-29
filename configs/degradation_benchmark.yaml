@@ -1,0 +1,27 @@
+seed: 7
+conditions:
+  - name: identity
+  - name: position_noise_1m
+    position_noise_std_m: 1.0
+  - name: missing_20pct
+    missing_player_rate: 0.20
+  - name: id_switch_15pct
+    id_switch_rate: 0.15
+  - name: calibration_drift
+    calibration_drift_x_m: 1.5
+    calibration_drift_y_m: -1.0
+  - name: broadcast_crop
+    camera_crop_width_m: 55.0
+    camera_crop_height_m: 48.0
+  - name: delay_2frames
+    delay_frames: 2
+  - name: ball_dropout_20pct
+    ball_dropout_rate: 0.20
+  - name: compound
+    position_noise_std_m: 1.0
+    missing_player_rate: 0.15
+    id_switch_rate: 0.10
+    camera_crop_width_m: 60.0
+    camera_crop_height_m: 50.0
+    delay_frames: 1
+    ball_dropout_rate: 0.10

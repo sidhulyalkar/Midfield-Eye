@@ -1,0 +1,35 @@
+version: 0.3
+canonical_pitch:
+  length_m: 105.0
+  width_m: 68.0
+  origin: top_left
+  y_axis: down
+providers:
+  metrica:
+    coverage: full_tracking
+    default_rate_hz: 25
+    carrier_policy: nearest_same_team_when_missing
+  skillcorner:
+    coverage: partial_tracking
+    default_rate_hz: 10
+    preserve_extrapolated: true
+    preserve_visibility_polygon: true
+  statsbomb360:
+    coverage: event_snapshot
+    native_pitch: [120, 80]
+    persistent_non_actor_identity: false
+    velocity_available: false
+  sportec_open:
+    coverage: full_tracking
+    bridge: kloppy
+  soccertrack_v2:
+    coverage: video_gsr
+    default_rate_hz: 25
+    ball_policy: event_actor_at_bas_frame
+  soccernet_gsr:
+    coverage: video_gsr
+    process_boundary: external
+    tracker_state_formats: [json, jsonl, csv, parquet, trusted_pickle]
+    possession_sidecar_required: true
+    preserve_visibility_polygon: true
+    preserve_position_covariance: true

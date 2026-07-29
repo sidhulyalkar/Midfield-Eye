@@ -1,0 +1,31 @@
+experiment_id: midfielder_eye_provider_transfer_v0_2
+split_order:
+  - provider
+  - competition
+  - match
+  - sequence
+primary_metrics:
+  - ndcg@3
+  - recall@3
+  - pairwise
+  - top3_jaccard
+bootstrap:
+  unit: sequence
+  iterations: 1000
+  confidence: 0.95
+baselines:
+  - naive
+  - static
+  - dynamic
+  - viewpoint_dynamic
+  - learned_tabular
+required_ablations:
+  - no_velocity
+  - no_viewpoint
+  - no_future_space
+  - observed_only
+  - no_option_creation
+forbidden:
+  - random_frame_split
+  - silent_future_features
+  - treating_snapshots_as_tracking

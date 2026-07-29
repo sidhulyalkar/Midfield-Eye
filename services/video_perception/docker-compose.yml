@@ -1,0 +1,16 @@
+services:
+  soccernet-gsr:
+    build:
+      context: .
+      args:
+        SN_GAMESTATE_REF: ${SN_GAMESTATE_REF:?Set SN_GAMESTATE_REF to a pinned commit}
+    volumes:
+      - ${VIDEO_DIR:-./input}:/input:ro
+      - ${OUTPUT_DIR:-./output}:/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

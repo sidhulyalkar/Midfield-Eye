@@ -1,0 +1,10 @@
+lane_clearance: 0.14
+interception_margin: 0.17
+receiver_space: 0.15
+future_space: 0.13
+forward_progress: 0.10
+xt_gain: 0.13
+body_orientation: 0.06
+visibility: 0.07
+option_creation: 0.05
+distance_penalty: -0.04

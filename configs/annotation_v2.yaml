@@ -1,0 +1,22 @@
+availability: [yes, no, uncertain]
+visibility: [yes, partial, no, uncertain]
+value_scale:
+  minimum: 0
+  maximum: 4
+  labels:
+    0: harmful_or_impossible
+    1: weak
+    2: viable
+    3: strong
+    4: exceptional
+failure_reasons:
+  - corridor
+  - interception
+  - body_shape
+  - receiver_pressure
+  - offside
+  - view
+  - execution_difficulty
+  - other
+require_annotator_id: true
+require_confidence: true

@@ -1,0 +1,20 @@
+provider: soccernet_gsr
+coordinates: soccernet_center
+pitch:
+  length_m: 105.0
+  width_m: 68.0
+frame_rate_hz: 25.0
+team_map:
+  left: home
+  right: away
+requirements:
+  possession_sidecar: true
+  tracker_state_manifest: true
+uncertainty:
+  base_sigma_m: 0.35
+  calibration_sigma_m: 2.5
+reconstruction:
+  method: causal_kalman
+  process_noise: 2.0
+  max_speed_mps: 12.0
+  offline_interpolation: false

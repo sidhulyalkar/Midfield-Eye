@@ -1,0 +1,22 @@
+pitch:
+  length_m: 105.0
+  width_m: 68.0
+
+affordance:
+  carry_distance_m: 7.0
+  carry_angle_offsets_deg: [-45.0, -22.5, 0.0, 22.5, 45.0]
+  ball_speed_mps: 16.0
+  visibility_half_fov_deg: 55.0
+  include_hold: true
+
+experiment:
+  sample_rate_hz: 5.0
+  future_horizon_s: 1.0
+  grouped_splits: 5
+  primary_k: 3
+  seed: 7
+
+annotation:
+  value_scale: [0, 1, 2, 3, 4]
+  double_label_fraction: 0.25
+  hide_outcome_during_primary_label: true
