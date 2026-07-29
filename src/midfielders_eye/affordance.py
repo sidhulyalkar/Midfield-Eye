@@ -17,6 +17,7 @@ from .geometry import (
     visibility_score,
 )
 from .schema import ActionOption, FrameState
+from .state.state_completion import point_in_polygon
 
 
 DEFAULT_WEIGHTS = {
@@ -67,6 +68,10 @@ class AffordanceEngine:
         "target_uncertainty_m",
         "defender_uncertainty_m",
         "visible_pitch_fraction",
+        "visible_area_mask",
+        "provider_visibility_known",
+        "perceptual_visibility_proxy",
+        "physical_candidate_retained",
         "state_confidence",
     )
 
@@ -127,12 +132,16 @@ class AffordanceEngine:
         )
         robust_clearance = corridor.minimum_clearance - target_uncertainty_m - 0.5 * defender_uncertainty
         visible_fraction = 1.0
+        provider_visibility_known = 0.0
+        visible_area_mask = 1.0
         if frame.visibility_polygon:
             polygon = np.asarray(frame.visibility_polygon, dtype=float)
             if polygon.ndim == 2 and polygon.shape[1] == 2:
                 x, y = polygon[:, 0], polygon[:, 1]
                 area = 0.5 * abs(float(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1))))
                 visible_fraction = float(np.clip(area / (frame.pitch_length * frame.pitch_width), 0.0, 1.0))
+                provider_visibility_known = 1.0
+                visible_area_mask = float(point_in_polygon(target, frame.visibility_polygon))
         confidence_values = [
             value
             for value in [
@@ -144,6 +153,11 @@ class AffordanceEngine:
         ]
         state_confidence = float(np.mean(confidence_values)) if confidence_values else 0.5
         state_confidence *= max(visible_fraction, 0.25)
+        if provider_visibility_known and not visible_area_mask:
+            state_confidence *= 0.5
+        perceptual_visibility = visibility_score(
+            carrier, target, half_fov_degrees=self.config.visibility_half_fov_deg
+        )
         return {
             "distance_m": distance,
             "lane_clearance_m": corridor.minimum_clearance,
@@ -157,15 +171,20 @@ class AffordanceEngine:
             "xt_end": xt_end,
             "xt_gain": xt_end - xt_start,
             "body_orientation": angular_alignment(carrier.body_angle, carrier.position, target),
-            "visibility": visibility_score(
-                carrier, target, half_fov_degrees=self.config.visibility_half_fov_deg
-            ),
+            # The player's geometric view proxy and the provider camera mask are intentionally
+            # separate. Outside-camera targets remain physical candidates; only observation
+            # support and uncertainty change.
+            "visibility": perceptual_visibility,
+            "perceptual_visibility_proxy": perceptual_visibility,
             "target_motion_alignment": target_motion_alignment,
             "option_creation": 0.0,
             "uncertainty_adjusted_clearance_m": robust_clearance,
             "target_uncertainty_m": target_uncertainty_m,
             "defender_uncertainty_m": defender_uncertainty,
             "visible_pitch_fraction": visible_fraction,
+            "visible_area_mask": visible_area_mask,
+            "provider_visibility_known": provider_visibility_known,
+            "physical_candidate_retained": 1.0,
             "state_confidence": state_confidence,
         }
 

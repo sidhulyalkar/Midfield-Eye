@@ -1,0 +1,2 @@
+event_id,Team,Type,Subtype,Period,Start Frame,Start Time [s],End Frame,End Time [s],From,To,Start X,Start Y,End X,End Y
+pass-1,Home,PASS,COMPLETE,1,100,10.00,101,10.04,1,2,0.500,0.500,0.650,0.450
