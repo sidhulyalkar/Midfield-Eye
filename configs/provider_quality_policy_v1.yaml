@@ -1,0 +1,16 @@
+schema_version: provider-quality-policy-v1
+policy_id: midfielders-eye-provider-quality-v1
+# Run-specific review configs may make these thresholds stricter, never weaker.
+threshold_bounds:
+  min_mean_players_per_frame:
+    floor: 12.0
+  max_p95_carrier_ball_distance_m:
+    ceiling: 4.0
+  min_observed_player_fraction:
+    floor: 0.60
+  max_extrapolated_player_fraction:
+    ceiling: 0.40
+  max_causal_feature_missing_fraction:
+    ceiling: 0.0
+  min_candidate_frame_coverage:
+    floor: 1.0
