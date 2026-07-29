@@ -13,7 +13,9 @@ def test_showcase_api_serves_static_bundle(tmp_path: Path):
     bundle = tmp_path / "showcase"
     build_showcase_bundle(bundle, scenario_ids=["rodri-pivot"], frame_count=8, render_dpi=60)
     client = TestClient(create_app(bundle))
-    assert client.get("/api/health").status_code == 200
+    health = client.get("/api/health")
+    assert health.status_code == 200
+    assert health.json()["bundle_version"] == "0.6.0"
     assert client.get("/api/showcase/manifest").json()["scenario_count"] == 1
     assert len(client.get("/api/players").json()["players"]) == 100
     assert client.get("/api/scenarios/rodri-pivot").status_code == 200

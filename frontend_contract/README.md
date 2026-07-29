@@ -16,6 +16,10 @@ Read in this order:
 The human implementation specification is
 `docs/GEMINI_FRONTEND_IMPLEMENTATION_BLUEPRINT.md`.
 
+The reference implementation is under `frontend/`. It consumes this boundary through one
+`ShowcaseDataSource` interface for generated static files and FastAPI responses. Contract changes
+must keep both modes, their tests, and the generated payloads compatible.
+
 Generate a complete handoff, including real payload fixtures, with:
 
 ```bash
@@ -23,4 +27,3 @@ python scripts/prepare_gemini_handoff.py ../generated-frontend --rebuild
 ```
 
 Do not edit generated files under `artifacts/` as a substitute for changing their Python exporters.
-

@@ -53,7 +53,12 @@ def create_app(bundle_dir: str | Path = "artifacts/showcase"):
 
     @app.get("/api/health")
     def health() -> dict[str, Any]:
-        return {"status": "ok", "version": "0.6.0", "bundle_exists": (root / "manifest.json").exists()}
+        return {
+            "status": "ok",
+            "version": "0.6.0",
+            "bundle_version": "0.6.0",
+            "bundle_exists": (root / "manifest.json").exists(),
+        }
 
     @app.get("/api/showcase/manifest")
     def manifest() -> Any:

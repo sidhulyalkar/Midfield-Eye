@@ -98,6 +98,27 @@ def test_empirical_showcase_builds_real_source_artifacts(tmp_path: Path) -> None
     assert verify_file_manifest(tmp_path / "FILE_MANIFEST.json") == []
     experiments = json.loads((tmp_path / "experiments.json").read_text())
     assert {item["source_id"] for item in experiments} == {"metrica_sample_data", "statsbomb_open_data"}
+    by_source = {item["source_id"]: item for item in experiments}
+    assert all("citation" in item and "confidence" in item for item in experiments)
+    assert all(item["confidence"] is None for item in experiments)
+    statsbomb_scene = by_source["statsbomb_open_data"]["scene"]
+    assert statsbomb_scene["kind"] == "event_snapshot"
+    assert statsbomb_scene["availability_labels"] is None
+    assert statsbomb_scene["selected_action"]["timing_semantics"] == (
+        "retrospective_selected_event_label"
+    )
+    assert statsbomb_scene["selected_action"]["recipient_snapshot_link"] is None
+    assert all(
+        player["identity_scope"] == "event_local"
+        for player in statsbomb_scene["players"]
+        if player["group"] != "subject"
+    )
+    metrica_scene = by_source["metrica_sample_data"]["scene"]
+    assert metrica_scene["kind"] == "continuous_tracking_frame"
+    assert metrica_scene["event_frame_id"] == metrica_scene["frame_id"] == 1226
+    assert metrica_scene["selected_action"]["actor_id"] == "Player10"
+    assert metrica_scene["selected_action"]["receiver_id"] == "Player8"
+    assert metrica_scene["availability_labels"] is None
     from PIL import Image
     for relative in manifest["visuals"]:
         with Image.open(tmp_path / relative) as image:
