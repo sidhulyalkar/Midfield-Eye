@@ -48,5 +48,7 @@ been executed, or scientific validity has been established on real matches.
 | FastAPI resources | implemented | scenario frames, options, timelines, cognition payloads, empirical evidence, and capture validation are served |
 | Normalized data-source contract | specified | static/API mappings, null policy, joins, URL state, and evidence grammar are frozen for implementation |
 | Component and visual tokens | specified | pitch order, component states, evidence styles, responsive targets, and motion rules are machine-readable |
-| React application | not implemented | Gemini should build it from `GEMINI_FRONTEND_IMPLEMENTATION_BLUEPRINT.md` |
-| Deployed public product | not implemented | requires frontend build, visual regression, accessibility audit, and deployment configuration |
+| React application | implemented | strict React/TypeScript application includes synthetic and empirical vertical slices, the 100-profile atlas, and four specialist laboratories |
+| Static/API parity | implemented | both sources validate into the same view models; configured API failures never silently fall back to static data |
+| Frontend quality gates | implemented | typecheck, lint, unit tests, production build, keyboard checks, and deterministic mobile/desktop/full-HD/4K browser captures |
+| Deployed public product | not implemented | production hosting and access policy remain an explicit deployment decision |

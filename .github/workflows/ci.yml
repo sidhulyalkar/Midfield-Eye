@@ -21,3 +21,35 @@ jobs:
       - run: python -m pytest
       - run: midfielders-eye demo --sequences 3 --frames-per-sequence 4 --output-dir artifacts/ci_demo
       - run: midfielders-eye demo-v2 --sequences 2 --frames-per-sequence 4 --output-dir artifacts/ci_v2_demo
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[showcase]"
+      - run: midfielders-eye showcase-build --output-dir artifacts/showcase --frame-count 18 --render-dpi 80
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run format:check
+        working-directory: frontend
+      - run: npm run typecheck
+        working-directory: frontend
+      - run: npm run lint
+        working-directory: frontend
+      - run: npm test
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm run test:e2e
+        working-directory: frontend
