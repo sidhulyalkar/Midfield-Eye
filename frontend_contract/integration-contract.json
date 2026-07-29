@@ -1,0 +1,414 @@
+{
+  "name": "Midfielder's Eye frontend integration",
+  "version": "0.6.0",
+  "authority": {
+    "research": "docs/INTEGRATED_DELIVERY_PLAN.md",
+    "implementation": "docs/GEMINI_FRONTEND_IMPLEMENTATION_BLUEPRINT.md",
+    "api": "frontend_contract/openapi.json",
+    "components": "frontend_contract/component-contract.json",
+    "tokens": "frontend_contract/design-tokens.json"
+  },
+  "compatibility": {
+    "versionField": "bundle_version",
+    "rejectDifferentMajor": true,
+    "warnNewerMinor": true,
+    "allowUnknownAdditiveFields": true,
+    "forbidUnknownEvidenceStates": true,
+    "nullPolicy": "preserve_missing_never_coerce_to_zero"
+  },
+  "modeSelection": {
+    "environmentVariable": "VITE_MIDFIELDERS_EYE_API_URL",
+    "apiWhen": "non_empty_absolute_url",
+    "staticRoot": "public/showcase",
+    "staticPublicUrl": "showcase/",
+    "fallbackPolicy": "never_silently_fallback_from_configured_api",
+    "diagnosticsRequired": true
+  },
+  "resources": {
+    "manifest": {
+      "static": "manifest.json",
+      "api": "GET /api/showcase/manifest",
+      "shape": "object",
+      "required": [
+        "bundle_version",
+        "player_count",
+        "scenario_count",
+        "ranking_policy",
+        "evidence_contract",
+        "frontend_contract"
+      ]
+    },
+    "players": {
+      "static": "players/index.json",
+      "api": "GET /api/atlas",
+      "shape": "array",
+      "requiredItemFields": [
+        "id",
+        "name",
+        "cohort",
+        "display_role",
+        "primary_archetype",
+        "signature",
+        "study_questions",
+        "showcase_emphasis",
+        "showcase_emphasis_status",
+        "evidence_status",
+        "profile_status"
+      ]
+    },
+    "player": {
+      "static": "players/{playerId}/profile.json",
+      "api": "GET /api/players/{player_id}",
+      "shape": "object"
+    },
+    "scenarios": {
+      "static": "scenarios/index.json",
+      "api": "GET /api/scenarios",
+      "shape": "array",
+      "requiredItemFields": [
+        "id",
+        "title",
+        "player_id",
+        "player_name",
+        "tactical_question",
+        "key_frame_index",
+        "evidence_status",
+        "gaze_status",
+        "body_mechanics_status",
+        "paths"
+      ]
+    },
+    "scenario": {
+      "static": "scenarios/{scenarioId}/scenario.json",
+      "api": "GET /api/scenarios/{scenario_id}",
+      "shape": "object"
+    },
+    "frames": {
+      "static": "scenarios/{scenarioId}/frames.jsonl",
+      "api": "GET /api/scenarios/{scenario_id}/frames",
+      "staticEncoding": "newline_delimited_json",
+      "normalizedShape": "array",
+      "requiredItemFields": [
+        "sequence_id",
+        "frame_id",
+        "timestamp_s",
+        "possession_team",
+        "ball_x",
+        "ball_y",
+        "ball_carrier_id",
+        "players",
+        "pitch_length",
+        "pitch_width",
+        "source_provider",
+        "quality_flags",
+        "state_version"
+      ]
+    },
+    "options": {
+      "static": "scenarios/{scenarioId}/options.json",
+      "api": "GET /api/scenarios/{scenario_id}/options",
+      "shape": "array",
+      "requiredItemFields": [
+        "sequence_id",
+        "frame_id",
+        "option_id",
+        "kind",
+        "actor_id",
+        "target_x",
+        "target_y",
+        "features",
+        "geometric_score",
+        "provenance"
+      ]
+    },
+    "timeline": {
+      "static": "scenarios/{scenarioId}/timeline.json",
+      "api": "GET /api/scenarios/{scenario_id}/timeline",
+      "shape": "array",
+      "requiredItemFields": [
+        "frame_id",
+        "timestamp_s",
+        "menu_breadth",
+        "visible_options",
+        "best_option_value",
+        "state_confidence"
+      ]
+    },
+    "gaze": {
+      "static": "scenarios/{scenarioId}/gaze.json",
+      "api": "GET /api/scenarios/{scenario_id}/gaze",
+      "shape": "object",
+      "required": [
+        "timeline",
+        "scan_events",
+        "summary",
+        "interpretation_guardrail"
+      ],
+      "requiredTimelineFields": [
+        "frame_id",
+        "timestamp_s",
+        "gaze_source",
+        "gaze_confidence",
+        "view_cones",
+        "metric_status"
+      ]
+    },
+    "bodyMechanics": {
+      "static": "scenarios/{scenarioId}/body_mechanics.json",
+      "api": "GET /api/scenarios/{scenario_id}/body-mechanics",
+      "shape": "object",
+      "required": [
+        "timeline",
+        "summary",
+        "interpretation_guardrail"
+      ],
+      "requiredTimelineFields": [
+        "frame_id",
+        "timestamp_s",
+        "source",
+        "body_angle_rad",
+        "movement_heading_rad",
+        "weight_transfer_vector",
+        "metric_status"
+      ]
+    },
+    "relationalControl": {
+      "static": "scenarios/{scenarioId}/relational_control.json",
+      "api": "GET /api/scenarios/{scenario_id}/relational-control",
+      "shape": "object",
+      "required": [
+        "timeline",
+        "summary",
+        "interpretation_guardrail"
+      ],
+      "requiredTimelineFields": [
+        "frame_id",
+        "timestamp_s",
+        "pressure_attraction",
+        "support_reactivity",
+        "option_enablement",
+        "metric_status"
+      ]
+    },
+    "empiricalManifest": {
+      "static": "empirical/manifest.json",
+      "api": "GET /api/empirical",
+      "shape": "object"
+    },
+    "empiricalSources": {
+      "static": "empirical/sources.json",
+      "api": "GET /api/empirical/sources",
+      "shape": "object",
+      "required": [
+        "version",
+        "sources"
+      ]
+    },
+    "empiricalExperiments": {
+      "static": "empirical/experiments.json",
+      "api": "GET /api/empirical/experiments",
+      "shape": "array",
+      "requiredItemFields": [
+        "id",
+        "title",
+        "subject",
+        "source_id",
+        "evidence_tier",
+        "modalities",
+        "measured",
+        "inferred",
+        "unavailable",
+        "visual",
+        "claim_boundary"
+      ]
+    },
+    "evidenceLedger": {
+      "static": "empirical/player_evidence_ledger.json",
+      "api": "GET /api/empirical/player-ledger",
+      "shape": "array"
+    },
+    "claimContract": {
+      "static": "empirical/claim_contract.json",
+      "api": "GET /api/empirical/claim-contract",
+      "shape": "object"
+    },
+    "citations": {
+      "static": "empirical/citation_index.json",
+      "api": "GET /api/empirical/citations",
+      "shape": "array"
+    },
+    "alignmentContract": {
+      "static": "empirical/alignment_contract.json",
+      "api": "GET /api/empirical/alignment-contract",
+      "shape": "object"
+    },
+    "captureProtocol": {
+      "static": "empirical/capture_protocol.json",
+      "api": "GET /api/capture-protocol/default",
+      "shape": "object"
+    },
+    "captureValidation": {
+      "static": "local_structural_validation_only",
+      "api": "POST /api/capture-protocol/validate",
+      "shape": "object",
+      "required": [
+        "valid",
+        "errors"
+      ]
+    }
+  },
+  "enums": {
+    "team": [
+      "home",
+      "away"
+    ],
+    "trackingStatus": [
+      "observed",
+      "extrapolated",
+      "inferred",
+      "interpolated",
+      "unknown"
+    ],
+    "actionKind": [
+      "pass",
+      "carry",
+      "hold"
+    ],
+    "playerEvidenceStatus": [
+      "hypothesis_only",
+      "measured",
+      "mixed"
+    ],
+    "gazeSource": [
+      "observed",
+      "pose_inferred",
+      "motion_proxy",
+      "synthetic",
+      "unknown"
+    ],
+    "playbackRate": [
+      0.25,
+      0.5,
+      1,
+      2
+    ]
+  },
+  "joins": {
+    "primaryFrameKey": [
+      "sequence_id",
+      "frame_id"
+    ],
+    "scenarioTimelineKey": "frame_id",
+    "optionKey": "option_id",
+    "timestampUsage": "display_and_alignment_diagnostics_not_lossy_join_when_frame_id_exists",
+    "missingFramePolicy": "show_partial_data_warning_never_nearest_neighbor_fill"
+  },
+  "coordinates": {
+    "units": "metres",
+    "origin": "top_left",
+    "xDirection": "right",
+    "yDirection": "down",
+    "defaultPitch": {
+      "length": 105,
+      "width": 68
+    },
+    "preserveAspectRatio": true,
+    "implicitFlipForbidden": true,
+    "independentAxisStretchForbidden": true,
+    "visualRotationMayNotMutateData": true
+  },
+  "scoreSemantics": {
+    "geometric_score": "model_score_rank_within_frame_not_probability",
+    "learned_score": "nullable_model_score_not_probability_unless_calibrated_metadata_exists",
+    "showcase_emphasis": "illustrative_research_emphasis_not_rating_rank_or_percentile",
+    "null": "missing_not_zero"
+  },
+  "evidenceGrammar": {
+    "direct_measurement": {
+      "line": "solid",
+      "label": "Measured"
+    },
+    "provider_observation": {
+      "line": "solid",
+      "label": "Provider observed"
+    },
+    "video_reconstruction": {
+      "line": "solid_dashed_boundary",
+      "label": "Reconstructed"
+    },
+    "inferred_proxy": {
+      "line": "dashed",
+      "label": "Proxy"
+    },
+    "synthetic": {
+      "line": "dotted",
+      "label": "Illustrative synthetic",
+      "watermark": true
+    },
+    "unavailable": {
+      "line": "none",
+      "label": "Unavailable",
+      "missingSignalPanel": true
+    }
+  },
+  "playback": {
+    "singleStore": true,
+    "primaryCursor": "currentFrameId",
+    "optionLockExtinctionStateRequired": true,
+    "elapsedTimeScheduling": true,
+    "pauseWhenDocumentHidden": true,
+    "reducedMotionAutoplay": false
+  },
+  "urlState": {
+    "frame": "integer_frame_id",
+    "option": "option_id",
+    "rate": "playback_rate",
+    "layers": "comma_separated_stable_layer_ids",
+    "evidence": "observed_or_uncertainty",
+    "compare": "secondary_entity_id",
+    "filters": "route_specific_compact_encoding",
+    "backForwardMustRestoreWithoutAutoplay": true
+  },
+  "pitchLayerOrder": [
+    "pitch",
+    "visible_pitch_polygon",
+    "pressure",
+    "uncertainty",
+    "players",
+    "trails_and_velocity",
+    "body_head_gaze_vectors",
+    "gaze_bands",
+    "relational_links",
+    "option_corridors",
+    "ball",
+    "interaction_highlights"
+  ],
+  "requiredFeedbackStates": [
+    "loading",
+    "recoverable_error",
+    "not_found",
+    "empty_filter_result",
+    "missing_signal",
+    "source_gated",
+    "unsupported_comparison",
+    "version_mismatch",
+    "offline_static_validation",
+    "partial_data_warning"
+  ],
+  "responsiveTargets": {
+    "mobile": "390x844",
+    "desktop": "1440x900",
+    "fullHd": "1920x1080",
+    "fourK": "3840x2160"
+  },
+  "qualityGates": {
+    "staticApiDomainParity": true,
+    "keyboardPlayback": true,
+    "reducedMotion": true,
+    "evidenceWordingTests": true,
+    "scientificBoundaryTests": true,
+    "visualRegressionAllTargets": true,
+    "productionBuild": true,
+    "zeroConsoleErrors": true
+  }
+}

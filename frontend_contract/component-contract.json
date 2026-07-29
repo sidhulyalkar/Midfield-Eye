@@ -1,0 +1,345 @@
+{
+  "version": "0.6.0",
+  "global": {
+    "dataBoundary": "ShowcaseDataSource",
+    "playbackCursor": "currentFrameId",
+    "requiredStates": [
+      "loading",
+      "recoverable_error",
+      "not_found",
+      "empty_filter_result",
+      "missing_signal",
+      "source_gated",
+      "unsupported_comparison",
+      "version_mismatch",
+      "offline_static_validation",
+      "partial_data_warning"
+    ],
+    "responsiveTargets": [
+      "390x844",
+      "1440x900",
+      "1920x1080",
+      "3840x2160"
+    ],
+    "accessibility": [
+      "keyboard_complete",
+      "visible_focus",
+      "reduced_motion",
+      "color_not_only_signal",
+      "tactical_visual_text_alternative"
+    ]
+  },
+  "components": {
+    "TacticalPitch": {
+      "requiredProps": [
+        "frame",
+        "options",
+        "selectedOptionId",
+        "layers"
+      ],
+      "events": [
+        "onFrameHover",
+        "onOptionSelect",
+        "onPlayerSelect"
+      ]
+    },
+    "GazeField": {
+      "requiredProps": [
+        "viewCones",
+        "gazeSource",
+        "gazeConfidence",
+        "scanEvents"
+      ],
+      "constraints": [
+        "show_source_badge",
+        "never_label_proxy_as_eye_tracking",
+        "nested_foveal_actionable_peripheral_bands"
+      ]
+    },
+    "BodyMechanicsOverlay": {
+      "requiredProps": [
+        "bodyAngle",
+        "movementHeading",
+        "weightTransferVector",
+        "metrics"
+      ],
+      "constraints": [
+        "label_kinematic_proxy",
+        "no_force_plate_claim_without_sensor_data"
+      ]
+    },
+    "RelationalControlGraph": {
+      "requiredProps": [
+        "players",
+        "subjectId",
+        "metrics",
+        "timeline"
+      ],
+      "events": [
+        "onRelationshipHover",
+        "onMetricSelect"
+      ],
+      "constraints": [
+        "do_not_infer_leadership_intent_from_geometry_alone"
+      ]
+    },
+    "PlayerAtlasGrid": {
+      "requiredProps": [
+        "players",
+        "filters",
+        "rankingPolicy"
+      ],
+      "events": [
+        "onPlayerSelect",
+        "onCompareToggle"
+      ],
+      "constraints": [
+        "never_show_ordinal_rank",
+        "support_100_cards",
+        "virtualize_on_small_devices"
+      ]
+    },
+    "PlayerProfileCard": {
+      "requiredProps": [
+        "profile",
+        "profileCardUrl"
+      ],
+      "constraints": [
+        "emphasis_is_not_rating",
+        "no_unlicensed_player_photography"
+      ]
+    },
+    "ActionMenuRail": {
+      "requiredProps": [
+        "options",
+        "selectedOptionId"
+      ],
+      "events": [
+        "onOptionSelect"
+      ]
+    },
+    "ActionMenuTimeline": {
+      "requiredProps": [
+        "timeline",
+        "currentFrameId"
+      ],
+      "events": [
+        "onSeek",
+        "onMarkerSelect"
+      ]
+    },
+    "PlaybackController": {
+      "requiredProps": [
+        "currentFrameId",
+        "frameIds",
+        "playing",
+        "playbackRate",
+        "reducedMotion"
+      ],
+      "events": [
+        "onPlay",
+        "onPause",
+        "onSeek",
+        "onStep",
+        "onRateChange"
+      ],
+      "constraints": [
+        "elapsed_time_scheduling",
+        "pause_when_document_hidden",
+        "no_autoplay_in_reduced_motion",
+        "url_restore_does_not_autoplay"
+      ]
+    },
+    "SynchronizedTimeline": {
+      "requiredProps": [
+        "currentFrameId",
+        "timeline",
+        "gazeTimeline",
+        "bodyTimeline",
+        "relationalTimeline",
+        "confidenceTimeline"
+      ],
+      "events": [
+        "onSeek",
+        "onOptionSelect",
+        "onMarkerSelect"
+      ],
+      "constraints": [
+        "join_by_frame_id",
+        "preserve_missing_gaps",
+        "selected_option_matches_pitch_and_rail"
+      ]
+    },
+    "EvidenceBadge": {
+      "requiredProps": [
+        "evidenceStatus"
+      ],
+      "constraints": [
+        "text_and_shape_not_color_only",
+        "source_available_on_inspection",
+        "synthetic_status_persistent"
+      ]
+    },
+    "EvidenceLegend": {
+      "requiredProps": [
+        "activeEvidenceStates"
+      ],
+      "constraints": [
+        "measured_solid",
+        "proxy_dashed",
+        "synthetic_dotted",
+        "unavailable_has_no_geometry"
+      ]
+    },
+    "FeedbackState": {
+      "requiredProps": [
+        "kind",
+        "title",
+        "message"
+      ],
+      "events": [
+        "onRetry",
+        "onOpenSource",
+        "onResetFilters"
+      ],
+      "constraints": [
+        "reserve_layout_space",
+        "name_failed_resource",
+        "unavailable_never_rendered_as_zero"
+      ]
+    },
+    "MediaReferencePanel": {
+      "requiredProps": [
+        "asset"
+      ],
+      "constraints": [
+        "youtube_iframe_only_for_embed_only",
+        "no_overlay_over_youtube_player"
+      ]
+    },
+    "EmpiricalEvidenceRail": {
+      "requiredProps": [
+        "sourceId",
+        "evidenceTier",
+        "measuredFields",
+        "inferredFields",
+        "unavailableFields",
+        "confidence",
+        "citation"
+      ],
+      "constraints": [
+        "unavailable_is_not_zero",
+        "source_always_visible",
+        "no_claim_above_evidence_tier"
+      ]
+    },
+    "SourceAccessCard": {
+      "requiredProps": [
+        "source",
+        "accessMode",
+        "modalities",
+        "license",
+        "downloadPlan"
+      ],
+      "events": [
+        "onOpenOfficialSource",
+        "onCopyCommand"
+      ],
+      "constraints": [
+        "no_one_click_download_for_gated_source",
+        "show_redistribution_rule"
+      ]
+    },
+    "ProvenanceDrawer": {
+      "requiredProps": [
+        "sourceFiles",
+        "upstreamHashes",
+        "localHashes",
+        "transformations",
+        "retrievalDate"
+      ],
+      "constraints": [
+        "hashes_are_copyable",
+        "preserve_provider_attribution"
+      ]
+    },
+    "MissingSignalPanel": {
+      "requiredProps": [
+        "signal",
+        "reason",
+        "recommendedSources"
+      ],
+      "constraints": [
+        "never_substitute_synthetic_value",
+        "explain_why_missing"
+      ]
+    },
+    "CaptureStudio": {
+      "requiredProps": [
+        "protocol",
+        "devices",
+        "tasks",
+        "consent",
+        "retention",
+        "metrics"
+      ],
+      "events": [
+        "onExportJson",
+        "onExportMarkdown"
+      ],
+      "constraints": [
+        "consent_required",
+        "no_public_media_without_permission",
+        "preregister_metrics",
+        "server_validation_required_in_api_mode",
+        "offline_validation_labeled_in_static_mode",
+        "json_and_markdown_exports_share_protocol_id"
+      ]
+    },
+    "DiagnosticsPopover": {
+      "requiredProps": [
+        "mode",
+        "contractVersion",
+        "runtimeVersion",
+        "resourceStatus"
+      ],
+      "constraints": [
+        "never_expose_secrets",
+        "show_version_compatibility",
+        "show_static_or_api_mode"
+      ]
+    }
+  },
+  "routeAssemblies": {
+    "landing": [
+      "TacticalPitch",
+      "PlaybackController",
+      "EvidenceBadge"
+    ],
+    "scenario": [
+      "TacticalPitch",
+      "ActionMenuRail",
+      "PlaybackController",
+      "SynchronizedTimeline",
+      "GazeField",
+      "BodyMechanicsOverlay",
+      "RelationalControlGraph",
+      "EvidenceLegend"
+    ],
+    "empiricalExperiment": [
+      "TacticalPitch",
+      "EmpiricalEvidenceRail",
+      "ProvenanceDrawer",
+      "MissingSignalPanel"
+    ],
+    "atlas": [
+      "PlayerAtlasGrid",
+      "PlayerProfileCard",
+      "EvidenceBadge"
+    ],
+    "captureStudio": [
+      "CaptureStudio",
+      "FeedbackState"
+    ]
+  }
+}

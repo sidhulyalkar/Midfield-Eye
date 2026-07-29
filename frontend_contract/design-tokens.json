@@ -1,0 +1,150 @@
+{
+  "name": "Midfielder's Eye Perception Atlas",
+  "version": "0.6.0",
+  "colors": {
+    "background": "#07110f",
+    "panel": "#0d1b18",
+    "pitch": "#102b24",
+    "pitchLine": "#d9f7e9",
+    "possession": "#f4d35e",
+    "opposition": "#ff6b6b",
+    "primaryOption": "#63e6be",
+    "secondaryOption": "#74c0fc",
+    "foveal": "#63e6be",
+    "actionableView": "#74c0fc",
+    "peripheralView": "#b197fc",
+    "bodyAxis": "#f4d35e",
+    "weightTransfer": "#63e6be",
+    "relationalLink": "#63e6be",
+    "text": "#f5fbf8",
+    "mutedText": "#9ab7ac",
+    "subtleText": "#708b81",
+    "focus": "#ffffff",
+    "border": "#1f3932",
+    "borderStrong": "#36554b",
+    "success": "#63e6be",
+    "danger": "#ff6b6b",
+    "warning": "#ffa94d",
+    "uncertainty": "#b197fc",
+    "evidenceMeasured": "#63e6be",
+    "evidenceProvider": "#74c0fc",
+    "evidenceReconstructed": "#b197fc",
+    "evidenceProxy": "#f4d35e",
+    "evidenceSynthetic": "#ffa94d",
+    "evidenceUnavailable": "#708b81"
+  },
+  "typography": {
+    "display": "Inter, ui-sans-serif, system-ui, sans-serif",
+    "body": "Inter, ui-sans-serif, system-ui, sans-serif",
+    "mono": "IBM Plex Mono, ui-monospace, monospace",
+    "scale": {
+      "caption": "clamp(0.72rem, 0.69rem + 0.12vw, 0.82rem)",
+      "body": "clamp(0.92rem, 0.88rem + 0.16vw, 1.02rem)",
+      "bodyLarge": "clamp(1.04rem, 0.98rem + 0.24vw, 1.2rem)",
+      "title": "clamp(1.35rem, 1.18rem + 0.7vw, 2rem)",
+      "display": "clamp(2.4rem, 1.7rem + 3vw, 5.8rem)"
+    },
+    "lineHeight": {
+      "tight": 1.05,
+      "heading": 1.18,
+      "body": 1.55
+    }
+  },
+  "spacing": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64,
+    "20": 80
+  },
+  "radius": {
+    "small": 8,
+    "medium": 14,
+    "large": 22,
+    "pill": 999
+  },
+  "stroke": {
+    "hairline": 1,
+    "standard": 1.5,
+    "emphasis": 2.5,
+    "focus": 3
+  },
+  "elevation": {
+    "panel": "0 12px 36px rgba(0, 0, 0, 0.22)",
+    "overlay": "0 24px 72px rgba(0, 0, 0, 0.42)",
+    "focus": "0 0 0 3px rgba(116, 192, 252, 0.42)"
+  },
+  "layout": {
+    "navigationRailPx": 64,
+    "topBarPx": 56,
+    "desktopInspectorPx": 360,
+    "desktopContentMaxPx": 1920,
+    "contentGutterMinPx": 16,
+    "contentGutterMaxPx": 48,
+    "mobileTouchTargetPx": 44
+  },
+  "breakpoints": {
+    "mobileMaxPx": 767,
+    "tabletMaxPx": 1199,
+    "desktopMinPx": 1200,
+    "wideMinPx": 1920
+  },
+  "motion": {
+    "fastMs": 120,
+    "standardMs": 220,
+    "slowMs": 480,
+    "easeStandard": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+    "easeEmphasis": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "reducedMotionFallback": "none",
+    "autoplayWhenReducedMotion": false
+  },
+  "pitch": {
+    "lengthM": 105,
+    "widthM": 68,
+    "preserveAspectRatio": true
+  },
+  "visualization": {
+    "gazeBands": [
+      "foveal",
+      "actionable",
+      "peripheral"
+    ],
+    "renderAtDevicePixelRatio": true,
+    "maximumCanvasDpr": 3,
+    "minimumDesktopPitchHeightPx": 620,
+    "profileCardAspectRatio": "16:9"
+  },
+  "evidenceStyles": {
+    "directMeasurement": {
+      "lineStyle": "solid",
+      "badge": "Measured"
+    },
+    "providerObservation": {
+      "lineStyle": "solid",
+      "badge": "Provider observed"
+    },
+    "videoReconstruction": {
+      "lineStyle": "dash-boundary",
+      "badge": "Reconstructed"
+    },
+    "inferredProxy": {
+      "lineStyle": "dashed",
+      "badge": "Proxy"
+    },
+    "synthetic": {
+      "lineStyle": "dotted",
+      "badge": "Illustrative synthetic",
+      "watermark": true
+    },
+    "unavailable": {
+      "lineStyle": "none",
+      "badge": "Unavailable"
+    }
+  }
+}
