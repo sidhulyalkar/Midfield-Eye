@@ -1,0 +1,44 @@
+{
+  "source_id": "metrica_sample_data",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1b0981f2cf16d820bbff2790f79df8cb2188dbfaa4c539929a40cd6ebfdd4d36",
+      "bytes": 542
+    },
+    {
+      "path": "SOURCE.json",
+      "sha256": "25e6f3d558460f95023e4bc0d6d2e2c00531fecf838c623b9668224b8b5a70bb",
+      "bytes": 782
+    },
+    {
+      "path": "away_normalized.csv",
+      "sha256": "a3c3d2b76e4432060fb3941193062ec6b1571dfa26fb0fa23d90ccc075bdf273",
+      "bytes": 7621
+    },
+    {
+      "path": "away_tracking_excerpt.csv",
+      "sha256": "c3b5e38c5ef40fff61a89d2353c9ca8f20e07dec6ea972fa24d062d2486b16c5",
+      "bytes": 3704
+    },
+    {
+      "path": "event.csv",
+      "sha256": "d31dc2eaa5fce99a8e59daf3f3a750d18f64f4b005fba411bb3ee7321593bd5c",
+      "bytes": 183
+    },
+    {
+      "path": "home_normalized.csv",
+      "sha256": "52628143f73b6858e770ed3ad6f40114d09b261192d6a73ef8e0bc97c75cf971",
+      "bytes": 7486
+    },
+    {
+      "path": "home_tracking_excerpt.csv",
+      "sha256": "7d77679a7d42896d8e469ea692b53b987b197e820d6ce331fee0f120f3094cf0",
+      "bytes": 3682
+    }
+  ],
+  "metadata": {
+    "release": "v0.6.0",
+    "source_pinned_excerpt": true
+  }
+}

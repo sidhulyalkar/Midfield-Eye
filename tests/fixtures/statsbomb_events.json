@@ -1,0 +1,26 @@
+[
+  {
+    "id": "event-1",
+    "period": 1,
+    "timestamp": "00:10:00.000",
+    "minute": 10,
+    "second": 0,
+    "type": {"name": "Pass"},
+    "team": {"id": 1, "name": "Home FC"},
+    "possession_team": {"id": 1, "name": "Home FC"},
+    "player": {"id": 101, "name": "Midfielder"},
+    "location": [60.0, 40.0],
+    "pass": {"end_location": [85.0, 32.0]}
+  },
+  {
+    "id": "event-2",
+    "period": 1,
+    "timestamp": "00:10:02.000",
+    "minute": 10,
+    "second": 2,
+    "type": {"name": "Pressure"},
+    "team": {"id": 2, "name": "Away FC"},
+    "player": {"id": 202, "name": "Defender"},
+    "location": [84.0, 33.0]
+  }
+]

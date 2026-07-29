@@ -1,0 +1,34 @@
+{
+  "source_id": "metrica_sample_data",
+  "upstream_repository": "https://github.com/metrica-sports/sample-data",
+  "game": "Sample Game 1",
+  "frames": [
+    1220,
+    1234
+  ],
+  "event_frame": 1226,
+  "pitch_m": [
+    105,
+    68
+  ],
+  "upstream_blob_sha": {
+    "home": "ce2e91c0e633426cec1146f4e728b72417454e3d",
+    "away": "ff409a5680fd75acc7cebcf786827214c687478b",
+    "events": "3c426dd4f442dd433bccf89e3634f91aa310cd8f"
+  },
+  "evidence_tier": "provider_tracking",
+  "measured": [
+    "player_xy",
+    "ball_xy",
+    "event_start",
+    "event_end"
+  ],
+  "not_measured": [
+    "gaze",
+    "head_pose",
+    "body_pose",
+    "forces",
+    "named_player_identity"
+  ],
+  "citation": "Metrica Sports Sample Data repository; source acknowledgement required for public use."
+}

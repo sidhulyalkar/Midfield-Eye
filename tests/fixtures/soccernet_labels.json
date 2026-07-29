@@ -1,0 +1,9 @@
+{
+  "info":{"version":"1.3"},
+  "annotations":[
+    {"category_id":1,"image_id":10,"track_id":1,"attributes":{"role":"player","jersey":8,"team":"left"},"bbox_pitch":{"x_bottom_middle":0.0,"y_bottom_middle":0.0}},
+    {"category_id":1,"image_id":10,"track_id":2,"attributes":{"role":"player","jersey":10,"team":"left"},"bbox_pitch":{"x_bottom_middle":15.0,"y_bottom_middle":8.0}},
+    {"category_id":1,"image_id":10,"track_id":11,"attributes":{"role":"player","jersey":4,"team":"right"},"bbox_pitch":{"x_bottom_middle":4.0,"y_bottom_middle":2.0}},
+    {"category_id":1,"image_id":10,"track_id":12,"attributes":{"role":"goalkeeper","jersey":1,"team":"right"},"bbox_pitch":{"x_bottom_middle":48.0,"y_bottom_middle":0.0}}
+  ]
+}

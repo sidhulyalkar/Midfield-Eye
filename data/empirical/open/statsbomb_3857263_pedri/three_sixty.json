@@ -1,0 +1,179 @@
+{
+  "event_uuid": "28ff205e-5e12-46d6-8054-06ca2d840c32",
+  "visible_area": [
+    42.960559153273124,
+    62.95166723288345,
+    25.4717259731995,
+    0.0,
+    74.11455950255805,
+    0.0,
+    65.4829780071474,
+    61.846961098868874,
+    42.960559153273124,
+    62.95166723288345
+  ],
+  "freeze_frame": [
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        35.35392610095501,
+        22.07276912447212
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        38.66504141083201,
+        -0.45961936826895666
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        44.561815459479206,
+        62.72933253623684
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        45.93689329368774,
+        23.833059930873038
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        48.5096656453725,
+        3.9514231985311845
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        49.52678661143628,
+        23.311683128331552
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": true,
+      "keeper": false,
+      "location": [
+        51.400001525878906,
+        13.300000190734863
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        52.07805922321632,
+        41.18984089583867
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        53.1337188754576,
+        0.8557232480124632
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        53.991772391920485,
+        13.002666160614915
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        54.53448588943061,
+        1.7842884721490968
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        59.032547643558075,
+        41.11873115826589
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        60.66083538810152,
+        26.025260695402622
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        63.035679494331745,
+        61.962660535736234
+      ]
+    },
+    {
+      "teammate": true,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        66.0044342028447,
+        26.822852771189613
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        66.18479482838347,
+        45.033988785933005
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        67.87899145970131,
+        28.071884532678876
+      ]
+    },
+    {
+      "teammate": false,
+      "actor": false,
+      "keeper": false,
+      "location": [
+        68.82369261124973,
+        17.257359536111366
+      ]
+    }
+  ]
+}

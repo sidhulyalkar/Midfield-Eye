@@ -1,0 +1,61 @@
+{
+  "id": "28ff205e-5e12-46d6-8054-06ca2d840c32",
+  "index": 60,
+  "period": 1,
+  "timestamp": "00:01:10.618",
+  "minute": 1,
+  "second": 10,
+  "type": {
+    "id": 30,
+    "name": "Pass"
+  },
+  "possession": 3,
+  "possession_team": {
+    "id": 772,
+    "name": "Spain"
+  },
+  "play_pattern": {
+    "id": 4,
+    "name": "From Throw In"
+  },
+  "team": {
+    "id": 772,
+    "name": "Spain"
+  },
+  "player": {
+    "id": 30486,
+    "name": "Pedro Gonz\u00e1lez L\u00f3pez"
+  },
+  "position": {
+    "id": 15,
+    "name": "Left Center Midfield"
+  },
+  "location": [
+    51.4,
+    13.3
+  ],
+  "duration": 1.893674,
+  "related_events": [
+    "a3d958b0-f5aa-46e8-b55b-f79c6faab88b"
+  ],
+  "pass": {
+    "recipient": {
+      "id": 4353,
+      "name": "Aymeric Laporte"
+    },
+    "length": 24.554022,
+    "angle": 2.9489894,
+    "height": {
+      "id": 1,
+      "name": "Ground Pass"
+    },
+    "end_location": [
+      27.3,
+      18.0
+    ],
+    "body_part": {
+      "id": 40,
+      "name": "Right Foot"
+    }
+  }
+}

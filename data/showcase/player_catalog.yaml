@@ -1,0 +1,5558 @@
+version: 2
+updated_at: '2026-07-28'
+title: 100 Elite Midfielder Study Atlas
+purpose: A balanced, non-ordinal research cohort of 100 elite midfield and midfield-adjacent creators. Qualitative
+  signatures and emphasis values are editorial hypotheses for interface and experiment design, never measured player
+  ratings.
+ranking_policy: The phrase top 100 is implemented as a curated 100-player study cohort, not an objective ordinal
+  ranking. The frontend must not display rank numbers.
+cohort_balance:
+  men's game: 50
+  women's game: 50
+source_anchors:
+- name: ESPN FC 100 2025
+  url: https://espnpressroom.com/press-release/espn-com-announce-the-2025-fc-100-list-ranking-the-best-players-in-mens-soccer/
+  scope: Recent elite men’s positional recognition; used as one selection anchor, not copied as a ranking.
+- name: The Best FIFA Football Awards 2025
+  url: https://www.fifa.com/en/articles/shortlist-voting-phase-now-open
+  scope: Recent women’s and men’s elite recognition.
+- name: UEFA Champions League Teams of the Season 2024/25 and 2025/26
+  url: https://www.uefa.com/uefachampionsleague/news/
+  scope: Recent technical-observer recognition and tactical context.
+- name: UEFA Women’s Champions League Teams of the Season 2024/25 and 2025/26
+  url: https://www.uefa.com/womenschampionsleague/news/
+  scope: Recent technical-observer recognition and tactical context.
+players:
+- id: rodri
+  name: Rodri
+  cohort: men's game
+  display_role: Single pivot / controlling midfielder
+  primary_archetype: press_resistant_controller
+  signature: Creates order before receiving, using positioning and first-touch direction to keep progression and
+    transition security alive.
+  talent_lenses:
+  - pre-reception structure
+  - tempo regulation
+  - rest-defense control
+  - pressure escape
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Rodri's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the press resistant controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.42
+    body_mechanics: 0.45
+    adaptation: 0.72
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.51
+    off_ball: 0.53
+    physical_execution: 0.68
+    final_action: 0.62
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: pedri
+  name: Pedri
+  cohort: men's game
+  display_role: Interior / advanced connector
+  primary_archetype: pocket_connector
+  signature: Arrives in pockets at the useful moment, then links the next player before the defensive block can
+    reset.
+  talent_lenses:
+  - blind-side arrival
+  - third-player play
+  - scanning
+  - one-touch connection
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Pedri's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the pocket connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.59
+    adaptation: 0.45
+    tempo_direction: 0.56
+    orchestration: 0.48
+    manipulation: 0.62
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.42
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: vitinha
+  name: Vitinha
+  cohort: men's game
+  display_role: Deep controller / roaming connector
+  primary_archetype: circulation_conductor
+  signature: Continuously redraws passing angles and turns circulation into penetration without abandoning central
+    access.
+  talent_lenses:
+  - support-angle creation
+  - tempo shifts
+  - central overloads
+  - press resistance
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Vitinha's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the circulation conductor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.45
+    body_mechanics: 0.59
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.56
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.59
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: jude-bellingham
+  name: Jude Bellingham
+  cohort: men's game
+  display_role: Advanced eight / box-crashing midfielder
+  primary_archetype: vertical_power_connector
+  signature: Combines carrying power, duel resistance, and late arrival timing to turn midfield possession into
+    penalty-area presence.
+  talent_lenses:
+  - vertical carrying
+  - box arrival
+  - duel escape
+  - second-wave threat
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Jude's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the vertical power connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.59
+    body_mechanics: 0.56
+    adaptation: 0.63
+    tempo_direction: 0.59
+    orchestration: 0.42
+    manipulation: 0.76
+    off_ball: 0.94
+    physical_execution: 0.9
+    final_action: 0.42
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: declan-rice
+  name: Declan Rice
+  cohort: men's game
+  display_role: Six / eight hybrid
+  primary_archetype: transition_controller
+  signature: Balances ball recovery, progressive carrying, and cover behind the attack while changing roles across
+    phases.
+  talent_lenses:
+  - transition control
+  - progressive carry
+  - screening
+  - recovery-to-attack
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Declan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the transition controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.53
+    body_mechanics: 0.59
+    adaptation: 0.62
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.72
+    off_ball: 0.48
+    physical_execution: 0.82
+    final_action: 0.45
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: federico-valverde
+  name: Federico Valverde
+  cohort: men's game
+  display_role: Dynamic eight / wide-central hybrid
+  primary_archetype: range_extender
+  signature: Expands the playable area through recovery running, vertical support, and long-range execution.
+  talent_lenses:
+  - coverage range
+  - off-ball running
+  - vertical support
+  - long-range threat
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Federico's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the range extender role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.45
+    body_mechanics: 0.56
+    adaptation: 0.86
+    tempo_direction: 0.42
+    orchestration: 0.45
+    manipulation: 0.59
+    off_ball: 0.82
+    physical_execution: 0.59
+    final_action: 0.45
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: michael-olise
+  name: Michael Olise
+  cohort: men's game
+  display_role: Right-sided creator / attacking midfielder
+  primary_archetype: half_space_manipulator
+  signature: Uses pauses, body disguise, and left-footed access to hold defenders and reveal weak-side routes.
+  talent_lenses:
+  - delayed release
+  - defender manipulation
+  - weak-side access
+  - final action
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Michael's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the half space manipulator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.51
+    body_mechanics: 0.42
+    adaptation: 0.42
+    tempo_direction: 0.53
+    orchestration: 0.53
+    manipulation: 0.7
+    off_ball: 0.42
+    physical_execution: 0.51
+    final_action: 0.92
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: jamal-musiala
+  name: Jamal Musiala
+  cohort: men's game
+  display_role: Attacking midfielder / dribbling connector
+  primary_archetype: pressure_magnet
+  signature: Invites pressure in tight spaces, carries through the first challenge, and releases after the defensive
+    shape bends.
+  talent_lenses:
+  - tight-space carrying
+  - pressure attraction
+  - balance
+  - final-third creation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Jamal's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the pressure magnet role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.56
+    body_mechanics: 0.95
+    adaptation: 0.72
+    tempo_direction: 0.42
+    orchestration: 0.56
+    manipulation: 0.76
+    off_ball: 0.42
+    physical_execution: 0.88
+    final_action: 0.92
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: florian-wirtz
+  name: Florian Wirtz
+  cohort: men's game
+  display_role: Attacking midfielder / roaming creator
+  primary_archetype: between_lines_orchestrator
+  signature: Moves across lines to create overloads, combine quickly, and find the final pass from changing reference
+    points.
+  talent_lenses:
+  - between-lines movement
+  - combination play
+  - blind-side timing
+  - final pass
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Florian's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the between lines orchestrator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.62
+    body_mechanics: 0.51
+    adaptation: 0.59
+    tempo_direction: 0.62
+    orchestration: 0.48
+    manipulation: 0.7
+    off_ball: 0.53
+    physical_execution: 0.42
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: martin-odegaard
+  name: Martin Ødegaard
+  cohort: men's game
+  display_role: Right interior / playmaker
+  primary_archetype: right_half_space_orchestrator
+  signature: Directs combinations from the right half-space through scanning, pressing cues, and disguised reverse
+    passes.
+  talent_lenses:
+  - reverse pass
+  - press direction
+  - combination timing
+  - body disguise
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Martin's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the right half space orchestrator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.42
+    body_mechanics: 0.8
+    adaptation: 0.72
+    tempo_direction: 0.56
+    orchestration: 0.62
+    manipulation: 0.95
+    off_ball: 0.62
+    physical_execution: 0.68
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: joao-neves
+  name: João Neves
+  cohort: men's game
+  display_role: Mobile central midfielder
+  primary_archetype: high_frequency_connector
+  signature: Repositions at high frequency to maintain support, counterpress immediately, and keep short combinations
+    alive.
+  talent_lenses:
+  - micro-positioning
+  - counterpress
+  - support angles
+  - quick circulation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does João's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the high frequency connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.59
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.42
+    orchestration: 0.56
+    manipulation: 0.48
+    off_ball: 0.84
+    physical_execution: 0.68
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: moises-caicedo
+  name: Moisés Caicedo
+  cohort: men's game
+  display_role: Ball-winning midfielder / pivot
+  primary_archetype: duel_to_control
+  signature: Converts defensive interventions into stable possession by recovering, securing, and reconnecting the
+    structure.
+  talent_lenses:
+  - ball recovery
+  - coverage
+  - secure progression
+  - counterpress
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Moisés's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the duel to control role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.42
+    body_mechanics: 0.48
+    adaptation: 0.78
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.62
+    off_ball: 0.82
+    physical_execution: 0.9
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: bruno-guimaraes
+  name: Bruno Guimarães
+  cohort: men's game
+  display_role: Deep midfielder / aggressive connector
+  primary_archetype: progressive_pivot
+  signature: Baits pressure, protects the ball, and breaks lines while retaining the aggression to regain possession.
+  talent_lenses:
+  - pressure bait
+  - line-breaking pass
+  - duel control
+  - tempo change
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Bruno's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the progressive pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.51
+    body_mechanics: 0.53
+    adaptation: 0.72
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.51
+    off_ball: 0.59
+    physical_execution: 0.9
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: nicolo-barella
+  name: Nicolò Barella
+  cohort: men's game
+  display_role: Dynamic eight
+  primary_archetype: tempo_accelerator
+  signature: Accelerates combinations and forward runs while repeatedly reconnecting wide and central zones.
+  talent_lenses:
+  - tempo acceleration
+  - forward running
+  - pressing
+  - wide-central links
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Nicolò's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the tempo accelerator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.51
+    body_mechanics: 0.42
+    adaptation: 0.72
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.59
+    off_ball: 0.56
+    physical_execution: 0.68
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: frenkie-de-jong
+  name: Frenkie de Jong
+  cohort: men's game
+  display_role: Deep carrier / central connector
+  primary_archetype: first_line_escape
+  signature: Escapes the first pressure line by carrying through central space while preserving multiple release
+    angles.
+  talent_lenses:
+  - first-line escape
+  - progressive carry
+  - press resistance
+  - central overload
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Frenkie's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the first line escape role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.45
+    body_mechanics: 0.45
+    adaptation: 0.72
+    tempo_direction: 0.59
+    orchestration: 0.53
+    manipulation: 0.72
+    off_ball: 0.48
+    physical_execution: 0.82
+    final_action: 0.45
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: joshua-kimmich
+  name: Joshua Kimmich
+  cohort: men's game
+  display_role: Deep playmaker / pivot
+  primary_archetype: distribution_hub
+  signature: Controls field access through switches, diagonal distribution, and disciplined starting positions behind
+    attacks.
+  talent_lenses:
+  - switches of play
+  - distribution range
+  - rest defense
+  - early access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Joshua's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the distribution hub role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.51
+    body_mechanics: 0.51
+    adaptation: 0.53
+    tempo_direction: 0.8
+    orchestration: 0.92
+    manipulation: 0.51
+    off_ball: 0.62
+    physical_execution: 0.45
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: bernardo-silva
+  name: Bernardo Silva
+  cohort: men's game
+  display_role: Hybrid creator / controller
+  primary_archetype: overload_specialist
+  signature: Creates local numerical superiority through rotation, ball retention, and constant adjustment to nearby
+    teammates.
+  talent_lenses:
+  - overload creation
+  - press resistance
+  - positional rotation
+  - ball retention
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Bernardo's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the overload specialist role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.62
+    body_mechanics: 0.42
+    adaptation: 0.88
+    tempo_direction: 0.45
+    orchestration: 0.42
+    manipulation: 0.42
+    off_ball: 0.84
+    physical_execution: 0.68
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: cole-palmer
+  name: Cole Palmer
+  cohort: men's game
+  display_role: Right-sided attacking midfielder
+  primary_archetype: final_action_creator
+  signature: Slows the final third just enough to alter defender timing, then passes, carries, or shoots from the
+    same picture.
+  talent_lenses:
+  - pause and release
+  - shot-pass disguise
+  - box access
+  - final action
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Cole's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the final action creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.51
+    body_mechanics: 0.8
+    adaptation: 0.59
+    tempo_direction: 0.48
+    orchestration: 0.51
+    manipulation: 0.95
+    off_ball: 0.59
+    physical_execution: 0.45
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: arda-guler
+  name: Arda Güler
+  cohort: men's game
+  display_role: Creative midfielder / inverted playmaker
+  primary_archetype: deceptive_creator
+  signature: Combines shooting threat and disguised left-footed delivery to widen passing corridors from the half-space.
+  talent_lenses:
+  - disguised passing
+  - shooting threat
+  - half-space creation
+  - set-play craft
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Arda's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the deceptive creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.59
+    body_mechanics: 0.8
+    adaptation: 0.53
+    tempo_direction: 0.48
+    orchestration: 0.84
+    manipulation: 0.95
+    off_ball: 0.62
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: kevin-de-bruyne
+  name: Kevin De Bruyne
+  cohort: men's game
+  display_role: Advanced playmaker / transition creator
+  primary_archetype: high_velocity_creator
+  signature: Sees and executes high-speed vertical solutions early, especially when transitions stretch the defensive
+    line.
+  talent_lenses:
+  - early crossing
+  - vertical passing
+  - transition creation
+  - shoot-pass range
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Kevin's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the high velocity creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.62
+    body_mechanics: 0.53
+    adaptation: 0.53
+    tempo_direction: 0.48
+    orchestration: 0.84
+    manipulation: 0.62
+    off_ball: 0.53
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: aurelien-tchouameni
+  name: Aurélien Tchouaméni
+  cohort: men's game
+  display_role: Holding midfielder / defensive controller
+  primary_archetype: space_screening_pivot
+  signature: Protects central space, wins aerial and ground duels, and distributes from a stable defensive platform.
+  talent_lenses:
+  - space screening
+  - duel control
+  - aerial coverage
+  - secure distribution
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Aurélien's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the space screening pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.42
+    body_mechanics: 0.62
+    adaptation: 0.78
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.62
+    off_ball: 0.82
+    physical_execution: 0.9
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: eduardo-camavinga
+  name: Eduardo Camavinga
+  cohort: men's game
+  display_role: Mobile six / eight
+  primary_archetype: elastic_escape_midfielder
+  signature: Uses mobility, tackling reach, and unusual body angles to escape pressure and repair broken structures.
+  talent_lenses:
+  - elastic press escape
+  - recovery range
+  - body flexibility
+  - role adaptation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Eduardo's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the elastic escape midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.56
+    body_mechanics: 0.42
+    adaptation: 0.72
+    tempo_direction: 0.51
+    orchestration: 0.56
+    manipulation: 0.62
+    off_ball: 0.48
+    physical_execution: 0.68
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: martin-zubimendi
+  name: Martín Zubimendi
+  cohort: men's game
+  display_role: Positional pivot
+  primary_archetype: reference_point_pivot
+  signature: Acts as a reliable positional reference, receiving between pressure lines and keeping the team connected.
+  talent_lenses:
+  - positional discipline
+  - third-man support
+  - tempo security
+  - press resistance
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Martín's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the reference point pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.53
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.42
+    off_ball: 0.84
+    physical_execution: 0.68
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: alexis-mac-allister
+  name: Alexis Mac Allister
+  cohort: men's game
+  display_role: Controller / advanced eight
+  primary_archetype: adaptive_phase_linker
+  signature: Adapts between deep build-up, counterpressing, and final-third combinations without losing technical
+    clarity.
+  talent_lenses:
+  - phase adaptation
+  - press resistance
+  - combination play
+  - counterpress
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Alexis's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the adaptive phase linker role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.62
+    body_mechanics: 0.56
+    adaptation: 0.72
+    tempo_direction: 0.56
+    orchestration: 0.62
+    manipulation: 0.45
+    off_ball: 0.62
+    physical_execution: 0.68
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: ryan-gravenberch
+  name: Ryan Gravenberch
+  cohort: men's game
+  display_role: Carrying six / eight
+  primary_archetype: stride_breaking_controller
+  signature: Uses long-stride carries and body shielding to progress through midfield while covering a large defensive
+    area.
+  talent_lenses:
+  - stride carrying
+  - body shielding
+  - coverage
+  - progressive support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Ryan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the stride breaking controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.62
+    body_mechanics: 0.48
+    adaptation: 0.86
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.76
+    off_ball: 0.82
+    physical_execution: 0.88
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: dominik-szoboszlai
+  name: Dominik Szoboszlai
+  cohort: men's game
+  display_role: Running eight / attacking midfielder
+  primary_archetype: high_intensity_director
+  signature: Combines pressing volume, vertical running, and powerful delivery to raise the speed of the game.
+  talent_lenses:
+  - pressing intensity
+  - vertical running
+  - long-range delivery
+  - tempo elevation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Dominik's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the high intensity director role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.53
+    body_mechanics: 0.45
+    adaptation: 0.72
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.51
+    off_ball: 0.59
+    physical_execution: 0.68
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: tijjani-reijnders
+  name: Tijjani Reijnders
+  cohort: men's game
+  display_role: Progressive eight / carrier
+  primary_archetype: flowing_progressor
+  signature: Glides through midfield with efficient carries and late support runs that connect build-up to finishing
+    zones.
+  talent_lenses:
+  - progressive carrying
+  - late support
+  - space recognition
+  - combination flow
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Tijjani's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the flowing progressor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.59
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.51
+    orchestration: 0.48
+    manipulation: 0.76
+    off_ball: 0.8
+    physical_execution: 0.88
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: sandro-tonali
+  name: Sandro Tonali
+  cohort: men's game
+  display_role: Two-way controller
+  primary_archetype: rhythm_and_recovery
+  signature: Blends long passing, recovery work, and forward support to change rhythm without disconnecting the
+    midfield.
+  talent_lenses:
+  - rhythm changes
+  - long distribution
+  - recovery work
+  - forward support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Sandro's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the rhythm and recovery role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.45
+    body_mechanics: 0.62
+    adaptation: 0.86
+    tempo_direction: 0.8
+    orchestration: 0.92
+    manipulation: 0.62
+    off_ball: 0.8
+    physical_execution: 0.62
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: enzo-fernandez
+  name: Enzo Fernández
+  cohort: men's game
+  display_role: Deep playmaker / eight
+  primary_archetype: vertical_distribution_controller
+  signature: Finds early vertical and diagonal passes, then follows the play to maintain central control.
+  talent_lenses:
+  - vertical distribution
+  - switches
+  - second-phase support
+  - press resistance
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Enzo's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the vertical distribution controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.56
+    body_mechanics: 0.62
+    adaptation: 0.86
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.53
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: xavi-simons
+  name: Xavi Simons
+  cohort: men's game
+  display_role: Roaming attacking midfielder
+  primary_archetype: mobile_advantage_creator
+  signature: Carries and rotates across attacking lanes to create local advantages and attack unsettled defenders.
+  talent_lenses:
+  - roaming
+  - carrying
+  - combination play
+  - transition attack
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Xavi's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the mobile advantage creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.48
+    body_mechanics: 0.48
+    adaptation: 0.59
+    tempo_direction: 0.53
+    orchestration: 0.45
+    manipulation: 0.76
+    off_ball: 0.56
+    physical_execution: 0.88
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: dani-olmo
+  name: Dani Olmo
+  cohort: men's game
+  display_role: Attacking midfielder / false winger
+  primary_archetype: space_interpreter
+  signature: Recognizes temporary pockets, receives on the half-turn, and combines before the space closes.
+  talent_lenses:
+  - space interpretation
+  - half-turn receiving
+  - quick combinations
+  - late box access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Dani's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the space interpreter role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.48
+    body_mechanics: 0.53
+    adaptation: 0.62
+    tempo_direction: 0.53
+    orchestration: 0.45
+    manipulation: 0.62
+    off_ball: 0.42
+    physical_execution: 0.45
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: fabian-ruiz
+  name: Fabián Ruiz
+  cohort: men's game
+  display_role: Left-footed controller / eight
+  primary_archetype: large_space_conductor
+  signature: Uses body orientation and left-footed range to circulate, advance, and control larger midfield spaces.
+  talent_lenses:
+  - left-footed distribution
+  - tempo control
+  - body orientation
+  - box support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Fabián's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the large space conductor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.56
+    body_mechanics: 0.48
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.92
+    manipulation: 0.42
+    off_ball: 0.8
+    physical_execution: 0.62
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: hakan-calhanoglu
+  name: Hakan Çalhanoğlu
+  cohort: men's game
+  display_role: Regista / deep playmaker
+  primary_archetype: deep_range_regista
+  signature: Controls from depth through scanning, long passing, set plays, and early recognition of the far side.
+  talent_lenses:
+  - deep distribution
+  - switches
+  - set plays
+  - scan-led control
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Hakan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the deep range regista role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.51
+    body_mechanics: 0.56
+    adaptation: 0.48
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.62
+    off_ball: 0.62
+    physical_execution: 0.42
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: granit-xhaka
+  name: Granit Xhaka
+  cohort: men's game
+  display_role: Left-sided controller
+  primary_archetype: structural_left_controller
+  signature: Directs build-up from the left through communication, angle management, and forceful progression.
+  talent_lenses:
+  - structural direction
+  - left-side access
+  - communication
+  - progressive passing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Granit's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the structural left controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.62
+    body_mechanics: 0.51
+    adaptation: 0.42
+    tempo_direction: 0.82
+    orchestration: 0.84
+    manipulation: 0.48
+    off_ball: 0.45
+    physical_execution: 0.45
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: ilkay-gundogan
+  name: İlkay Gündoğan
+  cohort: men's game
+  display_role: Controller / late-arriving eight
+  primary_archetype: timing_specialist
+  signature: Manipulates tempo and arrives in scoring positions through subtle timing rather than constant speed.
+  talent_lenses:
+  - late arrival
+  - tempo manipulation
+  - combination play
+  - space timing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does İlkay's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the timing specialist role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.62
+    body_mechanics: 0.62
+    adaptation: 0.56
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.42
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: isco
+  name: Isco
+  cohort: men's game
+  display_role: Free attacking midfielder
+  primary_archetype: retention_orchestrator
+  signature: Retains the ball under pressure and uses small rotations to reorganize teammates around the possession.
+  talent_lenses:
+  - ball retention
+  - tight-space rotation
+  - tempo control
+  - chance creation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Isco's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the retention orchestrator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.56
+    body_mechanics: 0.56
+    adaptation: 0.88
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.45
+    off_ball: 0.82
+    physical_execution: 0.56
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: mikel-merino
+  name: Mikel Merino
+  cohort: men's game
+  display_role: Physical eight / aerial connector
+  primary_archetype: duel_link_midfielder
+  signature: Connects possession through aerial strength, second-ball timing, and intelligent entries into advanced
+    spaces.
+  talent_lenses:
+  - aerial connection
+  - second balls
+  - box arrival
+  - duel play
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Mikel's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the duel link midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.62
+    body_mechanics: 0.48
+    adaptation: 0.63
+    tempo_direction: 0.59
+    orchestration: 0.51
+    manipulation: 0.53
+    off_ball: 0.94
+    physical_execution: 0.9
+    final_action: 0.56
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: bruno-fernandes
+  name: Bruno Fernandes
+  cohort: men's game
+  display_role: High-risk attacking midfielder
+  primary_archetype: volume_chance_director
+  signature: Attempts decisive passes early and repeatedly, directing attacks through aggressive vertical choices.
+  talent_lenses:
+  - chance volume
+  - vertical passing
+  - early release
+  - pressing direction
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Bruno's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the volume chance director role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.42
+    body_mechanics: 0.53
+    adaptation: 0.72
+    tempo_direction: 0.48
+    orchestration: 0.84
+    manipulation: 0.48
+    off_ball: 0.56
+    physical_execution: 0.68
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: james-maddison
+  name: James Maddison
+  cohort: men's game
+  display_role: Central creator / set-play specialist
+  primary_archetype: central_pause_creator
+  signature: Receives between lines, pauses to move defenders, and delivers from open play or dead balls.
+  talent_lenses:
+  - between-lines receiving
+  - pause
+  - set plays
+  - final pass
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does James's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the central pause creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.53
+    body_mechanics: 0.42
+    adaptation: 0.45
+    tempo_direction: 0.48
+    orchestration: 0.56
+    manipulation: 0.7
+    off_ball: 0.53
+    physical_execution: 0.62
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: morgan-gibbs-white
+  name: Morgan Gibbs-White
+  cohort: men's game
+  display_role: Transitioning ten / pressing creator
+  primary_archetype: transition_press_creator
+  signature: Links pressing energy with direct carries and releases into rapidly changing attacking pictures.
+  talent_lenses:
+  - transition creation
+  - pressing
+  - direct carrying
+  - runner access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Morgan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the transition press creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.42
+    body_mechanics: 0.59
+    adaptation: 0.72
+    tempo_direction: 0.48
+    orchestration: 0.51
+    manipulation: 0.76
+    off_ball: 0.59
+    physical_execution: 0.88
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: eberechi-eze
+  name: Eberechi Eze
+  cohort: men's game
+  display_role: Free eight / attacking carrier
+  primary_archetype: slalom_creator
+  signature: Carries through pressure with balance and changes of direction, creating shooting and passing lanes
+    together.
+  talent_lenses:
+  - slalom carrying
+  - balance
+  - shot creation
+  - pressure escape
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Eberechi's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the slalom creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.42
+    body_mechanics: 0.95
+    adaptation: 0.72
+    tempo_direction: 0.56
+    orchestration: 0.51
+    manipulation: 0.76
+    off_ball: 0.48
+    physical_execution: 0.88
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: lucas-paqueta
+  name: Lucas Paquetá
+  cohort: men's game
+  display_role: Creative eight / duel connector
+  primary_archetype: improvisational_connector
+  signature: Uses improvisation, contact resistance, and disguised combinations to connect chaotic phases.
+  talent_lenses:
+  - improvisation
+  - duel resistance
+  - disguised combinations
+  - counterpress
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Lucas's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the improvisational connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.51
+    body_mechanics: 0.8
+    adaptation: 0.72
+    tempo_direction: 0.62
+    orchestration: 0.62
+    manipulation: 0.95
+    off_ball: 0.45
+    physical_execution: 0.9
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: exequiel-palacios
+  name: Exequiel Palacios
+  cohort: men's game
+  display_role: Two-way central midfielder
+  primary_archetype: compact_phase_connector
+  signature: Keeps short distances between teammates, secures circulation, and reacts quickly when possession changes.
+  talent_lenses:
+  - compact support
+  - counterpress
+  - secure circulation
+  - phase connection
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Exequiel's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the compact phase connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.62
+    body_mechanics: 0.42
+    adaptation: 0.86
+    tempo_direction: 0.56
+    orchestration: 0.48
+    manipulation: 0.62
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: angelo-stiller
+  name: Angelo Stiller
+  cohort: men's game
+  display_role: Deep-lying playmaker
+  primary_archetype: left_footed_build_director
+  signature: Directs build-up with left-footed passing range, scanning, and precise occupation behind the first
+    line.
+  talent_lenses:
+  - build-up direction
+  - left-footed range
+  - scanning
+  - positional control
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Angelo's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the left footed build director role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.45
+    adaptation: 0.72
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.48
+    off_ball: 0.84
+    physical_execution: 0.48
+    final_action: 0.56
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: aleksandar-pavlovic
+  name: Aleksandar Pavlović
+  cohort: men's game
+  display_role: Young controlling pivot
+  primary_archetype: calm_progression_pivot
+  signature: Receives calmly under pressure and uses clean distribution to move the team through the first phase.
+  talent_lenses:
+  - composure
+  - first-phase progression
+  - press resistance
+  - central positioning
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Aleksandar's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the calm progression pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.42
+    body_mechanics: 0.51
+    adaptation: 0.72
+    tempo_direction: 0.53
+    orchestration: 0.45
+    manipulation: 0.59
+    off_ball: 0.84
+    physical_execution: 0.68
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: warren-zaire-emery
+  name: Warren Zaïre-Emery
+  cohort: men's game
+  display_role: Powerful all-phase midfielder
+  primary_archetype: all_phase_power_connector
+  signature: Combines physical coverage, carrying, and technical security across defensive and attacking phases.
+  talent_lenses:
+  - all-phase coverage
+  - carrying
+  - duel strength
+  - support timing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Warren's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the all phase power connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.59
+    body_mechanics: 0.48
+    adaptation: 0.86
+    tempo_direction: 0.53
+    orchestration: 0.56
+    manipulation: 0.76
+    off_ball: 0.82
+    physical_execution: 0.9
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: kobbie-mainoo
+  name: Kobbie Mainoo
+  cohort: men's game
+  display_role: Press-resistant central midfielder
+  primary_archetype: contact_escape_connector
+  signature: Uses close control, body feints, and calm decision-making to escape contact in central areas.
+  talent_lenses:
+  - contact escape
+  - close control
+  - body feints
+  - calm progression
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Kobbie's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the contact escape connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.48
+    body_mechanics: 0.48
+    adaptation: 0.42
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.51
+    off_ball: 0.62
+    physical_execution: 0.42
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: rayan-cherki
+  name: Rayan Cherki
+  cohort: men's game
+  display_role: Free creator / attacking midfielder
+  primary_archetype: two_footed_improviser
+  signature: Creates from either foot through disguise, improvisation, and rapid changes between pass, carry, and
+    shot.
+  talent_lenses:
+  - two-footed creation
+  - disguise
+  - improvisation
+  - final action
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Rayan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the two footed improviser role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.51
+    body_mechanics: 0.8
+    adaptation: 0.48
+    tempo_direction: 0.45
+    orchestration: 0.56
+    manipulation: 0.95
+    off_ball: 0.42
+    physical_execution: 0.48
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: khephren-thuram
+  name: Khéphren Thuram
+  cohort: men's game
+  display_role: Power-carrying eight
+  primary_archetype: transition_stride_midfielder
+  signature: Uses stride length and physical momentum to carry through open midfield and support the next phase.
+  talent_lenses:
+  - power carrying
+  - transition running
+  - duel strength
+  - support range
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Khéphren's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the transition stride midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.48
+    body_mechanics: 0.56
+    adaptation: 0.86
+    tempo_direction: 0.53
+    orchestration: 0.51
+    manipulation: 0.76
+    off_ball: 0.8
+    physical_execution: 0.9
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: morgan-rogers
+  name: Morgan Rogers
+  cohort: men's game
+  display_role: Powerful attacking midfielder
+  primary_archetype: contact_driven_creator
+  signature: Carries through contact and attacks gaps directly, forcing defenders to collapse before the release.
+  talent_lenses:
+  - contact carrying
+  - gap attack
+  - pressure attraction
+  - box threat
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Morgan's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the contact driven creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.53
+    body_mechanics: 0.51
+    adaptation: 0.72
+    tempo_direction: 0.48
+    orchestration: 0.59
+    manipulation: 0.76
+    off_ball: 0.56
+    physical_execution: 0.88
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: aitana-bonmati
+  name: Aitana Bonmatí
+  cohort: women's game
+  display_role: Advanced midfielder / all-phase connector
+  primary_archetype: dynamic_half_space_controller
+  signature: Combines scanning, short combinations, and timed movement to control overloads across multiple phases.
+  talent_lenses:
+  - scanning
+  - half-space control
+  - combination play
+  - late arrival
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Aitana's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the dynamic half space controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.51
+    adaptation: 0.56
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.53
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.45
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: alexia-putellas
+  name: Alexia Putellas
+  cohort: women's game
+  display_role: Advanced midfielder / creator
+  primary_archetype: central_creator
+  signature: Controls central attacking spaces through movement, final passing, and repeated arrival into decisive
+    zones.
+  talent_lenses:
+  - central creation
+  - box arrival
+  - final pass
+  - tempo control
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Alexia's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the central creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.53
+    body_mechanics: 0.56
+    adaptation: 0.53
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.7
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: patri-guijarro
+  name: Patri Guijarro
+  cohort: women's game
+  display_role: Pivot / central controller
+  primary_archetype: structural_pivot
+  signature: Stabilizes possession through positioning, circulation, and protection of the space behind the attack.
+  talent_lenses:
+  - rest defense
+  - circulation
+  - second-ball control
+  - structural positioning
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Patri's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the structural pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.42
+    body_mechanics: 0.48
+    adaptation: 0.72
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.42
+    off_ball: 0.84
+    physical_execution: 0.42
+    final_action: 0.45
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: mariona-caldentey
+  name: Mariona Caldentey
+  cohort: women's game
+  display_role: Wide-central creative hybrid
+  primary_archetype: roaming_linker
+  signature: Rotates between wide and central zones to destabilize marking references and connect combinations.
+  talent_lenses:
+  - roaming
+  - overloads
+  - combination play
+  - off-ball rotation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Mariona's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the roaming linker role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.51
+    body_mechanics: 0.45
+    adaptation: 0.88
+    tempo_direction: 0.59
+    orchestration: 0.45
+    manipulation: 0.45
+    off_ball: 0.82
+    physical_execution: 0.59
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: melchie-dumornay
+  name: Melchie Dumornay
+  cohort: women's game
+  display_role: Explosive attacking midfielder
+  primary_archetype: explosive_line_breaker
+  signature: Combines acceleration, carrying, and directness to break midfield lines and attack the box.
+  talent_lenses:
+  - explosive carrying
+  - line breaking
+  - box attack
+  - transition threat
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Melchie's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the explosive line breaker role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.56
+    body_mechanics: 0.62
+    adaptation: 0.59
+    tempo_direction: 0.42
+    orchestration: 0.51
+    manipulation: 0.76
+    off_ball: 0.42
+    physical_execution: 0.88
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: lindsey-heaps
+  name: Lindsey Heaps
+  cohort: women's game
+  display_role: Two-way central midfielder
+  primary_archetype: two_way_organizer
+  signature: Balances leadership, defensive coverage, and late attacking support while directing teammates around
+    her.
+  talent_lenses:
+  - organization
+  - defensive coverage
+  - box arrival
+  - leadership
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Lindsey's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the two way organizer role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.59
+    body_mechanics: 0.62
+    adaptation: 0.78
+    tempo_direction: 0.42
+    orchestration: 0.51
+    manipulation: 0.56
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: grace-geyoro
+  name: Grace Geyoro
+  cohort: women's game
+  display_role: Dynamic central midfielder
+  primary_archetype: transition_linker
+  signature: Turns regains into forward momentum through carrying, support runs, and rapid reconnection.
+  talent_lenses:
+  - ball recovery
+  - carry threat
+  - box-to-box support
+  - transition connection
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Grace's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the transition linker role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.59
+    body_mechanics: 0.59
+    adaptation: 0.86
+    tempo_direction: 0.42
+    orchestration: 0.59
+    manipulation: 0.72
+    off_ball: 0.8
+    physical_execution: 0.82
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: lily-yohannes
+  name: Lily Yohannes
+  cohort: women's game
+  display_role: Progressive young midfielder
+  primary_archetype: future_facing_connector
+  signature: Combines composure, forward passing, and long-range ambition while adapting to increasingly complex
+    roles.
+  talent_lenses:
+  - progressive passing
+  - composure
+  - long-range threat
+  - role learning
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Lily's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the future facing connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.42
+    body_mechanics: 0.62
+    adaptation: 0.53
+    tempo_direction: 0.48
+    orchestration: 0.84
+    manipulation: 0.48
+    off_ball: 0.62
+    physical_execution: 0.51
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: georgia-stanway
+  name: Georgia Stanway
+  cohort: women's game
+  display_role: Aggressive two-way midfielder
+  primary_archetype: competitive_rhythm_setter
+  signature: Sets intensity through duels, forward passing, and assertive movement into attacking positions.
+  talent_lenses:
+  - duel intensity
+  - forward passing
+  - box support
+  - tempo setting
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Georgia's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the competitive rhythm setter role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.42
+    body_mechanics: 0.62
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.84
+    manipulation: 0.45
+    off_ball: 0.8
+    physical_execution: 0.9
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: keira-walsh
+  name: Keira Walsh
+  cohort: women's game
+  display_role: Deep playmaker / pivot
+  primary_archetype: first_phase_conductor
+  signature: Controls the first phase through scanning, receiving angles, and precise distribution beyond pressure.
+  talent_lenses:
+  - scanning
+  - build-up control
+  - line-breaking pass
+  - positional discipline
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Keira's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the first phase conductor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.51
+    adaptation: 0.72
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.56
+    off_ball: 0.84
+    physical_execution: 0.56
+    final_action: 0.53
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: lena-oberdorf
+  name: Lena Oberdorf
+  cohort: women's game
+  display_role: Defensive midfielder / ball winner
+  primary_archetype: defensive_gravity_anchor
+  signature: Dominates central defensive space with timing, physicality, and the ability to secure the next pass.
+  talent_lenses:
+  - ball winning
+  - central coverage
+  - duel strength
+  - secure release
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Lena's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the defensive gravity anchor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.51
+    body_mechanics: 0.42
+    adaptation: 0.78
+    tempo_direction: 0.53
+    orchestration: 0.45
+    manipulation: 0.42
+    off_ball: 0.82
+    physical_execution: 0.9
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: yui-hasegawa
+  name: Yui Hasegawa
+  cohort: women's game
+  display_role: Deep controller / connector
+  primary_archetype: micro_angle_conductor
+  signature: Uses constant small adjustments and technical security to preserve circulation under pressure.
+  talent_lenses:
+  - micro-positioning
+  - technical security
+  - tempo control
+  - support angles
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Yui's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the micro angle conductor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.42
+    body_mechanics: 0.56
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.42
+    off_ball: 0.84
+    physical_execution: 0.48
+    final_action: 0.56
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: rose-lavelle
+  name: Rose Lavelle
+  cohort: women's game
+  display_role: Creative eight / attacking carrier
+  primary_archetype: half_turn_creator
+  signature: Receives on the half-turn, glides through midfield, and combines before defenders can reset their feet.
+  talent_lenses:
+  - half-turn receiving
+  - carrying
+  - combination play
+  - final-third access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Rose's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the half turn creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.48
+    body_mechanics: 0.45
+    adaptation: 0.59
+    tempo_direction: 0.51
+    orchestration: 0.62
+    manipulation: 0.76
+    off_ball: 0.51
+    physical_execution: 0.88
+    final_action: 0.92
+  featured: true
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: caroline-weir
+  name: Caroline Weir
+  cohort: women's game
+  display_role: Left-footed attacking midfielder
+  primary_archetype: left_footed_final_creator
+  signature: Creates from the half-space through left-footed passing, shooting, and controlled changes of tempo.
+  talent_lenses:
+  - left-footed creation
+  - shooting
+  - tempo change
+  - final pass
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Caroline's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the left footed final creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.42
+    body_mechanics: 0.42
+    adaptation: 0.42
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.7
+    off_ball: 0.53
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: pernille-harder
+  name: Pernille Harder
+  cohort: women's game
+  display_role: Second striker / attacking midfielder
+  primary_archetype: space_attacking_connector
+  signature: Connects midfield and attack while repeatedly finding high-value spaces around the box.
+  talent_lenses:
+  - space attack
+  - link play
+  - box movement
+  - finishing access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Pernille's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the space attacking connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.56
+    body_mechanics: 0.42
+    adaptation: 0.56
+    tempo_direction: 0.48
+    orchestration: 0.48
+    manipulation: 0.48
+    off_ball: 0.59
+    physical_execution: 0.56
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: sjoeke-nusken
+  name: Sjoeke Nüsken
+  cohort: women's game
+  display_role: Versatile all-phase midfielder
+  primary_archetype: role_adaptive_midfielder
+  signature: Adapts between pressing, coverage, box arrival, and supporting roles according to the structure around
+    her.
+  talent_lenses:
+  - role adaptation
+  - pressing
+  - coverage
+  - box arrival
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Sjoeke's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the role adaptive midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.42
+    body_mechanics: 0.56
+    adaptation: 0.78
+    tempo_direction: 0.56
+    orchestration: 0.56
+    manipulation: 0.56
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.45
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: erin-cuthbert
+  name: Erin Cuthbert
+  cohort: women's game
+  display_role: High-intensity central midfielder
+  primary_archetype: competitive_connector
+  signature: Combines pressing, carrying, and forceful passing to keep the midfield competitive and connected.
+  talent_lenses:
+  - pressing
+  - carrying
+  - competitive duels
+  - progressive passing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Erin's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the competitive connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.59
+    body_mechanics: 0.53
+    adaptation: 0.72
+    tempo_direction: 0.51
+    orchestration: 0.84
+    manipulation: 0.76
+    off_ball: 0.62
+    physical_execution: 0.9
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: frida-maanum
+  name: Frida Maanum
+  cohort: women's game
+  display_role: Advanced eight / shooting threat
+  primary_archetype: vertical_scoring_midfielder
+  signature: Adds vertical running and long-range shooting to midfield combinations, stretching defenders toward
+    goal.
+  talent_lenses:
+  - vertical running
+  - shooting threat
+  - box arrival
+  - combination play
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Frida's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the vertical scoring midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.56
+    body_mechanics: 0.45
+    adaptation: 0.51
+    tempo_direction: 0.51
+    orchestration: 0.59
+    manipulation: 0.59
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: kim-little
+  name: Kim Little
+  cohort: women's game
+  display_role: Central controller / connector
+  primary_archetype: compact_control_specialist
+  signature: Controls tight spaces through balance, short passing, and intelligent support positions around the
+    ball.
+  talent_lenses:
+  - tight-space control
+  - balance
+  - short combinations
+  - support positioning
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Kim's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the compact control specialist role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.53
+    body_mechanics: 0.95
+    adaptation: 0.86
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.53
+    off_ball: 0.84
+    physical_execution: 0.78
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: kyra-cooney-cross
+  name: Kyra Cooney-Cross
+  cohort: women's game
+  display_role: Progressive central midfielder
+  primary_archetype: forward_looking_controller
+  signature: Scans early and looks forward quickly while retaining enough composure to recycle when progression
+    closes.
+  talent_lenses:
+  - early scanning
+  - forward passing
+  - tempo choice
+  - support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Kyra's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the forward looking controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.59
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.84
+    manipulation: 0.59
+    off_ball: 0.8
+    physical_execution: 0.45
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: ella-toone
+  name: Ella Toone
+  cohort: women's game
+  display_role: Attacking midfielder / runner
+  primary_archetype: space_running_creator
+  signature: Links creative passing with energetic movement beyond the ball and into finishing positions.
+  talent_lenses:
+  - off-ball running
+  - final pass
+  - box entry
+  - transition support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Ella's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the space running creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.42
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.53
+    orchestration: 0.45
+    manipulation: 0.7
+    off_ball: 0.8
+    physical_execution: 0.62
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: lauren-james
+  name: Lauren James
+  cohort: women's game
+  display_role: Wide-central creator
+  primary_archetype: contact_balance_creator
+  signature: Uses exceptional balance, disguise, and contact resistance to hold defenders and create from either
+    lane.
+  talent_lenses:
+  - balance
+  - contact resistance
+  - disguise
+  - final action
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Lauren's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the contact balance creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.62
+    body_mechanics: 0.95
+    adaptation: 0.59
+    tempo_direction: 0.45
+    orchestration: 0.56
+    manipulation: 0.95
+    off_ball: 0.51
+    physical_execution: 0.78
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: claudia-pina
+  name: Clàudia Pina
+  cohort: women's game
+  display_role: Attacking midfielder / scoring creator
+  primary_archetype: shooting_lane_creator
+  signature: Combines movement between lines with shooting quality, forcing defenders to respect both pass and finish.
+  talent_lenses:
+  - shooting threat
+  - between-lines movement
+  - combination play
+  - final action
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Clàudia's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the shooting lane creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.59
+    body_mechanics: 0.53
+    adaptation: 0.56
+    tempo_direction: 0.56
+    orchestration: 0.48
+    manipulation: 0.7
+    off_ball: 0.42
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: linda-caicedo
+  name: Linda Caicedo
+  cohort: women's game
+  display_role: Wide creator / attacking midfielder
+  primary_archetype: elastic_transition_creator
+  signature: Changes direction at speed and links carries with combinations to attack unsettled defensive shapes.
+  talent_lenses:
+  - direction change
+  - transition carrying
+  - combination play
+  - wide-central rotation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Linda's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the elastic transition creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.42
+    body_mechanics: 0.51
+    adaptation: 0.88
+    tempo_direction: 0.62
+    orchestration: 0.42
+    manipulation: 0.76
+    off_ball: 0.82
+    physical_execution: 0.88
+    final_action: 0.45
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: vicky-lopez
+  name: Vicky López
+  cohort: women's game
+  display_role: Young attacking midfielder
+  primary_archetype: agile_pocket_creator
+  signature: Uses agility, close control, and quick interpretation to operate between lines and combine in crowded
+    zones.
+  talent_lenses:
+  - agility
+  - pocket receiving
+  - close control
+  - quick combinations
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Vicky's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the agile pocket creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.48
+    body_mechanics: 0.42
+    adaptation: 0.59
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.56
+    off_ball: 0.62
+    physical_execution: 0.48
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: julia-bartel
+  name: Júlia Bartel
+  cohort: women's game
+  display_role: Technical central midfielder
+  primary_archetype: technical_progression_eight
+  signature: Links clean technique, forward movement, and shooting confidence from central areas.
+  talent_lenses:
+  - technical security
+  - forward movement
+  - long-range threat
+  - combination play
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Júlia's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the technical progression eight role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.56
+    body_mechanics: 0.48
+    adaptation: 0.56
+    tempo_direction: 0.45
+    orchestration: 0.62
+    manipulation: 0.53
+    off_ball: 0.51
+    physical_execution: 0.59
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: teresa-abelleira
+  name: Teresa Abelleira
+  cohort: women's game
+  display_role: Deep controller / distributor
+  primary_archetype: rhythm_distribution_pivot
+  signature: Sets rhythm from deeper positions through scanning, switches, and precise support behind attacks.
+  talent_lenses:
+  - rhythm control
+  - switches
+  - scanning
+  - rest defense
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Teresa's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the rhythm distribution pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.95
+    gaze_timing: 0.9
+    body_mechanics: 0.62
+    adaptation: 0.59
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.48
+    off_ball: 0.62
+    physical_execution: 0.48
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: saki-kumagai
+  name: Saki Kumagai
+  cohort: women's game
+  display_role: Defensive controller / hybrid
+  primary_archetype: experienced_structure_anchor
+  signature: Reads danger early, protects central space, and gives the possession structure an experienced reference
+    point.
+  talent_lenses:
+  - anticipation
+  - central protection
+  - structural leadership
+  - secure distribution
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Saki's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the experienced structure anchor role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.59
+    body_mechanics: 0.51
+    adaptation: 0.42
+    tempo_direction: 0.8
+    orchestration: 0.92
+    manipulation: 0.62
+    off_ball: 0.56
+    physical_execution: 0.51
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: hinata-miyazawa
+  name: Hinata Miyazawa
+  cohort: women's game
+  display_role: Mobile eight / attacking runner
+  primary_archetype: late_space_runner
+  signature: Moves intelligently beyond midfield lines and arrives in scoring areas without disconnecting combinations.
+  talent_lenses:
+  - late runs
+  - space recognition
+  - combination support
+  - finishing access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Hinata's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the late space runner role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.42
+    body_mechanics: 0.62
+    adaptation: 0.86
+    tempo_direction: 0.48
+    orchestration: 0.59
+    manipulation: 0.59
+    off_ball: 0.8
+    physical_execution: 0.53
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: fuka-nagano
+  name: Fuka Nagano
+  cohort: women's game
+  display_role: Deep connector
+  primary_archetype: calm_support_pivot
+  signature: Provides calm circulation, short-distance support, and positional security during build-up.
+  talent_lenses:
+  - calm circulation
+  - support angles
+  - positional security
+  - press escape
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Fuka's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the calm support pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.48
+    body_mechanics: 0.48
+    adaptation: 0.86
+    tempo_direction: 0.51
+    orchestration: 0.62
+    manipulation: 0.45
+    off_ball: 0.84
+    physical_execution: 0.68
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: sam-coffey
+  name: Sam Coffey
+  cohort: women's game
+  display_role: Holding midfielder / distributor
+  primary_archetype: screen_and_switch_pivot
+  signature: Screens central transitions and changes the point of attack with controlled distribution.
+  talent_lenses:
+  - screening
+  - switches
+  - rest defense
+  - tempo security
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Sam's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the screen and switch pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.53
+    body_mechanics: 0.48
+    adaptation: 0.53
+    tempo_direction: 0.92
+    orchestration: 0.8
+    manipulation: 0.45
+    off_ball: 0.42
+    physical_execution: 0.53
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: jaedyn-shaw
+  name: Jaedyn Shaw
+  cohort: women's game
+  display_role: Attacking midfielder / hybrid forward
+  primary_archetype: deceptive_final_third_connector
+  signature: Combines disguise, movement, and finishing quality across the spaces between midfield and attack.
+  talent_lenses:
+  - disguise
+  - final-third movement
+  - finishing
+  - combination play
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Jaedyn's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the deceptive final third connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.48
+    body_mechanics: 0.8
+    adaptation: 0.53
+    tempo_direction: 0.59
+    orchestration: 0.48
+    manipulation: 0.95
+    off_ball: 0.45
+    physical_execution: 0.51
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: catarina-macario
+  name: Catarina Macario
+  cohort: women's game
+  display_role: Creative attacking midfielder
+  primary_archetype: multi_action_finisher
+  signature: Can pass, carry, combine, or shoot from similar receiving positions, increasing defensive uncertainty.
+  talent_lenses:
+  - multi-action threat
+  - finishing
+  - combination play
+  - body orientation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Catarina's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the multi action finisher role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.62
+    body_mechanics: 0.51
+    adaptation: 0.45
+    tempo_direction: 0.59
+    orchestration: 0.62
+    manipulation: 0.59
+    off_ball: 0.42
+    physical_execution: 0.56
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: jill-roord
+  name: Jill Roord
+  cohort: women's game
+  display_role: Advanced eight / scoring midfielder
+  primary_archetype: timed_box_connector
+  signature: Connects possession and times entries into the box while maintaining technical security under pressure.
+  talent_lenses:
+  - box timing
+  - technical security
+  - link play
+  - shooting
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Jill's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the timed box connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.59
+    body_mechanics: 0.62
+    adaptation: 0.53
+    tempo_direction: 0.59
+    orchestration: 0.42
+    manipulation: 0.56
+    off_ball: 0.53
+    physical_execution: 0.75
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: damaris-egurrola
+  name: Damaris Egurrola
+  cohort: women's game
+  display_role: Holding midfielder
+  primary_archetype: aerial_structure_pivot
+  signature: Provides aerial presence, central positioning, and stable distribution at the base of midfield.
+  talent_lenses:
+  - aerial control
+  - central positioning
+  - distribution
+  - transition protection
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Damaris's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the aerial structure pivot role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.56
+    body_mechanics: 0.62
+    adaptation: 0.72
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.51
+    off_ball: 0.84
+    physical_execution: 0.45
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: victoria-pelova
+  name: Victoria Pelova
+  cohort: women's game
+  display_role: Agile central connector
+  primary_archetype: agile_combination_eight
+  signature: Uses agility and quick combinations to escape pressure and maintain attacking flow.
+  talent_lenses:
+  - agility
+  - quick combinations
+  - press escape
+  - support movement
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Victoria's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the agile combination eight role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.53
+    body_mechanics: 0.59
+    adaptation: 0.86
+    tempo_direction: 0.62
+    orchestration: 0.42
+    manipulation: 0.59
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: jackie-groenen
+  name: Jackie Groenen
+  cohort: women's game
+  display_role: Pressing central midfielder
+  primary_archetype: pressing_network_connector
+  signature: Coordinates pressure and supports circulation through constant movement and tactical discipline.
+  talent_lenses:
+  - press coordination
+  - support movement
+  - tactical discipline
+  - ball recovery
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Jackie's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the pressing network connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.56
+    body_mechanics: 0.42
+    adaptation: 0.86
+    tempo_direction: 0.48
+    orchestration: 0.59
+    manipulation: 0.59
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.62
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: sherida-spitse
+  name: Sherida Spitse
+  cohort: women's game
+  display_role: Deep distributor / leader
+  primary_archetype: long_range_organizer
+  signature: Organizes from depth with long passing, set plays, and communication across the team structure.
+  talent_lenses:
+  - long distribution
+  - set plays
+  - communication
+  - structural control
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Sherida's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the long range organizer role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.42
+    gaze_timing: 0.53
+    body_mechanics: 0.62
+    adaptation: 0.45
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.45
+    off_ball: 0.62
+    physical_execution: 0.51
+    final_action: 0.59
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: sara-dabritz
+  name: Sara Däbritz
+  cohort: women's game
+  display_role: Two-way technical midfielder
+  primary_archetype: balanced_phase_connector
+  signature: Moves between defensive support and attacking combinations with technical balance across phases.
+  talent_lenses:
+  - phase balance
+  - technical security
+  - support runs
+  - progressive passing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Sara's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the balanced phase connector role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.59
+    body_mechanics: 0.95
+    adaptation: 0.86
+    tempo_direction: 0.56
+    orchestration: 0.84
+    manipulation: 0.51
+    off_ball: 0.8
+    physical_execution: 0.78
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: manuela-giugliano
+  name: Manuela Giugliano
+  cohort: women's game
+  display_role: Creative central midfielder
+  primary_archetype: italian_tempo_creator
+  signature: Controls tempo and finds incisive passes from central positions while supporting around the box.
+  talent_lenses:
+  - tempo control
+  - incisive passing
+  - set plays
+  - box support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Manuela's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the italian tempo creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.62
+    gaze_timing: 0.51
+    body_mechanics: 0.42
+    adaptation: 0.86
+    tempo_direction: 0.92
+    orchestration: 0.84
+    manipulation: 0.48
+    off_ball: 0.8
+    physical_execution: 0.51
+    final_action: 0.74
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: arianna-caruso
+  name: Arianna Caruso
+  cohort: women's game
+  display_role: Box-to-box midfielder
+  primary_archetype: timed_two_way_runner
+  signature: Combines recovery work with well-timed forward runs and decisive actions near the box.
+  talent_lenses:
+  - two-way running
+  - box arrival
+  - ball recovery
+  - finishing access
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Arianna's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the timed two way runner role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.53
+    gaze_timing: 0.51
+    body_mechanics: 0.53
+    adaptation: 0.45
+    tempo_direction: 0.56
+    orchestration: 0.51
+    manipulation: 0.42
+    off_ball: 0.94
+    physical_execution: 0.75
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: giada-greggi
+  name: Giada Greggi
+  cohort: women's game
+  display_role: Mobile central midfielder
+  primary_archetype: mobile_pressure_escape
+  signature: Uses low-center agility, quick touches, and movement to escape pressure and connect short combinations.
+  talent_lenses:
+  - agility
+  - press escape
+  - short combinations
+  - support movement
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Giada's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the mobile pressure escape role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.62
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.48
+    orchestration: 0.42
+    manipulation: 0.51
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.42
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: filippa-angeldahl
+  name: Filippa Angeldahl
+  cohort: women's game
+  display_role: Central controller
+  primary_archetype: measured_progression_controller
+  signature: Balances circulation and progression with disciplined occupation of central spaces.
+  talent_lenses:
+  - measured progression
+  - central discipline
+  - switches
+  - support
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Filippa's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the measured progression controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.62
+    body_mechanics: 0.62
+    adaptation: 0.86
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.42
+    off_ball: 0.8
+    physical_execution: 0.62
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: hina-sugita
+  name: Hina Sugita
+  cohort: women's game
+  display_role: Technical wide-central midfielder
+  primary_archetype: technical_rotation_linker
+  signature: Rotates between central and wide areas with close control and clean combination play.
+  talent_lenses:
+  - wide-central rotation
+  - close control
+  - combination play
+  - press resistance
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Hina's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the technical rotation linker role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.51
+    body_mechanics: 0.53
+    adaptation: 0.88
+    tempo_direction: 0.82
+    orchestration: 0.78
+    manipulation: 0.42
+    off_ball: 0.82
+    physical_execution: 0.68
+    final_action: 0.53
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: marta
+  name: Marta
+  cohort: women's game
+  display_role: Free attacking midfielder / creator
+  primary_archetype: veteran_improvisational_director
+  signature: Directs attacks through disguise, improvisation, and a deep understanding of how defenders react.
+  talent_lenses:
+  - improvisation
+  - defender reading
+  - final pass
+  - leadership
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Marta's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the veteran improvisational director role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.59
+    gaze_timing: 0.59
+    body_mechanics: 0.56
+    adaptation: 0.62
+    tempo_direction: 0.48
+    orchestration: 0.45
+    manipulation: 0.7
+    off_ball: 0.45
+    physical_execution: 0.48
+    final_action: 0.92
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: debinha
+  name: Debinha
+  cohort: women's game
+  display_role: Attacking midfielder / dribbling creator
+  primary_archetype: compact_space_improviser
+  signature: Creates in compact areas through rapid touches, dribbling, and spontaneous combinations.
+  talent_lenses:
+  - tight-space dribbling
+  - improvisation
+  - combination play
+  - finishing
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Debinha's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the compact space improviser role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.56
+    gaze_timing: 0.48
+    body_mechanics: 0.51
+    adaptation: 0.48
+    tempo_direction: 0.62
+    orchestration: 0.45
+    manipulation: 0.62
+    off_ball: 0.51
+    physical_execution: 0.53
+    final_action: 0.51
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: angelina
+  name: Angelina
+  cohort: women's game
+  display_role: Left-footed central midfielder
+  primary_archetype: left_footed_balance_controller
+  signature: Brings left-footed distribution, composure, and balanced support across midfield phases.
+  talent_lenses:
+  - left-footed distribution
+  - composure
+  - phase balance
+  - support positioning
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Angelina's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the left footed balance controller role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.62
+    body_mechanics: 0.95
+    adaptation: 0.86
+    tempo_direction: 0.82
+    orchestration: 0.92
+    manipulation: 0.59
+    off_ball: 0.84
+    physical_execution: 0.78
+    final_action: 0.56
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: ary-borges
+  name: Ary Borges
+  cohort: women's game
+  display_role: Powerful box-to-box midfielder
+  primary_archetype: power_arrival_midfielder
+  signature: Adds physical running, pressing, and forceful arrivals into advanced zones.
+  talent_lenses:
+  - power running
+  - pressing
+  - box arrival
+  - duel strength
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Ary's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the power arrival midfielder role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.48
+    gaze_timing: 0.62
+    body_mechanics: 0.62
+    adaptation: 0.72
+    tempo_direction: 0.59
+    orchestration: 0.53
+    manipulation: 0.62
+    off_ball: 0.94
+    physical_execution: 0.9
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: crystal-dunn
+  name: Crystal Dunn
+  cohort: women's game
+  display_role: Versatile wide-central midfielder
+  primary_archetype: multi_role_adapter
+  signature: Changes roles across lines while preserving intensity, support, and tactical connection.
+  talent_lenses:
+  - role versatility
+  - support running
+  - pressing
+  - wide-central adaptation
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Crystal's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the multi role adapter role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.51
+    gaze_timing: 0.45
+    body_mechanics: 0.45
+    adaptation: 0.86
+    tempo_direction: 0.51
+    orchestration: 0.59
+    manipulation: 0.48
+    off_ball: 0.8
+    physical_execution: 0.68
+    final_action: 0.56
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26
+- id: signe-gaupset
+  name: Signe Gaupset
+  cohort: women's game
+  display_role: Dynamic young attacking midfielder
+  primary_archetype: emerging_dynamic_creator
+  signature: Combines direct running, technical confidence, and growing responsibility in advanced midfield spaces.
+  talent_lenses:
+  - direct running
+  - technical confidence
+  - chance creation
+  - role growth
+  adaptation_lenses:
+  - teammate-response timing
+  - opponent displacement
+  - role switching
+  - support reciprocity
+  gaze_lenses:
+  - pre-reception scans
+  - head-body dissociation
+  - relevant-space acquisition
+  - gaze-to-action latency
+  body_mechanics_lenses:
+  - open-body access
+  - weight-transfer proxy
+  - braking and turning load
+  - multi-action readiness
+  orchestration_lenses:
+  - tempo change
+  - network brokerage
+  - option enablement
+  - directive influence
+  physical_lenses:
+  - acceleration access
+  - contact or balance demands
+  - repeat movement
+  - execution envelope
+  study_questions:
+  - How does Signe's scanning change the option menu before receiving?
+  - Which teammate movements amplify or constrain the emerging dynamic creator role?
+  - When do body orientation and weight transfer preserve multiple actions from one posture?
+  showcase_emphasis:
+    scanning: 0.45
+    gaze_timing: 0.45
+    body_mechanics: 0.53
+    adaptation: 0.45
+    tempo_direction: 0.53
+    orchestration: 0.51
+    manipulation: 0.51
+    off_ball: 0.56
+    physical_execution: 0.59
+    final_action: 0.48
+  featured: false
+  evidence_status: hypothesis_only
+  profile_status: editorial_research_hypothesis
+  selection_basis: elite_midfield_study_cohort_2025_26

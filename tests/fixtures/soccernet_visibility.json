@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "frame_id": 10,
+      "timestamp_s": 0.4,
+      "period": 1,
+      "camera_id": "main",
+      "camera_confidence": 0.8,
+      "visible_pitch_polygon": [[0,0],[90,0],[90,68],[0,68]]
+    }
+  ]
+}

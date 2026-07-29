@@ -1,0 +1,201 @@
+{
+  "protocol_id": "midfielder-eye-direct-gaze-biomechanics-pilot",
+  "title": "Direct gaze, receiving mechanics, and relational-control football pilot",
+  "version": "0.6.0",
+  "sensors": [
+    {
+      "sensor_id": "eye-tracker",
+      "modality": "binocular_eye_gaze",
+      "sampling_rate_hz": 100.0,
+      "clock_domain": "wearable",
+      "calibration_required": true,
+      "required": true,
+      "notes": "Retain calibration quality and dropout flags."
+    },
+    {
+      "sensor_id": "head-imu",
+      "modality": "head_pose_imu",
+      "sampling_rate_hz": 200.0,
+      "clock_domain": "wearable",
+      "calibration_required": true,
+      "required": true,
+      "notes": ""
+    },
+    {
+      "sensor_id": "tactical-camera-a",
+      "modality": "video",
+      "sampling_rate_hz": 60.0,
+      "clock_domain": "camera",
+      "calibration_required": true,
+      "required": true,
+      "notes": ""
+    },
+    {
+      "sensor_id": "tactical-camera-b",
+      "modality": "video",
+      "sampling_rate_hz": 60.0,
+      "clock_domain": "camera",
+      "calibration_required": true,
+      "required": true,
+      "notes": ""
+    },
+    {
+      "sensor_id": "body-camera-array",
+      "modality": "multiview_pose",
+      "sampling_rate_hz": 120.0,
+      "clock_domain": "camera",
+      "calibration_required": true,
+      "required": true,
+      "notes": "Two cameras minimum; four preferred for turning and occlusion."
+    },
+    {
+      "sensor_id": "ball-tracker",
+      "modality": "ball_tracking",
+      "sampling_rate_hz": 50.0,
+      "clock_domain": "tracking",
+      "calibration_required": true,
+      "required": true,
+      "notes": ""
+    },
+    {
+      "sensor_id": "player-tracker",
+      "modality": "full_tracking",
+      "sampling_rate_hz": 25.0,
+      "clock_domain": "tracking",
+      "calibration_required": true,
+      "required": true,
+      "notes": ""
+    },
+    {
+      "sensor_id": "force-reference",
+      "modality": "force_plate_or_instrumented_insole",
+      "sampling_rate_hz": 1000.0,
+      "clock_domain": "force",
+      "calibration_required": true,
+      "required": false,
+      "notes": "Needed only for direct force validation."
+    }
+  ],
+  "task_blocks": [
+    {
+      "block_id": "half-turn-reception",
+      "name": "Half-turn reception under rear pressure",
+      "repetitions": 12,
+      "active_pressure": true,
+      "intended_measurements": [
+        "pre_reception_scan",
+        "open_body_angle",
+        "first_touch_direction",
+        "option_retention"
+      ],
+      "description": "Receive from a defender-facing starting posture and play either side under randomized pressure."
+    },
+    {
+      "block_id": "attract-and-switch",
+      "name": "Attract pressure and switch play",
+      "repetitions": 10,
+      "active_pressure": true,
+      "intended_measurements": [
+        "gaze_acquisition",
+        "pressure_attraction",
+        "weak_side_access",
+        "release_timing"
+      ],
+      "description": "Delay or release immediately after an approaching presser, with randomized weak-side support."
+    },
+    {
+      "block_id": "third-player",
+      "name": "Third-player combination",
+      "repetitions": 10,
+      "active_pressure": true,
+      "intended_measurements": [
+        "scan_sequence",
+        "support_reactivity",
+        "body_dissociation",
+        "third_player_value"
+      ],
+      "description": "Use a bounce player to access a runner whose availability changes between repetitions."
+    },
+    {
+      "block_id": "brake-turn-disguise",
+      "name": "Brake, turn, disguise, and redirect",
+      "repetitions": 12,
+      "active_pressure": true,
+      "intended_measurements": [
+        "braking_acceleration",
+        "pelvis_rotation",
+        "head_torso_dissociation",
+        "action_direction_spread"
+      ],
+      "description": "Approach on a curved run, decelerate, and choose among pass, carry, or shot cues."
+    },
+    {
+      "block_id": "off-ball-reposition",
+      "name": "Off-ball repositioning and second reception",
+      "repetitions": 10,
+      "active_pressure": true,
+      "intended_measurements": [
+        "co_adaptation_lag",
+        "network_brokerage",
+        "future_option_uplift",
+        "reacquisition_time"
+      ],
+      "description": "Move after release to alter teammate and opponent geometry before a second reception."
+    }
+  ],
+  "synchronization_method": "shared_hardware_pulse_plus_visible_audio_clap_backup",
+  "synchronization_anchor_count": 3,
+  "pre_block_calibration": true,
+  "post_block_drift_check": true,
+  "direct_measurements": [
+    "eye_gaze_ray",
+    "head_imu",
+    "camera_pixels",
+    "player_positions_when_tracking_is_direct",
+    "ball_position_when_tracking_is_direct",
+    "force_only_when_force_reference_is_present"
+  ],
+  "derived_measurements": [
+    "scan_events",
+    "body_pose_3d",
+    "joint_kinematics",
+    "center_of_mass",
+    "braking_load_proxy",
+    "field_of_view_projection",
+    "affordance_options",
+    "relational_control_metrics"
+  ],
+  "prohibited_claims": [
+    "Do not call head direction literal gaze.",
+    "Do not call model-derived ground reaction force a direct force measurement.",
+    "Do not infer leadership intent from teammate displacement alone.",
+    "Do not publish identifiable footage without explicit public-identifiable-media consent."
+  ],
+  "consent": {
+    "participant_id": "participant-placeholder",
+    "research_analysis": true,
+    "model_training": false,
+    "public_derived_visuals": true,
+    "public_identifiable_media": false,
+    "withdrawal_process_documented": true,
+    "retention_days": 365
+  },
+  "preregistered_metrics": [
+    "scan_rate_before_reception",
+    "first_best_option_acquisition_s",
+    "visible_option_recall",
+    "scan_to_action_latency_s",
+    "head_gaze_dissociation_deg",
+    "open_body_angle_deg",
+    "braking_acceleration_mps2",
+    "action_direction_spread_deg",
+    "option_enablement_delta",
+    "co_adaptation_lag_s",
+    "test_retest_icc"
+  ],
+  "notes": [
+    "Participant-held-out and task-form-held-out splits are mandatory.",
+    "Retain raw clocks and synchronization anchors; never overwrite them with aligned time.",
+    "Public examples should default to de-identified pitch-space reconstructions."
+  ]
+}

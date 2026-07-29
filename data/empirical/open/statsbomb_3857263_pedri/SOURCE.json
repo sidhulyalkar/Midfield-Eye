@@ -1,0 +1,28 @@
+{
+  "source_id": "statsbomb_open_data",
+  "upstream_repository": "https://github.com/hudl/open-data",
+  "match_id": 3857263,
+  "match": "Spain 1-1 Germany",
+  "competition": "FIFA World Cup 2022",
+  "match_date": "2022-11-27",
+  "event_uuid": "28ff205e-5e12-46d6-8054-06ca2d840c32",
+  "event_blob_sha": "46b1a375e5cc21fa602bf81446024ec86790c32d",
+  "three_sixty_blob_sha": "e33916ca4f8aa065e476d7ebe0bdc38c4a1152e5",
+  "evidence_tier": "provider_tracking",
+  "measured": [
+    "event_type",
+    "actor_identity",
+    "event_location",
+    "pass_target",
+    "visible_area",
+    "freeze_frame_geometry"
+  ],
+  "not_measured": [
+    "literal_gaze",
+    "head_pose",
+    "body_weight",
+    "joint_forces",
+    "continuous_velocity"
+  ],
+  "citation": "StatsBomb Open Data. Attribute StatsBomb and display the provider logo when publishing analyses."
+}

@@ -1,0 +1,29 @@
+{
+  "source_id": "statsbomb_open_data",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "9e6742d5c1257914a0bfdf6440d5c43183a2b598b9727d8aaad023ebebff6097",
+      "bytes": 632
+    },
+    {
+      "path": "SOURCE.json",
+      "sha256": "02060932987eaff7c96740fabdc90dcef39cf692e36a9b6fdd1763956e28b1bb",
+      "bytes": 848
+    },
+    {
+      "path": "event.json",
+      "sha256": "cb5be94d9a0ba7735d1b8dde46eddbfa5dc553824affa2c51059eeb746e9c262",
+      "bytes": 1005
+    },
+    {
+      "path": "three_sixty.json",
+      "sha256": "0ff2ba74c4b7441016aebf78ea7ed7b12be9be629b701ab9e44da6bdb2c88948",
+      "bytes": 3270
+    }
+  ],
+  "metadata": {
+    "release": "v0.6.0",
+    "source_pinned_excerpt": true
+  }
+}

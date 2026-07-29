@@ -1,0 +1,2226 @@
+version: 2
+policy: Official YouTube Data API metadata discovery only. All results remain embed-only and require manual curation.
+  Pixel analysis, frame extraction, or model overlays require separate rights-cleared media.
+clip_taxonomy:
+- pre_reception_scan
+- head_body_dissociation
+- receive_under_pressure
+- cover_shadow_escape
+- weak_side_switch
+- third_player_combination
+- tempo_direction
+- teammate_adaptation
+- opponent_manipulation
+- body_weight_shift
+- transition_after_regain
+- final_third_creation
+- off_ball_manipulation
+- shoot_pass_carry_choice
+- unsuccessful_or_neutral
+balance_requirements:
+  successes: 2
+  neutral_actions: 2
+  failed_actions: 2
+  off_ball_actions: 2
+  defensive_or_transition_actions: 2
+players:
+- player_id: rodri
+  player_name: Rodri
+  featured: true
+  queries:
+  - Rodri official match highlights scanning passing movement
+  - Rodri tactical analysis press resistant controller body orientation
+  - Rodri full match touches official midfield off ball movement
+  - Rodri interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: pedri
+  player_name: Pedri
+  featured: true
+  queries:
+  - Pedri official match highlights scanning passing movement
+  - Pedri tactical analysis pocket connector body orientation
+  - Pedri full match touches official midfield off ball movement
+  - Pedri interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: vitinha
+  player_name: Vitinha
+  featured: true
+  queries:
+  - Vitinha official match highlights scanning passing movement
+  - Vitinha tactical analysis circulation conductor body orientation
+  - Vitinha full match touches official midfield off ball movement
+  - Vitinha interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: jude-bellingham
+  player_name: Jude Bellingham
+  featured: true
+  queries:
+  - Jude Bellingham official match highlights scanning passing movement
+  - Jude Bellingham tactical analysis vertical power connector body orientation
+  - Jude Bellingham full match touches official midfield off ball movement
+  - Jude Bellingham interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: declan-rice
+  player_name: Declan Rice
+  featured: false
+  queries:
+  - Declan Rice official match highlights scanning passing movement
+  - Declan Rice tactical analysis transition controller body orientation
+  - Declan Rice full match touches official midfield off ball movement
+  - Declan Rice interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: federico-valverde
+  player_name: Federico Valverde
+  featured: false
+  queries:
+  - Federico Valverde official match highlights scanning passing movement
+  - Federico Valverde tactical analysis range extender body orientation
+  - Federico Valverde full match touches official midfield off ball movement
+  - Federico Valverde interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: michael-olise
+  player_name: Michael Olise
+  featured: true
+  queries:
+  - Michael Olise official match highlights scanning passing movement
+  - Michael Olise tactical analysis half space manipulator body orientation
+  - Michael Olise full match touches official midfield off ball movement
+  - Michael Olise interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: jamal-musiala
+  player_name: Jamal Musiala
+  featured: true
+  queries:
+  - Jamal Musiala official match highlights scanning passing movement
+  - Jamal Musiala tactical analysis pressure magnet body orientation
+  - Jamal Musiala full match touches official midfield off ball movement
+  - Jamal Musiala interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: florian-wirtz
+  player_name: Florian Wirtz
+  featured: false
+  queries:
+  - Florian Wirtz official match highlights scanning passing movement
+  - Florian Wirtz tactical analysis between lines orchestrator body orientation
+  - Florian Wirtz full match touches official midfield off ball movement
+  - Florian Wirtz interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: martin-odegaard
+  player_name: Martin Ødegaard
+  featured: false
+  queries:
+  - Martin Ødegaard official match highlights scanning passing movement
+  - Martin Ødegaard tactical analysis right half space orchestrator body orientation
+  - Martin Ødegaard full match touches official midfield off ball movement
+  - Martin Ødegaard interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: joao-neves
+  player_name: João Neves
+  featured: false
+  queries:
+  - João Neves official match highlights scanning passing movement
+  - João Neves tactical analysis high frequency connector body orientation
+  - João Neves full match touches official midfield off ball movement
+  - João Neves interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: moises-caicedo
+  player_name: Moisés Caicedo
+  featured: false
+  queries:
+  - Moisés Caicedo official match highlights scanning passing movement
+  - Moisés Caicedo tactical analysis duel to control body orientation
+  - Moisés Caicedo full match touches official midfield off ball movement
+  - Moisés Caicedo interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: bruno-guimaraes
+  player_name: Bruno Guimarães
+  featured: false
+  queries:
+  - Bruno Guimarães official match highlights scanning passing movement
+  - Bruno Guimarães tactical analysis progressive pivot body orientation
+  - Bruno Guimarães full match touches official midfield off ball movement
+  - Bruno Guimarães interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: nicolo-barella
+  player_name: Nicolò Barella
+  featured: false
+  queries:
+  - Nicolò Barella official match highlights scanning passing movement
+  - Nicolò Barella tactical analysis tempo accelerator body orientation
+  - Nicolò Barella full match touches official midfield off ball movement
+  - Nicolò Barella interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: frenkie-de-jong
+  player_name: Frenkie de Jong
+  featured: false
+  queries:
+  - Frenkie de Jong official match highlights scanning passing movement
+  - Frenkie de Jong tactical analysis first line escape body orientation
+  - Frenkie de Jong full match touches official midfield off ball movement
+  - Frenkie de Jong interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: joshua-kimmich
+  player_name: Joshua Kimmich
+  featured: false
+  queries:
+  - Joshua Kimmich official match highlights scanning passing movement
+  - Joshua Kimmich tactical analysis distribution hub body orientation
+  - Joshua Kimmich full match touches official midfield off ball movement
+  - Joshua Kimmich interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: bernardo-silva
+  player_name: Bernardo Silva
+  featured: false
+  queries:
+  - Bernardo Silva official match highlights scanning passing movement
+  - Bernardo Silva tactical analysis overload specialist body orientation
+  - Bernardo Silva full match touches official midfield off ball movement
+  - Bernardo Silva interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: cole-palmer
+  player_name: Cole Palmer
+  featured: false
+  queries:
+  - Cole Palmer official match highlights scanning passing movement
+  - Cole Palmer tactical analysis final action creator body orientation
+  - Cole Palmer full match touches official midfield off ball movement
+  - Cole Palmer interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: arda-guler
+  player_name: Arda Güler
+  featured: false
+  queries:
+  - Arda Güler official match highlights scanning passing movement
+  - Arda Güler tactical analysis deceptive creator body orientation
+  - Arda Güler full match touches official midfield off ball movement
+  - Arda Güler interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: kevin-de-bruyne
+  player_name: Kevin De Bruyne
+  featured: false
+  queries:
+  - Kevin De Bruyne official match highlights scanning passing movement
+  - Kevin De Bruyne tactical analysis high velocity creator body orientation
+  - Kevin De Bruyne full match touches official midfield off ball movement
+  - Kevin De Bruyne interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: aurelien-tchouameni
+  player_name: Aurélien Tchouaméni
+  featured: false
+  queries:
+  - Aurélien Tchouaméni official match highlights scanning passing movement
+  - Aurélien Tchouaméni tactical analysis space screening pivot body orientation
+  - Aurélien Tchouaméni full match touches official midfield off ball movement
+  - Aurélien Tchouaméni interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: eduardo-camavinga
+  player_name: Eduardo Camavinga
+  featured: false
+  queries:
+  - Eduardo Camavinga official match highlights scanning passing movement
+  - Eduardo Camavinga tactical analysis elastic escape midfielder body orientation
+  - Eduardo Camavinga full match touches official midfield off ball movement
+  - Eduardo Camavinga interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: martin-zubimendi
+  player_name: Martín Zubimendi
+  featured: false
+  queries:
+  - Martín Zubimendi official match highlights scanning passing movement
+  - Martín Zubimendi tactical analysis reference point pivot body orientation
+  - Martín Zubimendi full match touches official midfield off ball movement
+  - Martín Zubimendi interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: alexis-mac-allister
+  player_name: Alexis Mac Allister
+  featured: false
+  queries:
+  - Alexis Mac Allister official match highlights scanning passing movement
+  - Alexis Mac Allister tactical analysis adaptive phase linker body orientation
+  - Alexis Mac Allister full match touches official midfield off ball movement
+  - Alexis Mac Allister interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: ryan-gravenberch
+  player_name: Ryan Gravenberch
+  featured: false
+  queries:
+  - Ryan Gravenberch official match highlights scanning passing movement
+  - Ryan Gravenberch tactical analysis stride breaking controller body orientation
+  - Ryan Gravenberch full match touches official midfield off ball movement
+  - Ryan Gravenberch interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: dominik-szoboszlai
+  player_name: Dominik Szoboszlai
+  featured: false
+  queries:
+  - Dominik Szoboszlai official match highlights scanning passing movement
+  - Dominik Szoboszlai tactical analysis high intensity director body orientation
+  - Dominik Szoboszlai full match touches official midfield off ball movement
+  - Dominik Szoboszlai interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: tijjani-reijnders
+  player_name: Tijjani Reijnders
+  featured: false
+  queries:
+  - Tijjani Reijnders official match highlights scanning passing movement
+  - Tijjani Reijnders tactical analysis flowing progressor body orientation
+  - Tijjani Reijnders full match touches official midfield off ball movement
+  - Tijjani Reijnders interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: sandro-tonali
+  player_name: Sandro Tonali
+  featured: false
+  queries:
+  - Sandro Tonali official match highlights scanning passing movement
+  - Sandro Tonali tactical analysis rhythm and recovery body orientation
+  - Sandro Tonali full match touches official midfield off ball movement
+  - Sandro Tonali interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: enzo-fernandez
+  player_name: Enzo Fernández
+  featured: false
+  queries:
+  - Enzo Fernández official match highlights scanning passing movement
+  - Enzo Fernández tactical analysis vertical distribution controller body orientation
+  - Enzo Fernández full match touches official midfield off ball movement
+  - Enzo Fernández interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: xavi-simons
+  player_name: Xavi Simons
+  featured: false
+  queries:
+  - Xavi Simons official match highlights scanning passing movement
+  - Xavi Simons tactical analysis mobile advantage creator body orientation
+  - Xavi Simons full match touches official midfield off ball movement
+  - Xavi Simons interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: dani-olmo
+  player_name: Dani Olmo
+  featured: false
+  queries:
+  - Dani Olmo official match highlights scanning passing movement
+  - Dani Olmo tactical analysis space interpreter body orientation
+  - Dani Olmo full match touches official midfield off ball movement
+  - Dani Olmo interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: fabian-ruiz
+  player_name: Fabián Ruiz
+  featured: false
+  queries:
+  - Fabián Ruiz official match highlights scanning passing movement
+  - Fabián Ruiz tactical analysis large space conductor body orientation
+  - Fabián Ruiz full match touches official midfield off ball movement
+  - Fabián Ruiz interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: hakan-calhanoglu
+  player_name: Hakan Çalhanoğlu
+  featured: false
+  queries:
+  - Hakan Çalhanoğlu official match highlights scanning passing movement
+  - Hakan Çalhanoğlu tactical analysis deep range regista body orientation
+  - Hakan Çalhanoğlu full match touches official midfield off ball movement
+  - Hakan Çalhanoğlu interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: granit-xhaka
+  player_name: Granit Xhaka
+  featured: false
+  queries:
+  - Granit Xhaka official match highlights scanning passing movement
+  - Granit Xhaka tactical analysis structural left controller body orientation
+  - Granit Xhaka full match touches official midfield off ball movement
+  - Granit Xhaka interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: ilkay-gundogan
+  player_name: İlkay Gündoğan
+  featured: false
+  queries:
+  - İlkay Gündoğan official match highlights scanning passing movement
+  - İlkay Gündoğan tactical analysis timing specialist body orientation
+  - İlkay Gündoğan full match touches official midfield off ball movement
+  - İlkay Gündoğan interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: isco
+  player_name: Isco
+  featured: false
+  queries:
+  - Isco official match highlights scanning passing movement
+  - Isco tactical analysis retention orchestrator body orientation
+  - Isco full match touches official midfield off ball movement
+  - Isco interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: mikel-merino
+  player_name: Mikel Merino
+  featured: false
+  queries:
+  - Mikel Merino official match highlights scanning passing movement
+  - Mikel Merino tactical analysis duel link midfielder body orientation
+  - Mikel Merino full match touches official midfield off ball movement
+  - Mikel Merino interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: bruno-fernandes
+  player_name: Bruno Fernandes
+  featured: false
+  queries:
+  - Bruno Fernandes official match highlights scanning passing movement
+  - Bruno Fernandes tactical analysis volume chance director body orientation
+  - Bruno Fernandes full match touches official midfield off ball movement
+  - Bruno Fernandes interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: james-maddison
+  player_name: James Maddison
+  featured: false
+  queries:
+  - James Maddison official match highlights scanning passing movement
+  - James Maddison tactical analysis central pause creator body orientation
+  - James Maddison full match touches official midfield off ball movement
+  - James Maddison interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: morgan-gibbs-white
+  player_name: Morgan Gibbs-White
+  featured: false
+  queries:
+  - Morgan Gibbs-White official match highlights scanning passing movement
+  - Morgan Gibbs-White tactical analysis transition press creator body orientation
+  - Morgan Gibbs-White full match touches official midfield off ball movement
+  - Morgan Gibbs-White interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: eberechi-eze
+  player_name: Eberechi Eze
+  featured: false
+  queries:
+  - Eberechi Eze official match highlights scanning passing movement
+  - Eberechi Eze tactical analysis slalom creator body orientation
+  - Eberechi Eze full match touches official midfield off ball movement
+  - Eberechi Eze interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: lucas-paqueta
+  player_name: Lucas Paquetá
+  featured: false
+  queries:
+  - Lucas Paquetá official match highlights scanning passing movement
+  - Lucas Paquetá tactical analysis improvisational connector body orientation
+  - Lucas Paquetá full match touches official midfield off ball movement
+  - Lucas Paquetá interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: exequiel-palacios
+  player_name: Exequiel Palacios
+  featured: false
+  queries:
+  - Exequiel Palacios official match highlights scanning passing movement
+  - Exequiel Palacios tactical analysis compact phase connector body orientation
+  - Exequiel Palacios full match touches official midfield off ball movement
+  - Exequiel Palacios interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: angelo-stiller
+  player_name: Angelo Stiller
+  featured: false
+  queries:
+  - Angelo Stiller official match highlights scanning passing movement
+  - Angelo Stiller tactical analysis left footed build director body orientation
+  - Angelo Stiller full match touches official midfield off ball movement
+  - Angelo Stiller interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: aleksandar-pavlovic
+  player_name: Aleksandar Pavlović
+  featured: false
+  queries:
+  - Aleksandar Pavlović official match highlights scanning passing movement
+  - Aleksandar Pavlović tactical analysis calm progression pivot body orientation
+  - Aleksandar Pavlović full match touches official midfield off ball movement
+  - Aleksandar Pavlović interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: warren-zaire-emery
+  player_name: Warren Zaïre-Emery
+  featured: false
+  queries:
+  - Warren Zaïre-Emery official match highlights scanning passing movement
+  - Warren Zaïre-Emery tactical analysis all phase power connector body orientation
+  - Warren Zaïre-Emery full match touches official midfield off ball movement
+  - Warren Zaïre-Emery interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: kobbie-mainoo
+  player_name: Kobbie Mainoo
+  featured: false
+  queries:
+  - Kobbie Mainoo official match highlights scanning passing movement
+  - Kobbie Mainoo tactical analysis contact escape connector body orientation
+  - Kobbie Mainoo full match touches official midfield off ball movement
+  - Kobbie Mainoo interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: rayan-cherki
+  player_name: Rayan Cherki
+  featured: false
+  queries:
+  - Rayan Cherki official match highlights scanning passing movement
+  - Rayan Cherki tactical analysis two footed improviser body orientation
+  - Rayan Cherki full match touches official midfield off ball movement
+  - Rayan Cherki interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: khephren-thuram
+  player_name: Khéphren Thuram
+  featured: false
+  queries:
+  - Khéphren Thuram official match highlights scanning passing movement
+  - Khéphren Thuram tactical analysis transition stride midfielder body orientation
+  - Khéphren Thuram full match touches official midfield off ball movement
+  - Khéphren Thuram interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: morgan-rogers
+  player_name: Morgan Rogers
+  featured: false
+  queries:
+  - Morgan Rogers official match highlights scanning passing movement
+  - Morgan Rogers tactical analysis contact driven creator body orientation
+  - Morgan Rogers full match touches official midfield off ball movement
+  - Morgan Rogers interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: aitana-bonmati
+  player_name: Aitana Bonmatí
+  featured: true
+  queries:
+  - Aitana Bonmatí official match highlights scanning passing movement
+  - Aitana Bonmatí tactical analysis dynamic half space controller body orientation
+  - Aitana Bonmatí full match touches official midfield off ball movement
+  - Aitana Bonmatí interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: alexia-putellas
+  player_name: Alexia Putellas
+  featured: true
+  queries:
+  - Alexia Putellas official match highlights scanning passing movement
+  - Alexia Putellas tactical analysis central creator body orientation
+  - Alexia Putellas full match touches official midfield off ball movement
+  - Alexia Putellas interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: patri-guijarro
+  player_name: Patri Guijarro
+  featured: true
+  queries:
+  - Patri Guijarro official match highlights scanning passing movement
+  - Patri Guijarro tactical analysis structural pivot body orientation
+  - Patri Guijarro full match touches official midfield off ball movement
+  - Patri Guijarro interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: mariona-caldentey
+  player_name: Mariona Caldentey
+  featured: false
+  queries:
+  - Mariona Caldentey official match highlights scanning passing movement
+  - Mariona Caldentey tactical analysis roaming linker body orientation
+  - Mariona Caldentey full match touches official midfield off ball movement
+  - Mariona Caldentey interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: melchie-dumornay
+  player_name: Melchie Dumornay
+  featured: false
+  queries:
+  - Melchie Dumornay official match highlights scanning passing movement
+  - Melchie Dumornay tactical analysis explosive line breaker body orientation
+  - Melchie Dumornay full match touches official midfield off ball movement
+  - Melchie Dumornay interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: lindsey-heaps
+  player_name: Lindsey Heaps
+  featured: false
+  queries:
+  - Lindsey Heaps official match highlights scanning passing movement
+  - Lindsey Heaps tactical analysis two way organizer body orientation
+  - Lindsey Heaps full match touches official midfield off ball movement
+  - Lindsey Heaps interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: grace-geyoro
+  player_name: Grace Geyoro
+  featured: false
+  queries:
+  - Grace Geyoro official match highlights scanning passing movement
+  - Grace Geyoro tactical analysis transition linker body orientation
+  - Grace Geyoro full match touches official midfield off ball movement
+  - Grace Geyoro interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: lily-yohannes
+  player_name: Lily Yohannes
+  featured: false
+  queries:
+  - Lily Yohannes official match highlights scanning passing movement
+  - Lily Yohannes tactical analysis future facing connector body orientation
+  - Lily Yohannes full match touches official midfield off ball movement
+  - Lily Yohannes interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: georgia-stanway
+  player_name: Georgia Stanway
+  featured: false
+  queries:
+  - Georgia Stanway official match highlights scanning passing movement
+  - Georgia Stanway tactical analysis competitive rhythm setter body orientation
+  - Georgia Stanway full match touches official midfield off ball movement
+  - Georgia Stanway interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: keira-walsh
+  player_name: Keira Walsh
+  featured: true
+  queries:
+  - Keira Walsh official match highlights scanning passing movement
+  - Keira Walsh tactical analysis first phase conductor body orientation
+  - Keira Walsh full match touches official midfield off ball movement
+  - Keira Walsh interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: lena-oberdorf
+  player_name: Lena Oberdorf
+  featured: false
+  queries:
+  - Lena Oberdorf official match highlights scanning passing movement
+  - Lena Oberdorf tactical analysis defensive gravity anchor body orientation
+  - Lena Oberdorf full match touches official midfield off ball movement
+  - Lena Oberdorf interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: yui-hasegawa
+  player_name: Yui Hasegawa
+  featured: true
+  queries:
+  - Yui Hasegawa official match highlights scanning passing movement
+  - Yui Hasegawa tactical analysis micro angle conductor body orientation
+  - Yui Hasegawa full match touches official midfield off ball movement
+  - Yui Hasegawa interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: rose-lavelle
+  player_name: Rose Lavelle
+  featured: true
+  queries:
+  - Rose Lavelle official match highlights scanning passing movement
+  - Rose Lavelle tactical analysis half turn creator body orientation
+  - Rose Lavelle full match touches official midfield off ball movement
+  - Rose Lavelle interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: caroline-weir
+  player_name: Caroline Weir
+  featured: false
+  queries:
+  - Caroline Weir official match highlights scanning passing movement
+  - Caroline Weir tactical analysis left footed final creator body orientation
+  - Caroline Weir full match touches official midfield off ball movement
+  - Caroline Weir interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: pernille-harder
+  player_name: Pernille Harder
+  featured: false
+  queries:
+  - Pernille Harder official match highlights scanning passing movement
+  - Pernille Harder tactical analysis space attacking connector body orientation
+  - Pernille Harder full match touches official midfield off ball movement
+  - Pernille Harder interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: sjoeke-nusken
+  player_name: Sjoeke Nüsken
+  featured: false
+  queries:
+  - Sjoeke Nüsken official match highlights scanning passing movement
+  - Sjoeke Nüsken tactical analysis role adaptive midfielder body orientation
+  - Sjoeke Nüsken full match touches official midfield off ball movement
+  - Sjoeke Nüsken interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: erin-cuthbert
+  player_name: Erin Cuthbert
+  featured: false
+  queries:
+  - Erin Cuthbert official match highlights scanning passing movement
+  - Erin Cuthbert tactical analysis competitive connector body orientation
+  - Erin Cuthbert full match touches official midfield off ball movement
+  - Erin Cuthbert interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: frida-maanum
+  player_name: Frida Maanum
+  featured: false
+  queries:
+  - Frida Maanum official match highlights scanning passing movement
+  - Frida Maanum tactical analysis vertical scoring midfielder body orientation
+  - Frida Maanum full match touches official midfield off ball movement
+  - Frida Maanum interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: kim-little
+  player_name: Kim Little
+  featured: false
+  queries:
+  - Kim Little official match highlights scanning passing movement
+  - Kim Little tactical analysis compact control specialist body orientation
+  - Kim Little full match touches official midfield off ball movement
+  - Kim Little interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: kyra-cooney-cross
+  player_name: Kyra Cooney-Cross
+  featured: false
+  queries:
+  - Kyra Cooney-Cross official match highlights scanning passing movement
+  - Kyra Cooney-Cross tactical analysis forward looking controller body orientation
+  - Kyra Cooney-Cross full match touches official midfield off ball movement
+  - Kyra Cooney-Cross interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: ella-toone
+  player_name: Ella Toone
+  featured: false
+  queries:
+  - Ella Toone official match highlights scanning passing movement
+  - Ella Toone tactical analysis space running creator body orientation
+  - Ella Toone full match touches official midfield off ball movement
+  - Ella Toone interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: lauren-james
+  player_name: Lauren James
+  featured: false
+  queries:
+  - Lauren James official match highlights scanning passing movement
+  - Lauren James tactical analysis contact balance creator body orientation
+  - Lauren James full match touches official midfield off ball movement
+  - Lauren James interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: claudia-pina
+  player_name: Clàudia Pina
+  featured: false
+  queries:
+  - Clàudia Pina official match highlights scanning passing movement
+  - Clàudia Pina tactical analysis shooting lane creator body orientation
+  - Clàudia Pina full match touches official midfield off ball movement
+  - Clàudia Pina interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: linda-caicedo
+  player_name: Linda Caicedo
+  featured: false
+  queries:
+  - Linda Caicedo official match highlights scanning passing movement
+  - Linda Caicedo tactical analysis elastic transition creator body orientation
+  - Linda Caicedo full match touches official midfield off ball movement
+  - Linda Caicedo interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: vicky-lopez
+  player_name: Vicky López
+  featured: false
+  queries:
+  - Vicky López official match highlights scanning passing movement
+  - Vicky López tactical analysis agile pocket creator body orientation
+  - Vicky López full match touches official midfield off ball movement
+  - Vicky López interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: julia-bartel
+  player_name: Júlia Bartel
+  featured: false
+  queries:
+  - Júlia Bartel official match highlights scanning passing movement
+  - Júlia Bartel tactical analysis technical progression eight body orientation
+  - Júlia Bartel full match touches official midfield off ball movement
+  - Júlia Bartel interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: teresa-abelleira
+  player_name: Teresa Abelleira
+  featured: false
+  queries:
+  - Teresa Abelleira official match highlights scanning passing movement
+  - Teresa Abelleira tactical analysis rhythm distribution pivot body orientation
+  - Teresa Abelleira full match touches official midfield off ball movement
+  - Teresa Abelleira interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: saki-kumagai
+  player_name: Saki Kumagai
+  featured: false
+  queries:
+  - Saki Kumagai official match highlights scanning passing movement
+  - Saki Kumagai tactical analysis experienced structure anchor body orientation
+  - Saki Kumagai full match touches official midfield off ball movement
+  - Saki Kumagai interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: hinata-miyazawa
+  player_name: Hinata Miyazawa
+  featured: false
+  queries:
+  - Hinata Miyazawa official match highlights scanning passing movement
+  - Hinata Miyazawa tactical analysis late space runner body orientation
+  - Hinata Miyazawa full match touches official midfield off ball movement
+  - Hinata Miyazawa interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: fuka-nagano
+  player_name: Fuka Nagano
+  featured: false
+  queries:
+  - Fuka Nagano official match highlights scanning passing movement
+  - Fuka Nagano tactical analysis calm support pivot body orientation
+  - Fuka Nagano full match touches official midfield off ball movement
+  - Fuka Nagano interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: sam-coffey
+  player_name: Sam Coffey
+  featured: false
+  queries:
+  - Sam Coffey official match highlights scanning passing movement
+  - Sam Coffey tactical analysis screen and switch pivot body orientation
+  - Sam Coffey full match touches official midfield off ball movement
+  - Sam Coffey interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: jaedyn-shaw
+  player_name: Jaedyn Shaw
+  featured: false
+  queries:
+  - Jaedyn Shaw official match highlights scanning passing movement
+  - Jaedyn Shaw tactical analysis deceptive final third connector body orientation
+  - Jaedyn Shaw full match touches official midfield off ball movement
+  - Jaedyn Shaw interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: catarina-macario
+  player_name: Catarina Macario
+  featured: false
+  queries:
+  - Catarina Macario official match highlights scanning passing movement
+  - Catarina Macario tactical analysis multi action finisher body orientation
+  - Catarina Macario full match touches official midfield off ball movement
+  - Catarina Macario interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: jill-roord
+  player_name: Jill Roord
+  featured: false
+  queries:
+  - Jill Roord official match highlights scanning passing movement
+  - Jill Roord tactical analysis timed box connector body orientation
+  - Jill Roord full match touches official midfield off ball movement
+  - Jill Roord interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: damaris-egurrola
+  player_name: Damaris Egurrola
+  featured: false
+  queries:
+  - Damaris Egurrola official match highlights scanning passing movement
+  - Damaris Egurrola tactical analysis aerial structure pivot body orientation
+  - Damaris Egurrola full match touches official midfield off ball movement
+  - Damaris Egurrola interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: victoria-pelova
+  player_name: Victoria Pelova
+  featured: false
+  queries:
+  - Victoria Pelova official match highlights scanning passing movement
+  - Victoria Pelova tactical analysis agile combination eight body orientation
+  - Victoria Pelova full match touches official midfield off ball movement
+  - Victoria Pelova interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: jackie-groenen
+  player_name: Jackie Groenen
+  featured: false
+  queries:
+  - Jackie Groenen official match highlights scanning passing movement
+  - Jackie Groenen tactical analysis pressing network connector body orientation
+  - Jackie Groenen full match touches official midfield off ball movement
+  - Jackie Groenen interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: sherida-spitse
+  player_name: Sherida Spitse
+  featured: false
+  queries:
+  - Sherida Spitse official match highlights scanning passing movement
+  - Sherida Spitse tactical analysis long range organizer body orientation
+  - Sherida Spitse full match touches official midfield off ball movement
+  - Sherida Spitse interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: sara-dabritz
+  player_name: Sara Däbritz
+  featured: false
+  queries:
+  - Sara Däbritz official match highlights scanning passing movement
+  - Sara Däbritz tactical analysis balanced phase connector body orientation
+  - Sara Däbritz full match touches official midfield off ball movement
+  - Sara Däbritz interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: manuela-giugliano
+  player_name: Manuela Giugliano
+  featured: false
+  queries:
+  - Manuela Giugliano official match highlights scanning passing movement
+  - Manuela Giugliano tactical analysis italian tempo creator body orientation
+  - Manuela Giugliano full match touches official midfield off ball movement
+  - Manuela Giugliano interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: arianna-caruso
+  player_name: Arianna Caruso
+  featured: false
+  queries:
+  - Arianna Caruso official match highlights scanning passing movement
+  - Arianna Caruso tactical analysis timed two way runner body orientation
+  - Arianna Caruso full match touches official midfield off ball movement
+  - Arianna Caruso interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: giada-greggi
+  player_name: Giada Greggi
+  featured: false
+  queries:
+  - Giada Greggi official match highlights scanning passing movement
+  - Giada Greggi tactical analysis mobile pressure escape body orientation
+  - Giada Greggi full match touches official midfield off ball movement
+  - Giada Greggi interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: filippa-angeldahl
+  player_name: Filippa Angeldahl
+  featured: false
+  queries:
+  - Filippa Angeldahl official match highlights scanning passing movement
+  - Filippa Angeldahl tactical analysis measured progression controller body orientation
+  - Filippa Angeldahl full match touches official midfield off ball movement
+  - Filippa Angeldahl interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: hina-sugita
+  player_name: Hina Sugita
+  featured: false
+  queries:
+  - Hina Sugita official match highlights scanning passing movement
+  - Hina Sugita tactical analysis technical rotation linker body orientation
+  - Hina Sugita full match touches official midfield off ball movement
+  - Hina Sugita interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: marta
+  player_name: Marta
+  featured: false
+  queries:
+  - Marta official match highlights scanning passing movement
+  - Marta tactical analysis veteran improvisational director body orientation
+  - Marta full match touches official midfield off ball movement
+  - Marta interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: debinha
+  player_name: Debinha
+  featured: false
+  queries:
+  - Debinha official match highlights scanning passing movement
+  - Debinha tactical analysis compact space improviser body orientation
+  - Debinha full match touches official midfield off ball movement
+  - Debinha interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: angelina
+  player_name: Angelina
+  featured: false
+  queries:
+  - Angelina official match highlights scanning passing movement
+  - Angelina tactical analysis left footed balance controller body orientation
+  - Angelina full match touches official midfield off ball movement
+  - Angelina interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: ary-borges
+  player_name: Ary Borges
+  featured: false
+  queries:
+  - Ary Borges official match highlights scanning passing movement
+  - Ary Borges tactical analysis power arrival midfielder body orientation
+  - Ary Borges full match touches official midfield off ball movement
+  - Ary Borges interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: crystal-dunn
+  player_name: Crystal Dunn
+  featured: false
+  queries:
+  - Crystal Dunn official match highlights scanning passing movement
+  - Crystal Dunn tactical analysis multi role adapter body orientation
+  - Crystal Dunn full match touches official midfield off ball movement
+  - Crystal Dunn interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true
+- player_id: signe-gaupset
+  player_name: Signe Gaupset
+  featured: false
+  queries:
+  - Signe Gaupset official match highlights scanning passing movement
+  - Signe Gaupset tactical analysis emerging dynamic creator body orientation
+  - Signe Gaupset full match touches official midfield off ball movement
+  - Signe Gaupset interview vision scanning decision making official
+  target_clip_types:
+  - pre_reception_scan
+  - receive_under_pressure
+  - off_ball_adaptation
+  - body_orientation
+  - tempo_direction
+  - unsuccessful_or_neutral
+  preferred_source_types:
+  - official_club
+  - official_competition
+  - official_federation
+  - rights_cleared_creator
+  analysis_allowed_from_youtube_result: false
+  rights_cleared_analysis_required: true

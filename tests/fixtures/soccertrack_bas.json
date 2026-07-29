@@ -1,0 +1,8 @@
+{
+  "UrlLocal":"117093",
+  "UrlYoutube":null,
+  "annotations":[
+    {"gameTime":"1 - 00:10","position":"10000","label":"Pass","team":"left","player_id":"P9","visibility":"visible"},
+    {"gameTime":"2 - 00:10","position":"10000","label":"Pass","team":"right","player_id":"D4","visibility":"visible"}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "policy": "analyze only rights-cleared local media; embed YouTube without downloading",
+  "assets": [],
+  "examples": [
+    {
+      "asset_id": "replace-me-local",
+      "title": "Rights-cleared tactical clip",
+      "player_ids": [
+        "michael-olise"
+      ],
+      "mode": "local_analysis",
+      "local_path": "media/replace-me.mp4",
+      "rights_status": "owned",
+      "license_name": "Owner supplied",
+      "rights_evidence": "media/replace-me-rights.txt",
+      "start_s": 0.0,
+      "end_s": 12.0
+    },
+    {
+      "asset_id": "replace-me-youtube",
+      "title": "Official channel reference clip",
+      "player_ids": [
+        "pedri"
+      ],
+      "mode": "youtube_embed",
+      "youtube_video_id": "REPLACE_ME",
+      "source_url": "https://www.youtube.com/watch?v=REPLACE_ME",
+      "rights_status": "embed_only",
+      "embeddable": true,
+      "notes": "Reference playback only. Do not download or analyze pixels from this entry."
+    }
+  ]
+}

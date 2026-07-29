@@ -1,0 +1,8 @@
+[
+  {"image_id":250,"track_id":1,"player_id":"P9","role":"player","jersey_number":9,"team_side":"left","x":0.0,"y":0.0},
+  {"image_id":250,"track_id":2,"player_id":"P8","role":"player","jersey_number":8,"team_side":"left","x":12.0,"y":8.0},
+  {"image_id":250,"track_id":3,"player_id":"P10","role":"player","jersey_number":10,"team_side":"left","x":20.0,"y":-7.0},
+  {"image_id":250,"track_id":11,"player_id":"D4","role":"player","jersey_number":4,"team_side":"right","x":5.0,"y":2.0},
+  {"image_id":250,"track_id":12,"player_id":"D5","role":"player","jersey_number":5,"team_side":"right","x":18.0,"y":7.0},
+  {"image_id":250,"track_id":13,"player_id":"GK1","role":"goalkeeper","jersey_number":1,"team_side":"right","x":49.0,"y":0.0}
+]

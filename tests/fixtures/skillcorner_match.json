@@ -1,0 +1,6 @@
+{
+  "id": "sc-match",
+  "pitch": {"length": 105, "width": 68},
+  "home_team": {"players": [{"id": 1}, {"id": 2}, {"id": 3}]},
+  "away_team": {"players": [{"id": 11}, {"id": 12}, {"id": 13}]}
+}
