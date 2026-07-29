@@ -1,0 +1,49 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+
+def write_frontend_contract(path: str | Path) -> Path:
+    payload = {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "The Midfielder's Eye Showcase API",
+            "version": "0.6.0",
+            "description": "Stable frontend contract for the 100-player perception atlas and empirical evidence studio. Runtime OpenAPI is also available from FastAPI at /openapi.json.",
+        },
+        "servers": [{"url": "http://localhost:8000"}],
+        "paths": {
+            "/api/health": {"get": {"summary": "Health and bundle status"}},
+            "/api/showcase/manifest": {"get": {"summary": "Showcase manifest and evidence contract"}},
+            "/api/atlas": {"get": {"summary": "Flat 100-player atlas index"}},
+            "/api/archetypes": {"get": {"summary": "Archetypes and non-rating comparison axes"}},
+            "/api/players": {"get": {"summary": "Filterable 100-player study catalog"}},
+            "/api/players/{player_id}": {"get": {"summary": "One player research profile"}},
+            "/api/players/{player_id}/profile-card": {"get": {"summary": "Scalable SVG study card"}},
+            "/api/scenarios": {"get": {"summary": "Scenario index"}},
+            "/api/scenarios/{scenario_id}": {"get": {"summary": "Scenario metadata"}},
+            "/api/scenarios/{scenario_id}/frames": {"get": {"summary": "Canonical scenario frames"}},
+            "/api/scenarios/{scenario_id}/timeline": {"get": {"summary": "Action-menu timeline"}},
+            "/api/scenarios/{scenario_id}/options": {"get": {"summary": "Ranked option payloads"}},
+            "/api/scenarios/{scenario_id}/gaze": {"get": {"summary": "Gaze fields, scan events, and source confidence"}},
+            "/api/scenarios/{scenario_id}/body-mechanics": {"get": {"summary": "Body-orientation and weight-transfer proxies"}},
+            "/api/scenarios/{scenario_id}/relational-control": {"get": {"summary": "Adaptation, orchestration, and co-response metrics"}},
+            "/api/empirical": {"get": {"summary": "Empirical showcase manifest"}},
+            "/api/empirical/sources": {"get": {"summary": "Dataset source registry, access, licenses, and modalities"}},
+            "/api/empirical/experiments": {"get": {"summary": "Real-source empirical experiment index"}},
+            "/api/empirical/experiments/{experiment_id}": {"get": {"summary": "One empirical experiment and claim boundary"}},
+            "/api/empirical/player-ledger": {"get": {"summary": "Evidence coverage for all 100 player profiles"}},
+            "/api/empirical/claim-contract": {"get": {"summary": "Evidence and claim guardrails"}},
+            "/api/empirical/citations": {"get": {"summary": "Source citations and official URLs"}},
+            "/api/empirical/alignment-contract": {"get": {"summary": "Clock fitting, alignment, missingness, and scan-event rules"}},
+            "/api/capture-protocol/default": {"get": {"summary": "Default governed gaze and biomechanics capture protocol"}},
+            "/api/capture-protocol/validate": {"post": {"summary": "Validate an edited prospective capture protocol"}},
+            "/api/assets/{asset_path}": {"get": {"summary": "Generated visual or data asset"}},
+            "/api/analyze-frame": {"post": {"summary": "Generate affordances from a canonical frame"}},
+        },
+    }
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return output

@@ -1,0 +1,175 @@
+version: "0.6.0"
+sources:
+  - id: metrica_sample_data
+    name: Metrica Sports Sample Data
+    access: open_repository
+    modalities: [full_tracking, ball]
+    official_url: https://github.com/metrica-sports/sample-data
+    license_name: Public sample with attribution request
+    redistribution: Include only source-pinned excerpts and acknowledge Metrica Sports; review upstream terms before broader redistribution.
+    citation: "Metrica Sports. Sample Data repository."
+    priority: 1
+    adapter: midfielders_eye.adapters.metrica
+    best_for: [continuous full-pitch geometry, synchronized event alignment, oracle-state experiments]
+    caveats: [players and teams are anonymized, sample size is small, no gaze or pose]
+    download:
+      commands: ["git clone --depth 1 https://github.com/metrica-sports/sample-data.git data/raw/metrica"]
+      files:
+        - path: Sample_Game_1_RawEventsData.csv
+          url: https://raw.githubusercontent.com/metrica-sports/sample-data/master/data/Sample_Game_1/Sample_Game_1_RawEventsData.csv
+  - id: statsbomb_open_data
+    name: StatsBomb Open Data
+    access: open_repository
+    modalities: [event_360]
+    official_url: https://github.com/hudl/open-data
+    license_name: StatsBomb Open Data terms
+    redistribution: Attribute StatsBomb and display its logo when publishing analyses; review repository terms before product deployment.
+    citation: "StatsBomb Open Data, Hudl repository."
+    priority: 1
+    adapter: midfielders_eye.adapters.statsbomb
+    best_for: [named-player event snapshots, visible-area geometry, action-context supervision]
+    caveats: [event snapshots are not continuous tracking, no velocity, no literal gaze, visible teammates lack persistent identities]
+    download:
+      commands: ["git clone --depth 1 https://github.com/hudl/open-data.git data/raw/statsbomb"]
+      files: []
+  - id: skillcorner_open_data
+    name: SkillCorner Open Data
+    access: open_repository
+    modalities: [partial_tracking, ball, video]
+    official_url: https://github.com/SkillCorner/opendata
+    license_name: MIT
+    redistribution: Code and open sample data are available under the repository license; preserve provider provenance.
+    citation: "SkillCorner Open Data repository."
+    priority: 1
+    adapter: midfielders_eye.adapters.skillcorner
+    best_for: [broadcast-derived tracking, camera visibility, observed-versus-extrapolated evaluation]
+    caveats: [broadcast crop creates missing state, extrapolated tracks are not direct observation, no eye gaze]
+    download:
+      commands: ["git clone --depth 1 https://github.com/SkillCorner/opendata.git data/raw/skillcorner"]
+      files: []
+  - id: ego_exo4d
+    name: Ego-Exo4D
+    access: registration
+    modalities: [eye_gaze, head_pose, body_pose_3d, video, imu]
+    official_url: https://docs.ego-exo4d-data.org/
+    license_name: Ego-Exo4D license agreement
+    redistribution: Do not redistribute dataset files; users must accept the license and download through the official CLI.
+    citation: "Grauman et al. Ego-Exo4D: Understanding Skilled Human Activity from First- and Third-Person Perspectives."
+    priority: 1
+    adapter: midfielders_eye.empirical.adapters.load_egoexo_gaze_csv
+    best_for: [direct 3D eye gaze, synchronized ego-exo geometry, soccer transfer experiments, head-gaze coordination]
+    caveats: [not an elite-match dataset, licensed access required, gaze transfer must be validated in football]
+    download:
+      human_steps: [Accept the Ego-Exo4D license, configure AWS credentials, select soccer takes and gaze annotations.]
+      commands: ["egoexo -o data/raw/ego_exo4d --parts metadata take_eye_gaze take_trajectory downscaled_takes/448 --uids <soccer-take-uids>"]
+  - id: egotraj
+    name: EgoTraj
+    access: open_repository
+    modalities: [eye_gaze, head_pose, video]
+    official_url: https://github.com/yehiahmad/EgoTraj
+    license_name: Upstream repository license
+    redistribution: Follow the upstream repository and dataset license.
+    citation: "EgoTraj: Egocentric Navigation Dataset with 6-DoF Head Pose and 3D Gaze, 2026."
+    priority: 2
+    adapter: midfielders_eye.adapters.egotraj
+    best_for: [gaze-motion representation pretraining, long-horizon attention and navigation]
+    caveats: [urban navigation rather than soccer, no football action labels]
+    download:
+      commands: ["git clone --depth 1 https://github.com/yehiahmad/EgoTraj.git data/raw/egotraj"]
+      files: []
+  - id: worldpose
+    name: WorldPose
+    access: registration
+    modalities: [body_pose_3d, video]
+    official_url: https://worldpose.ait.ethz.ch/
+    license_name: WorldPose academic research license
+    redistribution: Registration and license acceptance required; do not redistribute footage or annotations.
+    citation: "WorldPose: A World Cup Dataset for Global 3D Human Pose Estimation, 2025."
+    priority: 1
+    adapter: midfielders_eye.empirical.adapters.load_worldpose_export
+    best_for: [soccer-specific 3D pose, high-speed body configuration, broadcast-to-pose validation]
+    caveats: [academic-use restrictions, no direct gaze, poses are model/annotation products rather than force plates]
+    download:
+      human_steps: [Register through the official WorldPose form, accept the academic license, download approved sequences.]
+      commands: []
+  - id: sportspose
+    name: SportsPose
+    access: license_request
+    modalities: [body_pose_3d, kinematics]
+    official_url: https://christianingwersen.github.io/SportsPose/
+    license_name: Custom academic license
+    redistribution: Request access and follow the custom academic license.
+    citation: "SportsPose: A Dynamic 3D Sports Pose Dataset, 2023."
+    priority: 2
+    best_for: [validated dynamic sports pose, pose-estimator benchmarking]
+    caveats: [multi-sport rather than elite soccer, no direct gaze, no named professional-player analysis]
+    download:
+      human_steps: [Submit the official access request and accept the academic license.]
+  - id: athletepose3d
+    name: AthletePose3D
+    access: license_request
+    modalities: [body_pose_3d, kinematics]
+    official_url: https://github.com/calvinyeungck/AthletePose3D
+    license_name: Research license agreement
+    redistribution: License agreement required; do not redistribute data.
+    citation: "AthletePose3D: A Benchmark Dataset for 3D Human Pose Estimation and Kinematic Analysis in Athletic Movements."
+    priority: 2
+    best_for: [high-acceleration athletic pose pretraining, fast-turn and landing robustness]
+    caveats: [not specific to elite midfield play, no gaze, model transfer requires soccer validation]
+    download:
+      human_steps: [Complete the repository license agreement and request dataset access.]
+  - id: opencap
+    name: OpenCap
+    access: prospective_capture
+    modalities: [body_pose_3d, kinematics, kinetics, video]
+    official_url: https://www.opencap.ai/
+    license_name: OpenCap terms; free for non-commercial research and education
+    redistribution: Capture only consented participants and store media under the study consent and privacy policy.
+    citation: "Uhlrich et al. OpenCap: Human movement dynamics from smartphone videos."
+    priority: 1
+    adapter: midfielders_eye.empirical.adapters.load_opencap_mot
+    best_for: [rights-cleared prospective biomechanics, joint kinematics, controlled receiving and turning tasks]
+    caveats: [not retrospective elite-player evidence, kinetics are model-derived, protocol and camera calibration matter]
+    download:
+      human_steps: [Create a study, obtain informed consent, record controlled football tasks, export OpenSim MOT/TRC files.]
+  - id: pose2sim
+    name: Pose2Sim
+    access: prospective_capture
+    modalities: [body_pose_3d, kinematics, video]
+    official_url: https://github.com/perfanalytics/pose2sim
+    license_name: BSD-3-Clause
+    redistribution: Software is open; participant video and derived data remain governed by consent and local policy.
+    citation: "Pagnon et al. Pose2Sim: An open-source tool for 3D markerless kinematics."
+    priority: 1
+    best_for: [multi-camera rights-cleared capture, OpenSim-compatible kinematics, receiving-posture experiments]
+    caveats: [requires calibrated cameras, not a source of existing elite-player data, no force measurement by itself]
+    download:
+      commands: ["pip install pose2sim"]
+  - id: soccernet_gsr
+    name: SoccerNet Game State Reconstruction
+    access: registration
+    modalities: [video, partial_tracking]
+    official_url: https://github.com/SoccerNet/sn-gamestate
+    license_name: SoccerNet dataset terms; GPL-3.0 pipeline code
+    redistribution: Keep the GPL perception service isolated; dataset access is research-gated and footage rights remain separate.
+    citation: "SoccerNet Game State Reconstruction benchmark and sn-gamestate repository."
+    priority: 1
+    adapter: midfielders_eye.integrations.soccernet_gsr
+    best_for: [broadcast video reconstruction, named-player identity, camera-to-pitch pipeline]
+    caveats: [no documented ball state in core target, partial field visibility, no literal gaze]
+    download:
+      human_steps: [Register for SoccerNet, accept terms, download the approved GSR split and model weights.]
+  - id: soccertrack_v2
+    name: SoccerTrack v2
+    access: registration
+    modalities: [video, full_tracking, ball]
+    official_url: https://github.com/SoccerTrack/SoccerTrack-V2
+    license_name: Dataset-specific research terms
+    redistribution: Follow the official dataset terms; do not include match footage in this repository.
+    citation: "SoccerTrack v2: Full-pitch game-state reconstruction from panoramic soccer video."
+    priority: 2
+    adapter: midfielders_eye.adapters.soccertrack
+    best_for: [panoramic video-to-state evaluation, ball-action spotting, identity continuity]
+    caveats: [no direct gaze, access terms may restrict redistribution]
+    download:
+      human_steps: [Request or register for the dataset through the official project page.]
