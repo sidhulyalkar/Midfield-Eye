@@ -1,0 +1,39 @@
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .nav-rail,
+  .context-bar,
+  .bottom-nav,
+  .playback-controls,
+  .layer-controls,
+  .comparison-tray {
+    display: none !important;
+  }
+
+  .app-shell,
+  .app-column {
+    display: block;
+  }
+
+  .page-pad,
+  .scenario-page,
+  .landing-page {
+    padding: 0;
+  }
+
+  .evidence-badge {
+    border-color: black;
+    color: black;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}

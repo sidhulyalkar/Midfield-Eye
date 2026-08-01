@@ -13,8 +13,17 @@ from .catalog import PROVIDERS, get_provider, provider_rows
 
 _LAZY_EXPORTS = {
     "load_metrica_csv": (".metrica", "load_metrica_csv"),
+    "load_metrica_events_csv": (".metrica", "load_metrica_events_csv"),
+    "load_metrica_open": (".metrica", "load_metrica_open"),
+    "read_metrica_tracking_csv": (".metrica", "read_metrica_tracking_csv"),
+    "synchronize_metrica_events": (".metrica", "synchronize_metrica_events"),
     "load_skillcorner_open": (".skillcorner", "load_skillcorner_open"),
+    "validate_skillcorner_attacking_directions": (
+        ".skillcorner",
+        "validate_skillcorner_attacking_directions",
+    ),
     "load_statsbomb_360": (".statsbomb", "load_statsbomb_360"),
+    "label_statsbomb_selected_options": (".statsbomb", "label_statsbomb_selected_options"),
     "load_soccertrack_v2": (".soccertrack", "load_soccertrack_v2"),
     "load_soccernet_gsr": (".soccernet", "load_soccernet_gsr"),
     "frames_from_kloppy_dataframe": (".kloppy_bridge", "frames_from_kloppy_dataframe"),

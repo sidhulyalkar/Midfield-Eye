@@ -2,7 +2,10 @@
 
 **An evidence-aware 100-player perception atlas and empirical laboratory for the changing action menu of midfield play.**
 
-Version 0.6 adds the first real-source layer. The repository now contains source-pinned Metrica tracking and a real StatsBomb 360 Pedri event, an authoritative dataset registry, access-controlled download plans, direct-gaze and biomechanics adapters, provenance manifests, evidence validation, 4K empirical visualizations, and a complete frontend Evidence Studio specification.
+Version 0.6 includes the first real-source layer and a production React Evidence Studio. The
+repository contains source-pinned Metrica tracking and a real StatsBomb 360 Pedri event, an
+authoritative dataset registry, fail-closed pilot/reliability and B0-B3 protocols, provenance
+manifests, evidence validation, 4K empirical visualizations, and an integrated frontend.
 
 ## What v0.6 adds
 
@@ -17,7 +20,10 @@ Version 0.6 adds the first real-source layer. The repository now contains source
 - evidence-tier and claim-boundary validation;
 - four new empirical 4K views;
 - FastAPI routes for sources, experiments, citations, claim rules, clock alignment, and capture-protocol validation;
-- Gemini specifications for an Evidence Studio, source planner, evidence ledger, and capture-studio workflow.
+- raw Metrica synchronization, SkillCorner direction validation, visible-area masks, and StatsBomb receiver labels;
+- immutable pilot/reliability and sequence/provider-held-out B0-B3 tooling;
+- a strict React/TypeScript Evidence Studio with synthetic and empirical slices, the 100-profile atlas, and specialist laboratories;
+- Gemini specifications and machine-readable contracts for continued frontend implementation.
 
 ## What remains intentionally unclaimed
 
@@ -87,7 +93,41 @@ MIDFIELDERS_EYE_CORS_ORIGINS=https://your-frontend.example midfielders-eye showc
 `MIDFIELDERS_EYE_CORS_ORIGIN_REGEX` is also supported for controlled preview-domain patterns. Do not
 use an unrestricted production regex.
 
+## Run the frontend
+
+Node.js 22.22 or newer is required. The generated static bundle stays outside Git and is copied
+into the frontend automatically before development, builds, and browser tests.
+
+```bash
+midfielders-eye showcase-build
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. Static mode is the default. To use the FastAPI source instead:
+
+```bash
+VITE_MIDFIELDERS_EYE_API_URL=http://127.0.0.1:8000 npm run dev
+```
+
+The configured API never silently falls back to static data. Run the complete frontend gate with:
+
+```bash
+npm run format:check
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm run test:e2e
+```
+
+See `frontend/README.md` for routes, evidence rules, and deterministic mobile through 4K captures.
+
 ## Frontend handoff to Gemini AI Studio
+
+The application is implemented under `frontend/`. The following contracts remain the authoritative
+handoff for Gemini when extending or restyling it.
 
 Read and paste:
 
@@ -124,20 +164,21 @@ python scripts/prepare_gemini_handoff.py ../generated-frontend --rebuild
 The handoff command is required after a clean clone because generated `artifacts/` are intentionally
 not tracked.
 
-## Showcase routes
+## Frontend routes
 
-The frontend specification requires:
+The implemented application includes:
 
 ```text
 /                         narrative landing page
 /atlas                    filterable 100-player atlas
 /players/:playerId        player research profile
 /players/:playerId/perception
+/empirical                source-pinned evidence studio
+/empirical/experiments/:experimentId
 /gaze-lab                 gaze source, scans, fields of view
 /body-mechanics           receiving posture and execution envelope
 /orchestration            teammate/opponent relational control
 /scenario/:scenarioId     flagship tactical laboratory
-/compare                   context-normalized comparison
 /perception-lab            oracle versus degraded state
 /method                    model and evidence explanation
 /data-and-rights           provenance and media policy

@@ -1,0 +1,16 @@
+schema_version: inter-rater-reliability-v1
+min_genuine_raters: 2
+min_sequences: 10
+min_overlap_frame_fraction: 0.25
+min_overlap_items: 20
+min_availability_alpha: 0.60
+min_candidate_coverage: 1.0
+bootstrap:
+  unit: sequence_id
+  iterations: 1000
+  confidence: 0.95
+agreement:
+  availability: krippendorff_alpha_nominal
+  value: krippendorff_alpha_ordinal
+  pairwise_value_diagnostic: quadratic_weighted_cohen_kappa
+synthetic_or_pseudo_labels_establish_reliability: false

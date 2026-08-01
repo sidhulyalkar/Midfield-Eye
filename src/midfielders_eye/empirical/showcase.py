@@ -27,6 +27,177 @@ def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _canonical_point(
+    point: list[float] | tuple[float, float],
+    *,
+    native_length: float,
+    native_width: float,
+) -> list[float]:
+    return [
+        float(point[0]) * PITCH_LENGTH / native_length,
+        float(point[1]) * PITCH_WIDTH / native_width,
+    ]
+
+
+def _statsbomb_empirical_scene(bundle_dir: Path) -> dict[str, Any]:
+    """Export measured 360 geometry without inventing persistent snapshot identities."""
+    bundle = load_statsbomb_empirical_bundle(bundle_dir)
+    event = bundle["event"]
+    snapshot = bundle["three_sixty"]
+    players: list[dict[str, Any]] = []
+    teammate_index = 0
+    opponent_index = 0
+    for item in snapshot["freeze_frame"]:
+        if item["actor"]:
+            scene_id = "event-actor"
+            group = "subject"
+            identity_scope = "event_actor"
+        elif item["teammate"]:
+            scene_id = f"event-local-teammate-{teammate_index}"
+            teammate_index += 1
+            group = "teammate"
+            identity_scope = "event_local"
+        else:
+            scene_id = f"event-local-opponent-{opponent_index}"
+            opponent_index += 1
+            group = "opponent"
+            identity_scope = "event_local"
+        players.append(
+            {
+                "id": scene_id,
+                "group": group,
+                "location_m": _canonical_point(
+                    item["location"],
+                    native_length=120.0,
+                    native_width=80.0,
+                ),
+                "keeper": bool(item["keeper"]),
+                "identity_scope": identity_scope,
+                "tracking_status": "observed_event_snapshot",
+            }
+        )
+
+    pass_payload = event["pass"]
+    return {
+        "kind": "event_snapshot",
+        "frame_id": str(snapshot["event_uuid"]),
+        "period": int(event["period"]),
+        "timestamp_s": float(event["minute"]) * 60.0 + float(event["second"]),
+        "coordinate_system": {
+            "origin": "top_left",
+            "units": "metres",
+            "pitch_length": PITCH_LENGTH,
+            "pitch_width": PITCH_WIDTH,
+            "normalization": "StatsBomb 120x80 scaled independently to 105x68",
+        },
+        "players": players,
+        "ball": {
+            "location_m": _canonical_point(
+                event["location"],
+                native_length=120.0,
+                native_width=80.0,
+            ),
+            "state": "event_location",
+        },
+        "visible_area_m": [
+            _canonical_point(point, native_length=120.0, native_width=80.0)
+            for point in np.asarray(snapshot["visible_area"], dtype=float).reshape(-1, 2).tolist()
+        ],
+        "selected_action": {
+            "kind": "pass",
+            "target_m": _canonical_point(
+                pass_payload["end_location"],
+                native_length=120.0,
+                native_width=80.0,
+            ),
+            "recipient": pass_payload["recipient"]["name"],
+            "recipient_source_id": str(pass_payload["recipient"]["id"]),
+            "recipient_snapshot_link": None,
+            "timing_semantics": "retrospective_selected_event_label",
+        },
+        "availability_labels": None,
+        "velocity": None,
+        "identity_warning": (
+            "Only the event actor is identified in the 360 snapshot; other player IDs are "
+            "event-local and the named recipient is not silently linked by proximity."
+        ),
+    }
+
+
+def _metrica_empirical_scene(bundle_dir: Path, frame_id: int = 1226) -> dict[str, Any]:
+    """Export one synchronized measured tracking frame with anonymous provider identities."""
+    home, away = _load_metrica_long(bundle_dir)
+    events = pd.read_csv(bundle_dir / "event.csv")
+    matching_events = events.loc[
+        pd.to_numeric(events["Start Frame"], errors="coerce") == frame_id
+    ]
+    if len(matching_events) != 1:
+        raise ValueError(
+            f"Expected exactly one Metrica event starting at frame {frame_id}, "
+            f"found {len(matching_events)}"
+        )
+    event = matching_events.iloc[0]
+    players: list[dict[str, Any]] = []
+    ball: dict[str, Any] | None = None
+    for team, table in (("home", home), ("away", away)):
+        for row in table.loc[table["frame"] == frame_id].itertuples(index=False):
+            location = [
+                float(row.x_norm) * PITCH_LENGTH,
+                float(row.y_norm) * PITCH_WIDTH,
+            ]
+            if row.player_id == "Ball":
+                if ball is None:
+                    ball = {"location_m": location, "state": "provider_observed"}
+                continue
+            players.append(
+                {
+                    "id": str(row.player_id),
+                    "group": team,
+                    "location_m": location,
+                    "identity_scope": "anonymous_match_local",
+                    "tracking_status": "observed",
+                }
+            )
+    if ball is None:
+        raise ValueError(f"Metrica frame {frame_id} is missing the ball")
+    return {
+        "kind": "continuous_tracking_frame",
+        "frame_id": frame_id,
+        "event_frame_id": int(event["Start Frame"]),
+        "period": int(event["Period"]),
+        "timestamp_s": float(event["Start Time [s]"]),
+        "coordinate_system": {
+            "origin": "top_left",
+            "units": "metres",
+            "pitch_length": PITCH_LENGTH,
+            "pitch_width": PITCH_WIDTH,
+            "normalization": "Metrica normalized 0-1 axes scaled independently to 105x68",
+        },
+        "players": players,
+        "ball": ball,
+        "visible_area_m": None,
+        "selected_action": {
+            "kind": str(event["Type"]).lower(),
+            "actor_id": str(event["From"]),
+            "receiver_id": str(event["To"]),
+            "start_m": [
+                float(event["Start X"]) * PITCH_LENGTH,
+                float(event["Start Y"]) * PITCH_WIDTH,
+            ],
+            "target_m": [
+                float(event["End X"]) * PITCH_LENGTH,
+                float(event["End Y"]) * PITCH_WIDTH,
+            ],
+            "timing_semantics": "retrospective_selected_event_label",
+        },
+        "availability_labels": None,
+        "identity_warning": (
+            "Player identifiers are anonymous and match-local; this frame cannot support "
+            "named-player claims."
+        ),
+    }
+
+
 def _pitch(ax) -> None:
     line = "#dbeafe"
     ax.set_facecolor("#0a2f29")
@@ -225,6 +396,13 @@ def build_empirical_showcase(
             "visual": pedri.relative_to(output).as_posix(),
             "source_bundle": "data/empirical/open/statsbomb_3857263_pedri",
             "claim_boundary": "Named-player geometry is real; gaze and biomechanics are unavailable in this source.",
+            "confidence": None,
+            "confidence_semantics": (
+                "StatsBomb Open Data does not provide calibrated record-level confidence "
+                "for this 360 snapshot."
+            ),
+            "citation": registry.get("statsbomb_open_data").citation,
+            "scene": _statsbomb_empirical_scene(statsbomb_dir),
         },
         {
             "id": "metrica-game1-frame1226",
@@ -239,6 +417,13 @@ def build_empirical_showcase(
             "visual": metrica.relative_to(output).as_posix(),
             "source_bundle": "data/empirical/open/metrica_game1_pass_1226",
             "claim_boundary": "The spatial state is real but anonymous; it cannot validate named-player style claims.",
+            "confidence": None,
+            "confidence_semantics": (
+                "Metrica Sample Data does not provide calibrated record-level confidence "
+                "for this tracking excerpt."
+            ),
+            "citation": registry.get("metrica_sample_data").citation,
+            "scene": _metrica_empirical_scene(metrica_dir),
         },
     ]
     _write_json(output / "experiments.json", experiments)

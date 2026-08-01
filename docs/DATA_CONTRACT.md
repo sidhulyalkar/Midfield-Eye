@@ -117,6 +117,16 @@ It stores:
 - provider provenance;
 - availability, value, visibility, confidence, failure reason, and selected-action labels.
 
+Provider camera coverage and player-view visibility remain separate option features.
+`visible_area_mask` reports whether a target lies inside a supplied provider polygon;
+`perceptual_visibility_proxy` reports the orientation-based player-view proxy. An option outside
+the provider polygon remains a physical candidate, with `physical_candidate_retained = 1`; the
+mask must not be converted into an availability label.
+
+For StatsBomb 360, a selected receiver may be mapped to an event-local teammate using pass-end
+geometry. This is a selected-action label only. It is neither a persistent player identity nor a
+complete action-menu label.
+
 ## Persistence formats
 
 - JSONL is the canonical portable representation.
@@ -139,3 +149,5 @@ It stores:
 10. Player-only GSR detections may not silently define ball state or possession.
 11. Camera crops and hidden-player completion must preserve visible versus inferred provenance.
 12. Calibration and localization uncertainty must not be discarded before tactical scoring.
+13. Provider visible-area masks may change observation confidence, not physical candidate membership.
+14. Event-supported receiver selection may not be propagated into availability or value labels.

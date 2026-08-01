@@ -72,14 +72,14 @@ Official source: `https://github.com/metrica-sports/sample-data`
 Current support:
 
 - normalized wide CSV;
+- official raw three-row tracking headers;
 - normalized or metric coordinates;
 - optional player and ball velocity columns;
-- nearest-player carrier inference when explicit possession is absent.
+- explicit warnings and quality flags for nearest-player carrier inference;
+- provider-frame-first, period-aware event synchronization with recorded error and tolerance.
 
 Next upgrade:
 
-- raw three-row Metrica CSV parser;
-- event file synchronization;
 - halftime attacking-direction inference;
 - dead-ball filtering.
 
@@ -99,11 +99,12 @@ Current support:
 - possession actor;
 - causal velocity and body-direction approximation;
 - optional dynamic-event CSV.
+- fixed provider-coordinate validation with no half flipping;
+- match-specific half-direction evidence validation with inconclusive/failed states.
 
 Next upgrade:
 
 - phase-of-play joins;
-- provider-specific coordinate direction verification per half;
 - smoothing profiles validated against the official tutorials;
 - off-ball-run event normalization.
 
@@ -120,12 +121,13 @@ Current support:
 - event-local identities for other players;
 - visible-area polygon;
 - explicit snapshot and no-velocity flags.
+- event-local selected-receiver mapping from pass-end geometry;
+- selected-option labeling that does not manufacture availability labels;
+- provider-visible-area masking that retains outside-view physical candidates.
 
 Next upgrade:
 
 - lineup-assisted persistent identity where possible;
-- selected-action labels from pass/carry end locations;
-- visible-polygon geometric masking;
 - competition-level manifest generation.
 
 ### Sportec Open DFL
