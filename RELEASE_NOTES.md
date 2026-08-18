@@ -1,5 +1,34 @@
 # Release Notes
 
+## R1 · Real Action Menu Pilot
+
+### Real-pilot control plane
+
+- Added a deterministic ten-sequence R1 sampler with the frozen 3/2/2/2/1 diversity mix, 5 Hz focal labels, causal context, and non-overlapping source-frame checks.
+- Added a score-free blinded candidate export, full double-rating assignment packs, a post-rating selection template, and an auditable sample-review/sign-off step that never regenerates the candidate freeze.
+- Added R1 status and finalization ledgers so incomplete, failed, adjudication-needed, and benchmark-complete states remain machine-readable rather than being summarized by hand.
+
+### Metrica Tier A bridge
+
+- Added event-supported receipt-window construction from synchronized Metrica home/away tracking and PASS events.
+- The recorded passer defines causal pre-pass context and the recorded recipient becomes the carrier only at or after the pass end frame.
+- Post-receipt frames must satisfy the frozen carrier-to-ball distance and control-duration gates; nearest-player carrier inference is removed from R1 publication windows.
+- Added cross-match R1 source combining with duplicate source-frame and causal-state validation.
+
+### Expert evidence workflow
+
+- Upgraded the Streamlit annotator to accept randomized per-rater assignment packs and a separate causal-context file.
+- Publication annotation remains outcome-blind and model-score-blind, with selected-action controls unavailable by default.
+- R1 requires full double rating of every frozen candidate so the reliability design and 100% consensus-coverage requirement cannot conflict.
+- Added one-command fail-closed finalization: reliability → adjudication → consensus → causal-feature contract → immutable expert freeze → human-signed provider quality → benchmark.
+
+### R1 benchmark and showcase
+
+- Added `configs/r1_benchmark.yaml`, which intentionally runs Tier A as sequence-held-out only. Provider-held-out replication is deferred to R2.
+- Added the `/pilot` research cockpit: falsifiable question, five-rung evidence ladder, frozen pilot composition, blinding contract, empty-result state, benchmark table, and staged R1→R4 improvement path.
+- The showcase payload is generated from real R1 artifact state. It never displays benchmark metrics before the corresponding evidence files exist.
+- Added `docs/R1_REAL_ACTION_MENU_PILOT.md` as the executable runbook and research-expansion plan.
+
 ## v0.7.0 · The Action Menu Benchmark
 
 ### Research contract
