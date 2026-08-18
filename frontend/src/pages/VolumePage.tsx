@@ -29,13 +29,19 @@ const signalOrder: VolumeChannel[] = [
   "uncertainty",
 ];
 
-const visibilityEvidenceCopy: Record<VolumeVisibilityEvidence, string> = {
+const visibilityEvidenceCopy: Record<
+  VolumeVisibilityEvidence,
+  string
+> = {
   visibility_polygon: "Visibility polygon in the focal state",
   orientation_proxy: "Carrier orientation proxy",
   unknown: "Visibility evidence unavailable",
 };
 
-const uncertaintyEvidenceCopy: Record<VolumeUncertaintyEvidence, string> = {
+const uncertaintyEvidenceCopy: Record<
+  VolumeUncertaintyEvidence,
+  string
+> = {
   covariance_confidence_tracking: "Covariance + confidence + tracking status",
   covariance_tracking: "Covariance + tracking status",
   confidence_tracking: "Confidence + tracking status",
@@ -51,7 +57,8 @@ export default function VolumePage() {
   const [quality, setQuality] = useState<VolumeQuality>("auto");
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
-  const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(null);
+  const [inspectedVoxel, setInspectedVoxel] =
+    useState<VolumeVoxel | null>(null);
 
   const frame =
     bundle.frames?.[
@@ -232,7 +239,11 @@ export default function VolumePage() {
                         <div className="volume-signal-row" key={id}>
                           <span>{volumeChannelCopy[id].short}</span>
                           <i>
-                            <b style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} />
+                            <b
+                              style={{
+                                width: `${Math.max(0, Math.min(1, value)) * 100}%`,
+                              }}
+                            />
                           </i>
                           <output>{value.toFixed(3)}</output>
                         </div>
@@ -311,13 +322,21 @@ export default function VolumePage() {
                   <div>
                     <span>Visibility</span>
                     <strong>
-                      {visibilityEvidenceCopy[inspectedVoxel.evidence.visibility]}
+                      {
+                        visibilityEvidenceCopy[
+                          inspectedVoxel.evidence.visibility
+                        ]
+                      }
                     </strong>
                   </div>
                   <div>
                     <span>Uncertainty</span>
                     <strong>
-                      {uncertaintyEvidenceCopy[inspectedVoxel.evidence.uncertainty]}
+                      {
+                        uncertaintyEvidenceCopy[
+                          inspectedVoxel.evidence.uncertainty
+                        ]
+                      }
                     </strong>
                   </div>
                   <div>
