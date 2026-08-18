@@ -100,7 +100,11 @@ export function AffordanceVolume3D({
           const entry = entries[0];
           if (!entry) return;
           const ratio = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
-          renderer.resize(entry.contentRect.width, entry.contentRect.height, ratio);
+          renderer.resize(
+            entry.contentRect.width,
+            entry.contentRect.height,
+            ratio,
+          );
           render();
         });
         observer.observe(canvas);
@@ -114,7 +118,9 @@ export function AffordanceVolume3D({
       })
       .catch((reason: unknown) => {
         if (cancelled) return;
-        setError(reason instanceof Error ? reason.message : "3D renderer unavailable.");
+        setError(
+          reason instanceof Error ? reason.message : "3D renderer unavailable.",
+        );
       });
     return () => {
       cancelled = true;
@@ -138,7 +144,11 @@ export function AffordanceVolume3D({
 
   const pointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId);
-    pointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    pointerRef.current = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
   };
 
   const pointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -164,7 +174,10 @@ export function AffordanceVolume3D({
     event.preventDefault();
     cameraRef.current.distance = Math.max(
       70,
-      Math.min(190, cameraRef.current.distance * Math.exp(event.deltaY * 0.0012)),
+      Math.min(
+        190,
+        cameraRef.current.distance * Math.exp(event.deltaY * 0.0012),
+      ),
     );
     render();
   };
@@ -191,7 +204,11 @@ export function AffordanceVolume3D({
         <span>{scene.stats.renderedVoxels.toLocaleString()} voxels</span>
         <span>2-pass instancing</span>
       </div>
-      <button className="volume-camera-reset" type="button" onClick={resetCamera}>
+      <button
+        className="volume-camera-reset"
+        type="button"
+        onClick={resetCamera}
+      >
         Reset view
       </button>
       <div className="volume-time-axis" aria-hidden="true">
