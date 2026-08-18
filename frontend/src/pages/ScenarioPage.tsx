@@ -9,6 +9,7 @@ import {
   type LayerId,
   type PlaybackRate,
 } from "../state/playbackStore";
+import { DecisionMicroscope } from "../visualization/DecisionMicroscope";
 import { SynchronizedTimeline } from "../visualization/SynchronizedTimeline";
 import { TacticalPitch } from "../visualization/TacticalPitch";
 
@@ -348,6 +349,14 @@ export default function ScenarioPage() {
         timeline={bundle.timeline}
         currentFrameId={currentFrameId}
         onSeek={seek}
+      />
+      <DecisionMicroscope
+        frames={bundle.frames}
+        options={bundle.options}
+        currentFrameId={currentFrameId}
+        selectedOptionId={activeOption}
+        onSeek={seek}
+        onOptionSelect={selectOption}
       />
       <section className="evidence-details">
         <article>
