@@ -1,8 +1,8 @@
 {
   "name": "Midfielder's Eye frontend integration",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "authority": {
-    "research": "docs/INTEGRATED_DELIVERY_PLAN.md",
+    "research": "docs/ACTION_MENU_BENCHMARK.md",
     "implementation": "docs/GEMINI_FRONTEND_IMPLEMENTATION_BLUEPRINT.md",
     "api": "frontend_contract/openapi.json",
     "components": "frontend_contract/component-contract.json",
@@ -300,6 +300,12 @@
     ],
     "scenarioTimelineKey": "frame_id",
     "optionKey": "option_id",
+    "stableOptionIdentity": {
+      "pass": "pass:<target_player_id>",
+      "carry": "carry:<configured_angle_bucket>",
+      "hold": "hold",
+      "purpose": "retrospective_longitudinal_visualization_not_candidate_generation"
+    },
     "timestampUsage": "display_and_alignment_diagnostics_not_lossy_join_when_frame_id_exists",
     "missingFramePolicy": "show_partial_data_warning_never_nearest_neighbor_fill"
   },
@@ -321,6 +327,7 @@
     "geometric_score": "model_score_rank_within_frame_not_probability",
     "learned_score": "nullable_model_score_not_probability_unless_calibrated_metadata_exists",
     "showcase_emphasis": "illustrative_research_emphasis_not_rating_rank_or_percentile",
+    "action_menu_birth_extinction": "retrospective_visualization_label_not_causal_feature",
     "null": "missing_not_zero"
   },
   "evidenceGrammar": {
@@ -355,6 +362,7 @@
     "singleStore": true,
     "primaryCursor": "currentFrameId",
     "optionLockExtinctionStateRequired": true,
+    "actionMenuRibbonUsesSameCursor": true,
     "elapsedTimeScheduling": true,
     "pauseWhenDocumentHidden": true,
     "reducedMotionAutoplay": false
@@ -407,6 +415,7 @@
     "reducedMotion": true,
     "evidenceWordingTests": true,
     "scientificBoundaryTests": true,
+    "stableOptionIdentityTests": true,
     "visualRegressionAllTargets": true,
     "productionBuild": true,
     "zeroConsoleErrors": true
