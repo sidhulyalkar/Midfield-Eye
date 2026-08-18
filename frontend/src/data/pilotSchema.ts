@@ -65,7 +65,10 @@ export const PilotSchema = z
     benchmark: z
       .object({
         complete: z.boolean(),
-        metrics: z.record(z.string(), z.record(z.string(), z.number().nullable())),
+        metrics: z.record(
+          z.string(),
+          z.record(z.string(), z.number().nullable()),
+        ),
       })
       .passthrough(),
     evidence_ladder: z.array(PilotEvidenceStepSchema).length(5),
