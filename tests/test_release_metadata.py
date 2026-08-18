@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-import tomllib
+import re
 from pathlib import Path
 
 import yaml
@@ -11,8 +11,16 @@ from midfielders_eye import __version__
 ROOT = Path(__file__).parents[1]
 
 
+def _project_version() -> str:
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    project_section = text.split("[project]", 1)[1].split("[project.", 1)[0]
+    match = re.search(r'^version\s*=\s*"([^"]+)"', project_section, re.MULTILINE)
+    if match is None:
+        raise AssertionError("pyproject.toml [project] version is missing")
+    return match.group(1)
+
+
 def test_release_version_is_consistent_across_public_metadata() -> None:
-    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     citation = yaml.safe_load((ROOT / "CITATION.cff").read_text(encoding="utf-8"))
     integration = json.loads(
         (ROOT / "frontend_contract" / "integration-contract.json").read_text(
@@ -29,7 +37,7 @@ def test_release_version_is_consistent_across_public_metadata() -> None:
     )
 
     assert __version__ == "0.7.0"
-    assert project["project"]["version"] == __version__
+    assert _project_version() == __version__
     assert citation["cff-version"] == "1.2.0"
     assert citation["version"] == __version__
     assert integration["version"] == __version__
