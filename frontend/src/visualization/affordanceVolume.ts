@@ -250,8 +250,7 @@ function corridorAt(
     );
     best = Math.max(
       best,
-      score *
-        (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
+      score * (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
     );
   }
   return clamp01(best);
@@ -431,12 +430,7 @@ function buildPitchAndActors(frame: FrameState): Float32Array {
   horizontal(0, 0, thickness, frame.pitch_width);
   for (let index = 0; index < 32; index += 1) {
     const angle = (index / 32) * Math.PI * 2;
-    horizontal(
-      Math.cos(angle) * 9.15,
-      Math.sin(angle) * 9.15,
-      0.28,
-      0.28,
-    );
+    horizontal(Math.cos(angle) * 9.15, Math.sin(angle) * 9.15, 0.28, 0.28);
   }
   const homeColor: readonly [number, number, number] = [0.39, 0.9, 0.75];
   const awayColor: readonly [number, number, number] = [1, 0.42, 0.42];
@@ -451,11 +445,7 @@ function buildPitchAndActors(frame: FrameState): Float32Array {
       isCarrier ? 1.15 : 0.86,
       isCarrier ? 1.8 : 1.35,
       isCarrier ? 1.15 : 0.86,
-      isCarrier
-        ? carrierColor
-        : player.team === "home"
-          ? homeColor
-          : awayColor,
+      isCarrier ? carrierColor : player.team === "home" ? homeColor : awayColor,
       1,
     );
   }
