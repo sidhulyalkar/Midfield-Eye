@@ -13,7 +13,7 @@ The selected action is one observed outcome. It is never a substitute label for 
 The first publishable unit is deliberately limited to:
 
 1. a frozen expert annotation ontology;
-2. sequence-held-out B0-B3 comparisons;
+2. sequence-held-out B0/B1/B2/B2-V/B3 comparisons;
 3. uncertainty and reliability reporting;
 4. one provider-transfer or partial-observation study after the pilot gate;
 5. an evidence-aware visualization of option persistence and reordering.
@@ -91,29 +91,75 @@ artifacts/action-menu/
 
 Birth and extinction are explicitly **retrospective visualization labels**. They must not be fed into a causal model as focal-frame features.
 
-## Model ladder
+## Canonical model ladder
 
-The existing frozen benchmark remains authoritative:
+v0.7 makes the B2/B2-V distinction executable rather than documentary:
 
 - **B0** naive distance / progression;
 - **B1** static geometry;
-- **B2** dynamic geometry;
-- **B2-V** viewpoint / visibility conditioned dynamic geometry when the evidence supports it;
-- **B3** learned nonlinear tabular ranker.
+- **B2** dynamic geometry with interception timing, future space, option creation, uncertainty-adjusted clearance, and state confidence;
+- **B2-V** the exact B2 score plus body orientation and a perceptual-visibility proxy;
+- **B3** learned nonlinear tabular ranker trained only inside each held-out fold.
+
+The B2 score deliberately excludes body orientation and perceptual visibility. B2-V adds only those terms, so the B2-V minus B2 contrast has a literal interpretation. A proxy is never renamed as literal gaze.
+
+The existing frozen benchmark remains the fail-closed validation foundation for pilot hashes, candidate lineage, provider-quality approval, sequence/provider splits, leakage checks, and B3 fold training. The v0.7 action-menu runner then recomputes the public five-model ladder from those exact same held-out predictions.
+
+Run the canonical software-validation path with:
+
+```bash
+python scripts/run_action_menu_benchmark.py \
+  candidates.csv \
+  artifacts/action-menu-benchmark \
+  --config benchmark.yaml \
+  --synthetic-software-validation
+```
+
+For empirical evaluation, omit `--synthetic-software-validation` and provide the frozen pilot and provider-quality review:
+
+```bash
+python scripts/run_action_menu_benchmark.py \
+  consensus.csv \
+  artifacts/action-menu-benchmark \
+  --config benchmark.yaml \
+  --pilot-freeze pilot_freeze.json \
+  --provider-quality-review provider_quality_review.json
+```
+
+The canonical v0.7 outputs are:
+
+```text
+artifacts/action-menu-benchmark/
+├── action_menu_benchmark_manifest.json
+├── action_menu_metrics.csv
+├── action_menu_bootstrap_intervals.json
+├── action_menu_contrasts.json
+└── foundation/
+    ├── benchmark_manifest.json
+    ├── predictions.csv
+    ├── metrics.csv
+    ├── folds.json
+    └── ...
+```
+
+The `foundation/` directory is retained rather than hidden. It makes the exact validated predictions, folds, quality reports, and legacy benchmark evidence auditable.
 
 B4 temporal graph and B5 representation fusion remain blocked until the real pilot satisfies the reliability and transfer gates.
 
 ## Primary analyses
 
-The publication benchmark should report, where supported by the target:
+The canonical v0.7 benchmark reports:
 
 - NDCG@3;
 - Recall@3 with uncertain availability frames retained as null rather than silently binarized;
 - pairwise ranking accuracy;
-- top-k adjacent-frame stability;
+- adjacent-frame top-3 Jaccard stability using stable action identities;
 - sequence-bootstrap 95% confidence intervals;
 - match-held-out and provider-held-out performance when available;
-- prespecified ablations for velocity, viewpoint, visible-area masking, extrapolated players, future-space forecasting, and option creation.
+- prespecified B2-B1, B2-V-B2, B3-B2-V, and B3-B1 contrasts;
+- every negative, null, and non-estimable prespecified contrast rather than filtering to favorable results.
+
+Additional feature ablations remain prespecified for velocity, visible-area masking, extrapolated players, future-space forecasting, and option creation.
 
 ## Visual instrument
 
@@ -140,4 +186,4 @@ A publishable empirical result is not considered complete until:
 
 ## Current claim boundary
 
-v0.7 ships the benchmark contract, lifecycle analytics, tests, and visual instrument. It does **not** claim that the target real-data pilot or 150-sequence benchmark has already been completed. Those results must be produced from independently annotated real football sequences before tactical superiority claims are made.
+v0.7 ships the benchmark contract, corrected five-model ladder, lifecycle analytics, tests, and visual instrument. It does **not** claim that the target real-data pilot or 150-sequence benchmark has already been completed. Those results must be produced from independently annotated real football sequences before tactical superiority claims are made.
