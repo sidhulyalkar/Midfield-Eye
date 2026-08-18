@@ -82,7 +82,7 @@ def test_metrica_r1_receipt_uses_pass_actor_then_recipient() -> None:
     assert all("event_supported_ball_carrier" in frame.quality_flags for frame in source)
     assert all(
         frame.metadata["r1_window_selection_semantics"]
-        == "retrospective_window_selection_not_model_feature"
+        == "source_event_window_selection_not_feature"
         for frame in source
     )
 
