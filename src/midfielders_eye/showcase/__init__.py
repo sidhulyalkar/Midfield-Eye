@@ -17,13 +17,13 @@ def build_showcase_bundle(*args: Any, **kwargs: Any):
     real artifacts exist.
     """
 
-    from ..r1 import write_r1_showcase
+    from ..r1_showcase import write_r1_showcase_status
     from .export import build_showcase_bundle as _build
 
     r1_dir = kwargs.pop("r1_dir", None)
     manifest_path = _build(*args, **kwargs)
     root = Path(manifest_path).parent
-    write_r1_showcase(root / "pilot" / "index.json", r1_dir=r1_dir)
+    write_r1_showcase_status(root / "pilot" / "index.json", r1_dir=r1_dir)
 
     payload = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
     payload["pilot_path"] = "pilot/index.json"
