@@ -76,6 +76,25 @@ def _carrier_distance(frame: FrameState, player_id: str) -> float | None:
     return math.hypot(player.x - frame.ball_x, player.y - frame.ball_y)
 
 
+def _sample_context_frames(
+    frames: Sequence[FrameState],
+    *,
+    maximum_frames: int = 3,
+) -> list[FrameState]:
+    """Keep sparse, time-spanning snapshots so context cannot become a label window."""
+
+    ordered = sorted(frames, key=lambda frame: (frame.timestamp_s, frame.frame_id))
+    if len(ordered) <= maximum_frames:
+        return list(ordered)
+    if maximum_frames <= 1:
+        return [ordered[-1]]
+    indices = [
+        round(index * (len(ordered) - 1) / (maximum_frames - 1))
+        for index in range(maximum_frames)
+    ]
+    return [ordered[index] for index in dict.fromkeys(indices)]
+
+
 def _event_supported_frame(
     frame: FrameState,
     *,
@@ -138,6 +157,10 @@ def build_metrica_receipt_source(
     and to establish current possession/carrier state at the event boundary. It
     never converts the selected pass into an availability/value label and never
     injects the event outcome into candidate features.
+
+    Pre-pass frames are intentionally reduced to three time-spanning snapshots.
+    They remain useful to the human creation label but cannot accidentally pass
+    the R1 minimum-four-frame focal-window rule and become a second passer window.
     """
 
     if pre_context_s < 0 or post_receipt_s <= 0 or minimum_control_s <= 0:
@@ -207,11 +230,16 @@ def build_metrica_receipt_source(
             continue
 
         period_frames = by_period[event.period]
-        context = [
-            frame
-            for frame in period_frames
-            if start.timestamp_s - pre_context_s <= frame.timestamp_s <= start.timestamp_s
-        ]
+        context = _sample_context_frames(
+            [
+                frame
+                for frame in period_frames
+                if start.timestamp_s - pre_context_s
+                <= frame.timestamp_s
+                <= start.timestamp_s
+            ],
+            maximum_frames=3,
+        )
         if not context:
             counters["missing_tracking"] += 1
             continue
