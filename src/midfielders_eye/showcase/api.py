@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 from typing import Any
 
+from .. import __version__
 from ..affordance import AffordanceEngine
 from ..schema import FrameState
 from .catalog import load_player_catalog
@@ -34,8 +35,8 @@ def create_app(bundle_dir: str | Path = "artifacts/showcase"):
     root = Path(bundle_dir).resolve()
     app = FastAPI(
         title="The Midfielder's Eye Showcase API",
-        version="0.6.0",
-        description="100-player perception atlas, empirical evidence studio, governed gaze/pose/biomechanics sources, and canonical-frame affordance endpoint.",
+        version=__version__,
+        description="100-player perception atlas, empirical evidence studio, governed gaze/pose/biomechanics sources, action-menu benchmark tooling, and canonical-frame affordance endpoint.",
     )
     configured_origins = os.getenv(
         "MIDFIELDERS_EYE_CORS_ORIGINS",
@@ -55,8 +56,8 @@ def create_app(bundle_dir: str | Path = "artifacts/showcase"):
     def health() -> dict[str, Any]:
         return {
             "status": "ok",
-            "version": "0.6.0",
-            "bundle_version": "0.6.0",
+            "version": __version__,
+            "bundle_version": __version__,
             "bundle_exists": (root / "manifest.json").exists(),
         }
 
