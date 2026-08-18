@@ -124,6 +124,7 @@ def test_missing_selection_record_is_distinct_from_no_candidate_selected() -> No
 
     assert status_by_frame.loc[4] == "no_candidate_selected"
     assert status_by_frame.loc[5] == "selection_record_missing"
+    assert joined.loc[joined["frame_id"] == 5, "selected"].isna().all()
     summary = selection_join_summary(joined)
     assert summary["frames_without_selected_candidate"] == 1
     assert summary["frames_missing_selection_record"] == 1
