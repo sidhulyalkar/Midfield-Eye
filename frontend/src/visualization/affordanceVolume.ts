@@ -115,10 +115,7 @@ function gaussian(distance: number, sigma: number): number {
 }
 
 function predictedPlayer(player: PlayerState, t: number): [number, number] {
-  return [
-    player.x + (player.vx ?? 0) * t,
-    player.y + (player.vy ?? 0) * t,
-  ];
+  return [player.x + (player.vx ?? 0) * t, player.y + (player.vy ?? 0) * t];
 }
 
 function playerPotential(
@@ -170,7 +167,10 @@ function distanceToSegment(
   return { distance: Math.hypot(px - qx, py - qy), progress };
 }
 
-function pointInPolygon(point: [number, number], vertices: [number, number][]): boolean {
+function pointInPolygon(
+  point: [number, number],
+  vertices: [number, number][],
+): boolean {
   let inside = false;
   for (
     let index = 0, previous = vertices.length - 1;
@@ -205,7 +205,8 @@ function visibilityAt(frame: FrameState, x: number, y: number): number {
     (player) => player.player_id === frame.ball_carrier_id,
   );
   if (!carrier) return 0.35;
-  const heading = carrier.gaze_angle ?? carrier.head_angle ?? carrier.body_angle;
+  const heading =
+    carrier.gaze_angle ?? carrier.head_angle ?? carrier.body_angle;
   if (heading === null || heading === undefined) return 0.35;
   const dx = x - carrier.x;
   const dy = y - carrier.y;
@@ -215,7 +216,9 @@ function visibilityAt(frame: FrameState, x: number, y: number): number {
   const angle = Math.atan2(dy, dx);
   const difference = angularDifference(angle, heading);
   const halfCone = (55 * Math.PI) / 180;
-  return clamp01(1 - Math.max(0, difference - halfCone * 0.6) / (halfCone * 0.5));
+  return clamp01(
+    1 - Math.max(0, difference - halfCone * 0.6) / (halfCone * 0.5),
+  );
 }
 
 function corridorAt(
@@ -247,7 +250,8 @@ function corridorAt(
     );
     best = Math.max(
       best,
-      score * (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
+      score *
+        (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
     );
   }
   return clamp01(best);
@@ -287,7 +291,12 @@ function pressureShadowAt(
   return clamp01(best);
 }
 
-function uncertaintyAt(frame: FrameState, x: number, y: number, t: number): number {
+function uncertaintyAt(
+  frame: FrameState,
+  x: number,
+  y: number,
+  t: number,
+): number {
   let value = 0;
   for (const player of frame.players) {
     const [px, py] = predictedPlayer(player, t);
@@ -296,9 +305,10 @@ function uncertaintyAt(frame: FrameState, x: number, y: number, t: number): numb
       ? Math.max(covariance[0]?.[0] ?? 0, covariance[1]?.[1] ?? 0)
       : 0;
     const covarianceRadius = Math.sqrt(Math.max(0, variance));
-    const confidencePenalty = player.confidence === null || player.confidence === undefined
-      ? 0
-      : 1 - player.confidence;
+    const confidencePenalty =
+      player.confidence === null || player.confidence === undefined
+        ? 0
+        : 1 - player.confidence;
     const statusPenalty =
       player.tracking_status === "observed"
         ? 0
@@ -329,7 +339,8 @@ function fieldSignals(
   );
   const teammates = frame.players.filter(
     (player) =>
-      player.team === frame.possession_team && player.player_id !== frame.ball_carrier_id,
+      player.team === frame.possession_team &&
+      player.player_id !== frame.ball_carrier_id,
   );
   const defenders = frame.players.filter(
     (player) => player.team !== frame.possession_team,
@@ -338,16 +349,22 @@ function fieldSignals(
   const support = playerPotential(teammates, x, y, t, 6.5);
   const nearestDefender = nearestDistance(defenders, x, y, t);
   const futureSpace = clamp01(
-    0.72 * clamp01((nearestDefender - 2) / 13) + 0.18 * support + 0.1 * (1 - pressure),
+    0.72 * clamp01((nearestDefender - 2) / 13) +
+      0.18 * support +
+      0.1 * (1 - pressure),
   );
   const initialNearest = nearestDistance(defenders, x, y, 0);
   const initialSpace = clamp01((initialNearest - 2) / 13);
-  const creation = clamp01(Math.max(0, futureSpace - initialSpace) * 2.4 + 0.12 * support);
+  const creation = clamp01(
+    Math.max(0, futureSpace - initialSpace) * 2.4 + 0.12 * support,
+  );
   const corridor = corridorAt(frame, options, x, y);
   const visibility = visibilityAt(frame, x, y);
   const uncertainty = uncertaintyAt(frame, x, y, t);
   const pressureShadow = pressureShadowAt(frame, defenders, x, y, t);
-  const carrierDistance = carrier ? Math.hypot(carrier.x - x, carrier.y - y) : 0;
+  const carrierDistance = carrier
+    ? Math.hypot(carrier.x - x, carrier.y - y)
+    : 0;
   return {
     pressure: clamp01(pressure * (0.9 + 0.1 * clamp01(carrierDistance / 25))),
     pressure_shadow: pressureShadow,
@@ -414,7 +431,12 @@ function buildPitchAndActors(frame: FrameState): Float32Array {
   horizontal(0, 0, thickness, frame.pitch_width);
   for (let index = 0; index < 32; index += 1) {
     const angle = (index / 32) * Math.PI * 2;
-    horizontal(Math.cos(angle) * 9.15, Math.sin(angle) * 9.15, 0.28, 0.28);
+    horizontal(
+      Math.cos(angle) * 9.15,
+      Math.sin(angle) * 9.15,
+      0.28,
+      0.28,
+    );
   }
   const homeColor: readonly [number, number, number] = [0.39, 0.9, 0.75];
   const awayColor: readonly [number, number, number] = [1, 0.42, 0.42];
@@ -429,7 +451,11 @@ function buildPitchAndActors(frame: FrameState): Float32Array {
       isCarrier ? 1.15 : 0.86,
       isCarrier ? 1.8 : 1.35,
       isCarrier ? 1.15 : 0.86,
-      isCarrier ? carrierColor : player.team === "home" ? homeColor : awayColor,
+      isCarrier
+        ? carrierColor
+        : player.team === "home"
+          ? homeColor
+          : awayColor,
       1,
     );
   }
@@ -447,7 +473,9 @@ function buildPitchAndActors(frame: FrameState): Float32Array {
   return new Float32Array(instances);
 }
 
-export function defaultVolumeConfig(channel: VolumeChannel = "menu"): VolumeConfig {
+export function defaultVolumeConfig(
+  channel: VolumeChannel = "menu",
+): VolumeConfig {
   return {
     channel,
     quality: "auto",
@@ -467,13 +495,17 @@ export function buildAffordanceVolume(
   const cellX = frame.pitch_length / gridX;
   const cellY = frame.pitch_width / gridY;
   const timeScaleMetres = 16;
-  const layerThickness = Math.max(0.16, timeScaleMetres / config.horizonSteps / 8);
+  const layerThickness = Math.max(
+    0.16,
+    timeScaleMetres / config.horizonSteps / 8,
+  );
   const candidates: Array<{ value: number; data: number[] }> = [];
   let sum = 0;
   let maxValue = 0;
 
   for (let layer = 0; layer < config.horizonSteps; layer += 1) {
-    const fraction = config.horizonSteps <= 1 ? 0 : layer / (config.horizonSteps - 1);
+    const fraction =
+      config.horizonSteps <= 1 ? 0 : layer / (config.horizonSteps - 1);
     const t = fraction * config.horizonSeconds;
     const worldY = 0.7 + fraction * timeScaleMetres;
     for (let ix = 0; ix < gridX; ix += 1) {
