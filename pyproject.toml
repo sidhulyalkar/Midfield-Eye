@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "midfielders-eye"
-version = "0.8.0"
-description = "Evidence-aware soccer action-menu benchmark with a real-data pilot control plane, blinded expert annotation, lifecycle analytics, and an interactive decision microscope."
+version = "0.7.0"
+description = "Evidence-aware soccer action-menu benchmark with governed datasets, tactical affordance fields, lifecycle analytics, and an interactive decision microscope."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
