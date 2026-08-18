@@ -26,28 +26,20 @@ type RenderBackend = {
 };
 
 const CUBE_VERTICES = new Float32Array([
-  -0.5, -0.5, -0.5,
-  0.5, -0.5, -0.5,
-  0.5, 0.5, -0.5,
-  -0.5, 0.5, -0.5,
-  -0.5, -0.5, 0.5,
-  0.5, -0.5, 0.5,
-  0.5, 0.5, 0.5,
-  -0.5, 0.5, 0.5,
+  -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5,
+  -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5,
 ]);
 
 const CUBE_INDICES = new Uint16Array([
-  0, 1, 2, 0, 2, 3,
-  4, 6, 5, 4, 7, 6,
-  0, 4, 5, 0, 5, 1,
-  3, 2, 6, 3, 6, 7,
-  1, 5, 6, 1, 6, 2,
-  0, 3, 7, 0, 7, 4,
+  0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6, 0, 4, 5, 0, 5, 1, 3, 2, 6, 3, 6, 7, 1, 5,
+  6, 1, 6, 2, 0, 3, 7, 0, 7, 4,
 ]);
 
 const INSTANCE_BYTES = INSTANCE_STRIDE * Float32Array.BYTES_PER_ELEMENT;
 
-function normalize3(vector: readonly [number, number, number]): [number, number, number] {
+function normalize3(
+  vector: readonly [number, number, number],
+): [number, number, number] {
   const length = Math.hypot(vector[0], vector[1], vector[2]) || 1;
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
@@ -82,20 +74,44 @@ function lookAt(
   const x = normalize3(cross3([0, 1, 0], z));
   const y = cross3(z, x);
   return new Float32Array([
-    x[0], y[0], z[0], 0,
-    x[1], y[1], z[1], 0,
-    x[2], y[2], z[2], 0,
-    -dot3(x, eye), -dot3(y, eye), -dot3(z, eye), 1,
+    x[0],
+    y[0],
+    z[0],
+    0,
+    x[1],
+    y[1],
+    z[1],
+    0,
+    x[2],
+    y[2],
+    z[2],
+    0,
+    -dot3(x, eye),
+    -dot3(y, eye),
+    -dot3(z, eye),
+    1,
   ]);
 }
 
 function perspective(aspect: number, near = 0.1, far = 400): Float32Array {
   const f = 1 / Math.tan((48 * Math.PI) / 360);
   return new Float32Array([
-    f / aspect, 0, 0, 0,
-    0, f, 0, 0,
-    0, 0, far / (near - far), -1,
-    0, 0, (far * near) / (near - far), 0,
+    f / aspect,
+    0,
+    0,
+    0,
+    0,
+    f,
+    0,
+    0,
+    0,
+    0,
+    far / (near - far),
+    -1,
+    0,
+    0,
+    (far * near) / (near - far),
+    0,
   ]);
 }
 
@@ -139,7 +155,8 @@ function compileShader(
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    const message = gl.getShaderInfoLog(shader) ?? "Unknown shader compilation failure";
+    const message =
+      gl.getShaderInfoLog(shader) ?? "Unknown shader compilation failure";
     gl.deleteShader(shader);
     throw new Error(message);
   }
@@ -244,7 +261,10 @@ class WebGlVoxelBackend implements RenderBackend {
   resize(width: number, height: number, pixelRatio: number) {
     this.width = Math.max(1, Math.floor(width * pixelRatio));
     this.height = Math.max(1, Math.floor(height * pixelRatio));
-    if (this.canvas.width !== this.width || this.canvas.height !== this.height) {
+    if (
+      this.canvas.width !== this.width ||
+      this.canvas.height !== this.height
+    ) {
       this.canvas.width = this.width;
       this.canvas.height = this.height;
     }
@@ -337,13 +357,17 @@ type GpuDeviceLike = {
   createBuffer(descriptor: Record<string, unknown>): GpuBufferLike;
   createTexture(descriptor: Record<string, unknown>): GpuTextureLike;
   createShaderModule(descriptor: Record<string, unknown>): unknown;
-  createRenderPipeline(descriptor: Record<string, unknown>): GpuRenderPipelineLike;
+  createRenderPipeline(
+    descriptor: Record<string, unknown>,
+  ): GpuRenderPipelineLike;
   createBindGroup(descriptor: Record<string, unknown>): unknown;
   createCommandEncoder(): GpuCommandEncoderLike;
 };
 type GpuAdapterLike = { requestDevice(): Promise<GpuDeviceLike> };
 type GpuNavigatorLike = {
-  requestAdapter(options?: Record<string, unknown>): Promise<GpuAdapterLike | null>;
+  requestAdapter(
+    options?: Record<string, unknown>,
+  ): Promise<GpuAdapterLike | null>;
   getPreferredCanvasFormat(): string;
 };
 type GpuCanvasContextLike = {
@@ -460,7 +484,11 @@ class WebGpuVoxelBackend implements RenderBackend {
     this.solidPipeline = device.createRenderPipeline({
       layout: "auto",
       vertex,
-      fragment: { module: shader, entryPoint: "fragmentMain", targets: [{ format }] },
+      fragment: {
+        module: shader,
+        entryPoint: "fragmentMain",
+        targets: [{ format }],
+      },
       primitive: { topology: "triangle-list", cullMode: "back" },
       depthStencil,
     });
@@ -497,13 +525,19 @@ class WebGpuVoxelBackend implements RenderBackend {
     });
   }
 
-  static async create(canvas: HTMLCanvasElement): Promise<WebGpuVoxelBackend | null> {
+  static async create(
+    canvas: HTMLCanvasElement,
+  ): Promise<WebGpuVoxelBackend | null> {
     const gpu = (navigator as Navigator & { gpu?: GpuNavigatorLike }).gpu;
     if (!gpu) return null;
-    const adapter = await gpu.requestAdapter({ powerPreference: "high-performance" });
+    const adapter = await gpu.requestAdapter({
+      powerPreference: "high-performance",
+    });
     if (!adapter) return null;
     const device = await adapter.requestDevice();
-    const context = canvas.getContext("webgpu") as unknown as GpuCanvasContextLike | null;
+    const context = canvas.getContext(
+      "webgpu",
+    ) as unknown as GpuCanvasContextLike | null;
     if (!context) return null;
     const format = gpu.getPreferredCanvasFormat();
     context.configure({ device, format, alphaMode: "opaque" });
@@ -537,7 +571,10 @@ class WebGpuVoxelBackend implements RenderBackend {
   resize(width: number, height: number, pixelRatio: number) {
     this.width = Math.max(1, Math.floor(width * pixelRatio));
     this.height = Math.max(1, Math.floor(height * pixelRatio));
-    if (this.canvas.width !== this.width || this.canvas.height !== this.height) {
+    if (
+      this.canvas.width !== this.width ||
+      this.canvas.height !== this.height
+    ) {
       this.canvas.width = this.width;
       this.canvas.height = this.height;
       this.depthTexture?.destroy();
@@ -550,11 +587,19 @@ class WebGpuVoxelBackend implements RenderBackend {
   }
 
   update(scene: VolumeScene) {
-    const solidUpload = this.upload(scene.solids, this.solidBuffer, this.solidCapacity);
+    const solidUpload = this.upload(
+      scene.solids,
+      this.solidBuffer,
+      this.solidCapacity,
+    );
     this.solidBuffer = solidUpload.buffer;
     this.solidCapacity = solidUpload.capacity;
     this.solidCount = scene.solids.length / INSTANCE_STRIDE;
-    const fieldUpload = this.upload(scene.field, this.fieldBuffer, this.fieldCapacity);
+    const fieldUpload = this.upload(
+      scene.field,
+      this.fieldBuffer,
+      this.fieldCapacity,
+    );
     this.fieldBuffer = fieldUpload.buffer;
     this.fieldCapacity = fieldUpload.capacity;
     this.fieldCount = scene.field.length / INSTANCE_STRIDE;
@@ -623,7 +668,9 @@ class WebGpuVoxelBackend implements RenderBackend {
 export class AdaptiveVoxelRenderer {
   private constructor(private readonly backend: RenderBackend) {}
 
-  static async create(canvas: HTMLCanvasElement): Promise<AdaptiveVoxelRenderer> {
+  static async create(
+    canvas: HTMLCanvasElement,
+  ): Promise<AdaptiveVoxelRenderer> {
     try {
       const webgpu = await WebGpuVoxelBackend.create(canvas);
       if (webgpu) return new AdaptiveVoxelRenderer(webgpu);
