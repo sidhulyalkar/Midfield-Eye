@@ -9,23 +9,36 @@ from midfielders_eye.synthetic import generate_sequence
 
 def test_metrica_r1_receipt_uses_pass_actor_then_recipient() -> None:
     frames = generate_sequence(0, frames=70, fps=25.0, seed=103)
-    actor_id = "H06"
-    recipient_id = "H07"
+    actor_id = "Home_06"
+    recipient_id = "Home_07"
     converted = []
     for frame in frames:
-        carrier_id = actor_id if frame.frame_id < 20 else recipient_id
-        carrier = frame.player(carrier_id)
+        synthetic_carrier_id = "H06" if frame.frame_id < 20 else "H07"
+        carrier = frame.player(synthetic_carrier_id)
+        players = [
+            replace(
+                player,
+                player_id=(
+                    f"Home_{player.player_id[1:]}"
+                    if player.team == "home"
+                    else f"Away_{player.player_id[1:]}"
+                ),
+                source_player_id=player.player_id[1:],
+            )
+            for player in frame.players
+        ]
         converted.append(
             replace(
                 frame,
                 sequence_id="match-1",
                 source_provider="metrica",
                 source_match_id="match-1",
-                ball_carrier_id=carrier_id,
+                ball_carrier_id=actor_id if frame.frame_id < 20 else recipient_id,
                 ball_x=carrier.x,
                 ball_y=carrier.y,
                 ball_vx=carrier.vx,
                 ball_vy=carrier.vy,
+                players=players,
                 quality_flags=["inferred_ball_carrier"],
             )
         )
