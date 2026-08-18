@@ -100,10 +100,14 @@ def join_selected_outcomes(
         & selected_key.notna()
         & selected_key.astype(str).str.strip().ne("")
     )
-    joined["selected"] = has_observed_candidate & (
-        joined["option_key"].astype(str) == selected_key.astype(str)
-    )
-    joined["label_selected"] = joined["selected"]
+    selected = pd.Series(pd.NA, index=joined.index, dtype="boolean")
+    selected.loc[record_present] = False
+    selected.loc[
+        has_observed_candidate
+        & (joined["option_key"].astype(str) == selected_key.astype(str))
+    ] = True
+    joined["selected"] = selected
+    joined["label_selected"] = selected
     joined["selection_join_status"] = "selection_record_missing"
     joined.loc[
         record_present & ~has_observed_candidate,
@@ -122,16 +126,16 @@ def selection_join_summary(dataframe: pd.DataFrame) -> dict[str, Any]:
     if missing:
         raise ValueError(f"joined selection dataframe missing columns: {missing}")
     frame_groups = dataframe.groupby(FRAME_COLUMNS, sort=False)
-    selected_counts = frame_groups["selected"].sum()
-    if (selected_counts > 1).any():
+    selected_counts = frame_groups["selected"].sum(min_count=1)
+    frame_status = frame_groups["selection_join_status"].first()
+    missing_records = frame_status.eq("selection_record_missing")
+    if selected_counts[~missing_records].gt(1).any():
         raise ValueError(
             "joined selection output has more than one selected candidate in a frame"
         )
-    frame_status = frame_groups["selection_join_status"].first()
-    missing_records = frame_status.eq("selection_record_missing")
     valid_frames = ~missing_records
-    selected_valid = (selected_counts == 1) & valid_frames
-    no_candidate_valid = (selected_counts == 0) & valid_frames
+    selected_valid = selected_counts.eq(1) & valid_frames
+    no_candidate_valid = selected_counts.eq(0) & valid_frames
     return {
         "schema_version": "action-menu-selection-join-v1",
         "frames": int(len(selected_counts)),
