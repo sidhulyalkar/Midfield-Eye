@@ -124,9 +124,7 @@ def _event_supported_frame(
                 if phase == "causal_context"
                 else "metrica_pass_recipient_at_or_after_end_frame"
             ),
-            "r1_window_selection_semantics": (
-                "retrospective_window_selection_not_model_feature"
-            ),
+            "r1_window_selection_semantics": "source_event_window_selection_not_feature",
             "r1_original_sequence_id": frame.sequence_id,
         }
     )
