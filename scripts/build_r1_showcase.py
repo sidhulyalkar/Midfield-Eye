@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from midfielders_eye.r1 import write_r1_showcase
+from midfielders_eye.r1_showcase import write_r1_showcase_status
 
 
 def main() -> None:
@@ -29,7 +29,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output = write_r1_showcase(
+    output = write_r1_showcase_status(
         args.output,
         r1_dir=args.r1_dir,
         annotation_paths=args.annotation or None,
