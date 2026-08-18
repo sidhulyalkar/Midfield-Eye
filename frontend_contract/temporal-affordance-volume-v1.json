@@ -1,0 +1,69 @@
+{
+  "schema_version": "temporal-affordance-volume-v1",
+  "instrument": "Temporal Affordance Volume",
+  "route": "/volume",
+  "coordinate_semantics": {
+    "render_x": "canonical_pitch_x_metres",
+    "render_z": "canonical_pitch_y_metres",
+    "render_y": "causal_forecast_horizon_not_physical_height",
+    "default_horizon_seconds": 1.5,
+    "future_observed_frames_forbidden": true
+  },
+  "channels": {
+    "menu": "explanatory_composite_not_probability",
+    "pressure": "focal_state_opponent_motion_proxy",
+    "pressure_shadow": "geometric_screening_proxy",
+    "future_space": "focal_state_motion_forecast",
+    "passing_corridors": "current_candidate_corridor_geometry",
+    "option_creation": "future_openness_improvement_not_causal_attribution",
+    "visibility": "provider_polygon_or_explicit_orientation_proxy",
+    "uncertainty": "tracking_status_confidence_and_covariance_when_available"
+  },
+  "renderer": {
+    "primary_backend": "webgpu",
+    "fallback_backend": "webgl2",
+    "shared_primitive": "cube",
+    "instance_stride_floats": 10,
+    "instance_fields": [
+      "position_x",
+      "position_y",
+      "position_z",
+      "scale_x",
+      "scale_y",
+      "scale_z",
+      "color_r",
+      "color_g",
+      "color_b",
+      "alpha"
+    ],
+    "passes": [
+      "opaque_pitch_players_ball_depth_write",
+      "translucent_field_no_depth_write"
+    ],
+    "target_draw_calls": 2,
+    "sparse_pruning_before_upload": true
+  },
+  "lod": {
+    "low_grid": [20, 13, 7],
+    "medium_grid": [28, 18, 7],
+    "high_grid": [38, 25, 7],
+    "low_max_voxels": 1200,
+    "normal_max_voxels": 2800,
+    "high_max_voxels": 4200,
+    "device_pixel_ratio_cap": 2,
+    "threshold_user_controllable": true
+  },
+  "evidence_guardrails": [
+    "synthetic_or_proxy_fields_must_remain_labeled",
+    "future_voxels_are_forecasts_not_observed_future_truth",
+    "visibility_proxy_must_not_be_called_observed_gaze",
+    "brightness_must_not_be_called_probability_without_calibration_metadata",
+    "option_creation_visualization_must_not_be_called_causal_attribution",
+    "r1_benchmark_claims_remain_bound_to_real_expert_artifacts"
+  ],
+  "next_tier": {
+    "trigger": "dense_scientific_workload_requires_more_than_sparse_auditable_cells",
+    "candidate_backend": "webgpu_compute_plus_3d_storage_texture_raymarch",
+    "keep_sparse_backend": true
+  }
+}
