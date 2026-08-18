@@ -32,9 +32,24 @@ const protocolReady = {
   evidence_ladder: [
     { id: "protocol", label: "Protocol", complete: true, detail: "Frozen." },
     { id: "sample", label: "Sample", complete: false, detail: "Pending." },
-    { id: "annotation", label: "Annotation", complete: false, detail: "Pending." },
-    { id: "reliability", label: "Reliability", complete: false, detail: "Pending." },
-    { id: "benchmark", label: "Benchmark", complete: false, detail: "Pending." },
+    {
+      id: "annotation",
+      label: "Annotation",
+      complete: false,
+      detail: "Pending.",
+    },
+    {
+      id: "reliability",
+      label: "Reliability",
+      complete: false,
+      detail: "Pending.",
+    },
+    {
+      id: "benchmark",
+      label: "Benchmark",
+      complete: false,
+      detail: "Pending.",
+    },
   ],
   guardrails: ["No synthetic metric substitutes for missing expert evidence."],
 };
@@ -49,7 +64,10 @@ describe("PilotSchema", () => {
 
   it("requires exactly five evidence gates", () => {
     expect(() =>
-      PilotSchema.parse({ ...protocolReady, evidence_ladder: protocolReady.evidence_ladder.slice(0, 4) }),
+      PilotSchema.parse({
+        ...protocolReady,
+        evidence_ladder: protocolReady.evidence_ladder.slice(0, 4),
+      }),
     ).toThrow();
   });
 });
