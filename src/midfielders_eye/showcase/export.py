@@ -6,8 +6,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .. import __version__
 from ..affordance import AffordanceEngine
 from ..cognition import sequence_body_summary, sequence_gaze_summary, sequence_relational_summary
+from ..empirical.showcase import build_empirical_showcase
 from ..io import write_frames_jsonl
 from ..schema import ActionOption
 from ..visualization.showcase import (
@@ -23,7 +25,6 @@ from ..visualization.showcase import (
 from .catalog import load_player_catalog
 from .metrics import scenario_summary
 from .scenarios import SCENARIOS, build_scenario_frames
-from ..empirical.showcase import build_empirical_showcase
 
 
 def _option_payload(option: ActionOption) -> dict[str, Any]:
@@ -237,10 +238,10 @@ def build_showcase_bundle(
             render_dpi=render_dpi,
         )
     manifest = {
-        "bundle_version": "0.6.0",
+        "bundle_version": __version__,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "title": "The Midfielder's Eye · Empirical Perception Atlas",
-        "description": "Frontend-ready 100-player atlas plus source-pinned empirical tracking and 360 snapshots, governed gaze/pose/biomechanics ingestion, evidence ledgers, ranked action menus, and 4K visual assets.",
+        "title": "The Midfielder's Eye · Action Menu Benchmark",
+        "description": "Frontend-ready 100-player hypothesis atlas plus source-pinned empirical evidence, ranked action menus, governed perception inputs, and the v0.7 decision-microscope contract.",
         "players_path": "players.json",
         "player_atlas_path": "players/index.json",
         "player_comparison_axes_path": "players/comparison_axes.json",
@@ -257,6 +258,7 @@ def build_showcase_bundle(
             "relational_control": "geometry can show response timing but cannot establish leadership intent alone",
             "real_player_analysis": "requires rights-cleared footage or licensed tracking and explicit provenance",
             "empirical_layer": "source-pinned real examples are separated from inferred proxies and synthetic demonstrations",
+            "action_menu_lifecycle": "birth and extinction are retrospective visualization labels, never future-aware focal-frame features",
             "youtube": "embed-only reference lane; no downloading or pixel analysis",
         },
         "frontend_contract": {
@@ -265,6 +267,7 @@ def build_showcase_bundle(
             "responsive_targets": ["1440x900", "1920x1080", "3840x2160", "390x844"],
             "vector_player_cards": 100,
             "high_resolution_visuals_per_scenario": 7,
+            "signature_instrument": "Action Menu Ribbon / Decision Microscope",
         },
     }
     _write_json(output / "manifest.json", manifest)
