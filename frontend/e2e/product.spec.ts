@@ -41,7 +41,9 @@ test("synthetic scenario stays synchronized and keyboard addressable", async ({
 test("action menu ribbon seeks the shared scenario clock", async ({ page }) => {
   await page.goto("/scenario/aitana-overload?frame=0");
   const ribbon = page.getByRole("region", { name: "Action menu ribbon" });
-  const futureCell = ribbon.getByRole("button").filter({ hasText: "" }).nth(1);
+  const futureCell = ribbon
+    .getByRole("button", { name: /frame \d+, score/u })
+    .nth(1);
   await expect(futureCell).toBeVisible();
   const label = await futureCell.getAttribute("aria-label");
   expect(label).toMatch(/frame \d+, score/u);
