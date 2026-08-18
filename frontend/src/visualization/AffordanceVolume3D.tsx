@@ -13,9 +13,19 @@ import {
   defaultVolumeConfig,
   type VolumeChannel,
   type VolumeQuality,
+  type VolumeScene,
   type VolumeStats,
   type VolumeVoxel,
 } from "./affordanceVolume";
+import {
+  addTemporalGuideRails,
+  buildRetainedVoxelTrajectory,
+  filterVolumeScene,
+  FULL_TEMPORAL_FILTER,
+  horizonSecondsForLayer,
+  temporalFilterLabel,
+  type VolumeTemporalFilter,
+} from "./volumeTemporal";
 import {
   pickVolumeVoxel,
   projectVoxelToScreen,
@@ -32,10 +42,19 @@ export type AffordanceVolumeRuntime = {
   backend: VoxelBackend;
   renderer: RendererSnapshot;
   field: VolumeStats;
+  fullField: VolumeStats;
+  temporalFilter: VolumeTemporalFilter;
+};
+
+export type AffordanceVolumeSceneState = {
+  fullScene: VolumeScene;
+  visibleScene: VolumeScene;
+  temporalFilter: VolumeTemporalFilter;
 };
 
 export type AffordanceVolumeHandle = {
   inspectStrongest(): void;
+  selectVoxelById(id: string): void;
   clearSelection(): void;
   resetCamera(): void;
 };
@@ -48,7 +67,10 @@ type Props = {
   threshold: number;
   horizonSeconds?: number | undefined;
   maxVoxels?: number | undefined;
+  temporalFilter?: VolumeTemporalFilter | undefined;
+  onTemporalFilterChange?: ((filter: VolumeTemporalFilter) => void) | undefined;
   onRuntime?: ((runtime: AffordanceVolumeRuntime) => void) | undefined;
+  onScene?: ((state: AffordanceVolumeSceneState) => void) | undefined;
   onInspect?: ((voxel: VolumeVoxel | null) => void) | undefined;
 };
 
@@ -74,6 +96,18 @@ const initialCamera: OrbitCamera = {
   targetY: 5.5,
 };
 
+function defaultSliceLayer(horizonSteps: number): number {
+  return Math.min(2, Math.max(0, horizonSteps - 1));
+}
+
+function defaultBand(horizonSteps: number): VolumeTemporalFilter {
+  return {
+    mode: "band",
+    startLayerIndex: Math.min(1, Math.max(0, horizonSteps - 1)),
+    endLayerIndex: Math.min(4, Math.max(0, horizonSteps - 1)),
+  };
+}
+
 export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
   function AffordanceVolume3D(
     {
@@ -84,7 +118,10 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
       threshold,
       horizonSeconds = 1.5,
       maxVoxels = 2600,
+      temporalFilter,
+      onTemporalFilterChange,
       onRuntime,
+      onScene,
       onInspect,
     },
     ref,
@@ -95,13 +132,22 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
     const pointerRef = useRef<PointerState | null>(null);
     const selectedVoxelIdRef = useRef<string | null>(null);
     const onRuntimeRef = useRef(onRuntime);
+    const onSceneRef = useRef(onScene);
     const onInspectRef = useRef(onInspect);
+    const onTemporalFilterChangeRef = useRef(onTemporalFilterChange);
     const [backend, setBackend] = useState<VoxelBackend | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [selectionMarker, setSelectionMarker] =
       useState<SelectionMarker | null>(null);
+    const [selectedVoxel, setSelectedVoxel] = useState<VolumeVoxel | null>(
+      null,
+    );
+    const [internalTemporalFilter, setInternalTemporalFilter] =
+      useState<VolumeTemporalFilter>(FULL_TEMPORAL_FILTER);
 
-    const scene = useMemo(() => {
+    const activeTemporalFilter = temporalFilter ?? internalTemporalFilter;
+
+    const fullScene = useMemo(() => {
       const config = defaultVolumeConfig(channel);
       return buildAffordanceVolume(frame, options, {
         ...config,
@@ -120,15 +166,54 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
       quality,
       threshold,
     ]);
+
+    const scene = useMemo(() => {
+      const filtered = filterVolumeScene(fullScene, activeTemporalFilter);
+      return addTemporalGuideRails(
+        filtered,
+        activeTemporalFilter,
+        frame.pitch_length,
+        frame.pitch_width,
+      );
+    }, [
+      activeTemporalFilter,
+      frame.pitch_length,
+      frame.pitch_width,
+      fullScene,
+    ]);
+
     const sceneRef = useRef(scene);
+    const fullSceneRef = useRef(fullScene);
+    const temporalFilterRef = useRef(activeTemporalFilter);
+
+    const trajectory = useMemo(
+      () =>
+        selectedVoxel
+          ? buildRetainedVoxelTrajectory(
+              fullScene.voxels,
+              selectedVoxel,
+              fullScene.stats.horizonSteps,
+              horizonSeconds,
+            )
+          : null,
+      [fullScene, horizonSeconds, selectedVoxel],
+    );
 
     useEffect(() => {
       onRuntimeRef.current = onRuntime;
     }, [onRuntime]);
 
     useEffect(() => {
+      onSceneRef.current = onScene;
+    }, [onScene]);
+
+    useEffect(() => {
       onInspectRef.current = onInspect;
     }, [onInspect]);
+
+    useEffect(() => {
+      onTemporalFilterChangeRef.current = onTemporalFilterChange;
+    }, [onTemporalFilterChange]);
 
     const publishCurrent = useCallback(() => {
       const renderer = rendererRef.current;
@@ -137,6 +222,8 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
         backend: renderer.kind,
         renderer: renderer.snapshot(),
         field: sceneRef.current.stats,
+        fullField: fullSceneRef.current.stats,
+        temporalFilter: temporalFilterRef.current,
       });
     }, []);
 
@@ -181,12 +268,14 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
     const clearSelection = useCallback(() => {
       selectedVoxelIdRef.current = null;
       setSelectionMarker(null);
+      setSelectedVoxel(null);
       onInspectRef.current?.(null);
     }, []);
 
     const selectVoxel = useCallback(
       (voxel: VolumeVoxel, left?: number, top?: number) => {
         selectedVoxelIdRef.current = voxel.id;
+        setSelectedVoxel(voxel);
         onInspectRef.current?.(voxel);
         if (left !== undefined && top !== undefined) {
           setSelectionMarker({ id: voxel.id, left, top });
@@ -195,6 +284,26 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
         }
       },
       [updateSelectionMarker],
+    );
+
+    const selectVoxelById = useCallback(
+      (id: string) => {
+        const voxel = sceneRef.current.voxels.find((item) => item.id === id);
+        if (!voxel) {
+          clearSelection();
+          return;
+        }
+        selectVoxel(voxel);
+      },
+      [clearSelection, selectVoxel],
+    );
+
+    const changeTemporalFilter = useCallback(
+      (next: VolumeTemporalFilter) => {
+        if (temporalFilter === undefined) setInternalTemporalFilter(next);
+        onTemporalFilterChangeRef.current?.(next);
+      },
+      [temporalFilter],
     );
 
     useEffect(() => {
@@ -252,6 +361,13 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
 
     useEffect(() => {
       sceneRef.current = scene;
+      fullSceneRef.current = fullScene;
+      temporalFilterRef.current = activeTemporalFilter;
+      onSceneRef.current?.({
+        fullScene,
+        visibleScene: scene,
+        temporalFilter: activeTemporalFilter,
+      });
       const selectedId = selectedVoxelIdRef.current;
       if (
         selectedId &&
@@ -263,7 +379,7 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
       if (!renderer) return;
       renderer.update(scene);
       renderCurrent();
-    }, [clearSelection, renderCurrent, scene]);
+    }, [activeTemporalFilter, clearSelection, fullScene, renderCurrent, scene]);
 
     const inspectAt = useCallback(
       (clientX: number, clientY: number) => {
@@ -315,10 +431,11 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
       ref,
       () => ({
         inspectStrongest,
+        selectVoxelById,
         clearSelection,
         resetCamera,
       }),
-      [clearSelection, inspectStrongest, resetCamera],
+      [clearSelection, inspectStrongest, resetCamera, selectVoxelById],
     );
 
     const pointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -382,8 +499,159 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
       renderCurrent();
     };
 
+    const filterLabel = temporalFilterLabel(
+      activeTemporalFilter,
+      fullScene.stats.horizonSteps,
+      horizonSeconds,
+    );
+    const layerIndices = Array.from(
+      { length: fullScene.stats.horizonSteps },
+      (_, index) => index,
+    );
+
     return (
       <div className="affordance-volume-shell">
+        <div className="volume-temporal-surgery" data-testid="temporal-surgery">
+          <div className="volume-temporal-heading">
+            <div>
+              <span>TIME SLICE SURGERY · V1.2</span>
+              <strong>{filterLabel}</strong>
+            </div>
+            <p>
+              View-only filtering over retained voxels. Missing layers remain
+              missing; values are never recomputed.
+            </p>
+          </div>
+          <div
+            className="volume-temporal-modes"
+            aria-label="Temporal view mode"
+          >
+            <button
+              type="button"
+              aria-pressed={activeTemporalFilter.mode === "full"}
+              onClick={() => changeTemporalFilter(FULL_TEMPORAL_FILTER)}
+            >
+              Full
+            </button>
+            <button
+              type="button"
+              aria-pressed={activeTemporalFilter.mode === "slice"}
+              onClick={() =>
+                changeTemporalFilter({
+                  mode: "slice",
+                  layerIndex:
+                    activeTemporalFilter.mode === "slice"
+                      ? activeTemporalFilter.layerIndex
+                      : defaultSliceLayer(fullScene.stats.horizonSteps),
+                })
+              }
+            >
+              Slice
+            </button>
+            <button
+              type="button"
+              aria-pressed={activeTemporalFilter.mode === "band"}
+              onClick={() =>
+                changeTemporalFilter(
+                  activeTemporalFilter.mode === "band"
+                    ? activeTemporalFilter
+                    : defaultBand(fullScene.stats.horizonSteps),
+                )
+              }
+            >
+              Band
+            </button>
+          </div>
+          {activeTemporalFilter.mode === "slice" ? (
+            <div className="volume-layer-picker" aria-label="Slice horizon">
+              {layerIndices.map((layerIndex) => {
+                const seconds = horizonSecondsForLayer(
+                  layerIndex,
+                  fullScene.stats.horizonSteps,
+                  horizonSeconds,
+                );
+                return (
+                  <button
+                    type="button"
+                    key={layerIndex}
+                    aria-pressed={
+                      activeTemporalFilter.layerIndex === layerIndex
+                    }
+                    onClick={() =>
+                      changeTemporalFilter({ mode: "slice", layerIndex })
+                    }
+                  >
+                    +{seconds.toFixed(2)} s
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+          {activeTemporalFilter.mode === "band" ? (
+            <div className="volume-band-picker">
+              <label>
+                <span>From</span>
+                <select
+                  aria-label="Band start layer"
+                  value={activeTemporalFilter.startLayerIndex}
+                  onChange={(event) => {
+                    const startLayerIndex = Number(event.target.value);
+                    changeTemporalFilter({
+                      mode: "band",
+                      startLayerIndex,
+                      endLayerIndex: Math.max(
+                        startLayerIndex,
+                        activeTemporalFilter.endLayerIndex,
+                      ),
+                    });
+                  }}
+                >
+                  {layerIndices.map((layerIndex) => (
+                    <option key={layerIndex} value={layerIndex}>
+                      +
+                      {horizonSecondsForLayer(
+                        layerIndex,
+                        fullScene.stats.horizonSteps,
+                        horizonSeconds,
+                      ).toFixed(2)}{" "}
+                      s
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>To</span>
+                <select
+                  aria-label="Band end layer"
+                  value={activeTemporalFilter.endLayerIndex}
+                  onChange={(event) => {
+                    const endLayerIndex = Number(event.target.value);
+                    changeTemporalFilter({
+                      mode: "band",
+                      startLayerIndex: Math.min(
+                        activeTemporalFilter.startLayerIndex,
+                        endLayerIndex,
+                      ),
+                      endLayerIndex,
+                    });
+                  }}
+                >
+                  {layerIndices.map((layerIndex) => (
+                    <option key={layerIndex} value={layerIndex}>
+                      +
+                      {horizonSecondsForLayer(
+                        layerIndex,
+                        fullScene.stats.horizonSteps,
+                        horizonSeconds,
+                      ).toFixed(2)}{" "}
+                      s
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          ) : null}
+        </div>
         <div
           className="volume-canvas-stage"
           style={{ position: "relative", minHeight: "inherit" }}
@@ -400,9 +668,13 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
           />
           <div className="volume-canvas-hud" aria-live="polite">
             <span>{backend ? backend.toUpperCase() : "GPU init"}</span>
-            <span>{scene.stats.renderedVoxels.toLocaleString()} voxels</span>
+            <span>
+              {scene.stats.renderedVoxels.toLocaleString()} /{" "}
+              {fullScene.stats.renderedVoxels.toLocaleString()} voxels
+            </span>
             <span>2-pass instancing</span>
-            <span>Inspector v1.1</span>
+            <span>Inspector v1.2</span>
+            <span data-testid="temporal-filter-hud">{filterLabel}</span>
           </div>
           {selectionMarker ? (
             <div
@@ -426,6 +698,40 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
             </div>
           ) : null}
         </div>
+        {trajectory ? (
+          <div className="volume-trajectory" data-testid="voxel-trajectory">
+            <div>
+              <span>SAME PITCH CELL</span>
+              <strong>
+                {selectedVoxel?.gridXIndex},{selectedVoxel?.gridYIndex}
+              </strong>
+            </div>
+            <ol>
+              {trajectory.map((point) => (
+                <li
+                  key={point.layerIndex}
+                  className={
+                    point.layerIndex === selectedVoxel?.layerIndex
+                      ? "is-selected"
+                      : undefined
+                  }
+                  data-status={point.status}
+                >
+                  <span>+{point.forecastSeconds.toFixed(2)} s</span>
+                  <strong>
+                    {point.status === "retained"
+                      ? point.value?.toFixed(3)
+                      : "gap"}
+                  </strong>
+                </li>
+              ))}
+            </ol>
+            <p>
+              Gaps mean no retained voxel survived threshold/LOD at this cell
+              and layer. They are not zeros and are never interpolated.
+            </p>
+          </div>
+        ) : null}
         <div
           className="volume-camera-actions"
           style={{
