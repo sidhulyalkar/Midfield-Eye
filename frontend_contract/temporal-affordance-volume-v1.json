@@ -1,6 +1,7 @@
 {
   "schema_version": "temporal-affordance-volume-v1",
   "instrument": "Temporal Affordance Volume",
+  "instrument_version": "1.1.0",
   "route": "/volume",
   "coordinate_semantics": {
     "render_x": "canonical_pitch_x_metres",
@@ -16,7 +17,7 @@
     "future_space": "focal_state_motion_forecast",
     "passing_corridors": "current_candidate_corridor_geometry",
     "option_creation": "future_openness_improvement_not_causal_attribution",
-    "visibility": "provider_polygon_or_explicit_orientation_proxy",
+    "visibility": "visibility_polygon_or_explicit_orientation_proxy",
     "uncertainty": "tracking_status_confidence_and_covariance_when_available"
   },
   "renderer": {
@@ -53,15 +54,58 @@
     "device_pixel_ratio_cap": 2,
     "threshold_user_controllable": true
   },
+  "voxel_inspector": {
+    "version": "1.1.0",
+    "selection_method": "deterministic_cpu_projection_over_retained_voxels",
+    "navigation_gesture": "drag_orbits_click_inspects",
+    "keyboard_pointer_fallback": "inspect_strongest_visible_voxel_button",
+    "selection_invalidates_when_voxel_leaves_current_scene": true,
+    "selection_marker": "screen_space_projection_of_selected_voxel_center",
+    "forensic_fields": [
+      "voxel_id",
+      "frame_id",
+      "pitch_x_metres",
+      "pitch_y_metres",
+      "forecast_seconds",
+      "layer_index",
+      "grid_indices",
+      "active_channel_value",
+      "all_channel_component_values",
+      "nearest_defender_id_and_distance",
+      "nearest_teammate_id_and_distance",
+      "top_local_option_contributions",
+      "visibility_evidence_mode",
+      "uncertainty_evidence_mode",
+      "source_provider",
+      "future_observed_frames_used"
+    ],
+    "candidate_contribution_limit": 4,
+    "picking_requires_gpu_readback": false,
+    "picking_changes_renderer_pass_count": false
+  },
   "evidence_guardrails": [
     "synthetic_or_proxy_fields_must_remain_labeled",
     "future_voxels_are_forecasts_not_observed_future_truth",
     "visibility_proxy_must_not_be_called_observed_gaze",
     "brightness_must_not_be_called_probability_without_calibration_metadata",
     "option_creation_visualization_must_not_be_called_causal_attribution",
+    "inspector_must_expose_source_or_proxy_status",
     "r1_benchmark_claims_remain_bound_to_real_expert_artifacts"
   ],
-  "next_tier": {
+  "planned_v1_2": {
+    "name": "Time Slice Surgery",
+    "goal": "isolate_and_compare_exact_forecast_horizons_without_perspective_occlusion",
+    "required_modes": [
+      "full_volume",
+      "single_slice",
+      "bounded_slice_band",
+      "linked_top_down_slice"
+    ],
+    "required_horizon_presets_seconds": [0, 0.25, 0.5, 1.0, 1.5],
+    "must_preserve_v1_1_inspector": true,
+    "future_observed_frames_forbidden": true
+  },
+  "next_dense_tier": {
     "trigger": "dense_scientific_workload_requires_more_than_sparse_auditable_cells",
     "candidate_backend": "webgpu_compute_plus_3d_storage_texture_raymarch",
     "keep_sparse_backend": true
