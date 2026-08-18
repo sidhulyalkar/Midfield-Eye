@@ -45,6 +45,74 @@ def pressure_grid(frame: FrameState, resolution: tuple[int, int] = (80, 52)):
     return xs, ys, grid
 
 
+def _draw_players(frame: FrameState, ax) -> None:
+    for player in frame.players:
+        marker = "o" if player.team == "home" else "s"
+        ax.scatter(
+            player.x,
+            player.y,
+            marker=marker,
+            s=55,
+            edgecolors="black",
+            linewidths=0.5,
+        )
+        ax.text(player.x + 0.7, player.y + 0.7, player.player_id, fontsize=7)
+        direction = np.array(
+            [math.cos(player.body_angle), math.sin(player.body_angle)]
+        )
+        ax.arrow(
+            player.x,
+            player.y,
+            direction[0] * 1.8,
+            direction[1] * 1.8,
+            width=0.04,
+        )
+
+
+def plot_annotation_frame(
+    frame: FrameState,
+    options: list[ActionOption],
+    output_path: str | Path | None = None,
+):
+    """Render candidates without model ranks, scores, pressure heatmaps, or view cones.
+
+    The annotation interface uses this view by default so expert labels are not
+    seeded by the model being evaluated. Body axes remain visible as canonical
+    state evidence, while literal gaze is never implied.
+    """
+
+    fig, ax = plt.subplots(figsize=(13, 8))
+    draw_pitch(ax, frame.pitch_length, frame.pitch_width)
+    _draw_players(frame, ax)
+    carrier = frame.carrier
+    ax.scatter(frame.ball_x, frame.ball_y, marker="*", s=180, zorder=6)
+
+    for index, option in enumerate(options, start=1):
+        ax.annotate(
+            "",
+            xy=(option.target_x, option.target_y),
+            xytext=(carrier.x, carrier.y),
+            arrowprops={"arrowstyle": "->", "linewidth": 1.8, "alpha": 0.72},
+        )
+        ax.text(
+            option.target_x,
+            option.target_y - 1.2,
+            f"A{index:02d} {option.kind}",
+            fontsize=8,
+        )
+
+    ax.set_title(
+        f"The Midfielder's Eye | {frame.sequence_id} frame {frame.frame_id} | "
+        "outcome-blind candidate state"
+    )
+    fig.tight_layout()
+    if output_path is not None:
+        output = Path(output_path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(output, dpi=170, bbox_inches="tight")
+    return fig, ax
+
+
 def plot_affordance_frame(
     frame: FrameState,
     options: list[ActionOption],
@@ -56,30 +124,39 @@ def plot_affordance_frame(
     xs, ys, grid = pressure_grid(frame)
     ax.contourf(xs, ys, grid, levels=12, alpha=0.30)
 
-    for player in frame.players:
-        marker = "o" if player.team == "home" else "s"
-        ax.scatter(player.x, player.y, marker=marker, s=55, edgecolors="black", linewidths=0.5)
-        ax.text(player.x + 0.7, player.y + 0.7, player.player_id, fontsize=7)
-        direction = np.array([math.cos(player.body_angle), math.sin(player.body_angle)])
-        ax.arrow(player.x, player.y, direction[0] * 1.8, direction[1] * 1.8, width=0.04)
+    _draw_players(frame, ax)
 
     carrier = frame.carrier
     half_fov = math.radians(55)
     radius = 18
     wedge_points = [carrier.position]
-    for angle in np.linspace(carrier.view_angle - half_fov, carrier.view_angle + half_fov, 24):
-        wedge_points.append(carrier.position + radius * np.array([math.cos(angle), math.sin(angle)]))
+    for angle in np.linspace(
+        carrier.view_angle - half_fov,
+        carrier.view_angle + half_fov,
+        24,
+    ):
+        wedge_points.append(
+            carrier.position
+            + radius * np.array([math.cos(angle), math.sin(angle)])
+        )
     ax.add_patch(Polygon(wedge_points, closed=True, alpha=0.12))
     ax.scatter(frame.ball_x, frame.ball_y, marker="*", s=180, zorder=6)
 
-    ranked = sorted(options, key=lambda option: option.geometric_score, reverse=True)[:top_k]
+    ranked = sorted(
+        options,
+        key=lambda option: option.geometric_score,
+        reverse=True,
+    )[:top_k]
     if ranked:
         min_score = min(option.geometric_score for option in ranked)
         max_score = max(option.geometric_score for option in ranked)
     else:
         min_score = max_score = 0.0
     for rank, option in enumerate(ranked, start=1):
-        normalized = (option.geometric_score - min_score) / max(max_score - min_score, 1e-8)
+        normalized = (option.geometric_score - min_score) / max(
+            max_score - min_score,
+            1e-8,
+        )
         linewidth = 1.2 + 4.0 * normalized
         ax.annotate(
             "",
@@ -87,7 +164,12 @@ def plot_affordance_frame(
             xytext=(carrier.x, carrier.y),
             arrowprops={"arrowstyle": "->", "linewidth": linewidth, "alpha": 0.85},
         )
-        ax.text(option.target_x, option.target_y - 1.2, f"#{rank} {option.kind}", fontsize=8)
+        ax.text(
+            option.target_x,
+            option.target_y - 1.2,
+            f"#{rank} {option.kind}",
+            fontsize=8,
+        )
 
     ax.set_title(
         f"The Midfielder's Eye | {frame.sequence_id} frame {frame.frame_id} | "
