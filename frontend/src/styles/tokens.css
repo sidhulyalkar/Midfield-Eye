@@ -11,6 +11,8 @@
   --color-sky: #74c0fc;
   --color-violet: #b197fc;
   --color-orange: #ffa94d;
+  --color-positive: var(--color-mint);
+  --color-negative: var(--color-coral);
   --color-text: #f5fbf8;
   --color-muted: #9ab7ac;
   --color-subtle: #708b81;
