@@ -23,7 +23,12 @@
 .action-menu-ribbon {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(99, 230, 190, 0.035), transparent 34%),
+  background:
+    linear-gradient(
+      180deg,
+      rgba(99, 230, 190, 0.035),
+      transparent 34%
+    ),
     var(--color-panel);
   box-shadow: var(--shadow-panel);
   padding: clamp(20px, 2.4vw, 36px);
@@ -124,7 +129,11 @@
 
 .ribbon-cell {
   border: 1px solid rgba(99, 230, 190, 0.32);
-  background: linear-gradient(180deg, rgba(99, 230, 190, 0.9), rgba(116, 192, 252, 0.52));
+  background: linear-gradient(
+    180deg,
+    rgba(99, 230, 190, 0.9),
+    rgba(116, 192, 252, 0.52)
+  );
   cursor: pointer;
   transition:
     opacity 120ms var(--ease),
