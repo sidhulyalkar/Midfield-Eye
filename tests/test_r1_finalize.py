@@ -77,3 +77,16 @@ def test_r1_finalizer_establishes_expert_freeze_then_waits_for_quality_review(tm
     assert (r1_dir / "causal_feature_contract.json").exists()
     assert (r1_dir / "pilot_expert_freeze.json").exists()
     assert not (r1_dir / "benchmark").exists()
+
+    freeze_bytes = (r1_dir / "pilot_expert_freeze.json").read_bytes()
+    resumed_path = finalize_r1_pilot(
+        r1_dir,
+        [expert_a, expert_b],
+        reviewed_by="research_lead",
+        benchmark_config_path="configs/r1_benchmark.yaml",
+        bootstrap_iterations=20,
+        run_benchmark=False,
+    )
+    resumed = json.loads(resumed_path.read_text(encoding="utf-8"))
+    assert resumed["stage"] == "expert_pilot_frozen_needs_provider_review"
+    assert (r1_dir / "pilot_expert_freeze.json").read_bytes() == freeze_bytes
