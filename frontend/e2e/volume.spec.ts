@@ -42,7 +42,9 @@ test("v1.1 turns a rendered voxel into an auditable forensic record", async ({
   const inspector = page.getByTestId("voxel-inspector");
   await expect(inspector).toContainText("Ask one glowing cell what it means.");
 
-  await page.getByRole("button", { name: "Inspect strongest voxel" }).click();
+  await inspector
+    .getByRole("button", { name: "Inspect strongest visible voxel" })
+    .click();
   await expect(page.getByTestId("voxel-selection-marker")).toBeVisible();
   await expect(inspector).toContainText("Forecast horizon");
   await expect(inspector).toContainText("Focal-state kinematics");
@@ -50,9 +52,14 @@ test("v1.1 turns a rendered voxel into an auditable forensic record", async ({
   await expect(inspector).toContainText("Component field");
   await expect(inspector).toContainText("Nearest defender");
   await expect(inspector).toContainText("not a calibrated probability");
+  await expect(
+    inspector.getByRole("button", { name: "Clear inspected voxel" }),
+  ).toBeVisible();
 
   await page.getByRole("button", { name: /Pressure fronts/u }).click();
   await expect(inspector).toContainText("Ask one glowing cell what it means.");
-  await page.getByRole("button", { name: "Inspect strongest voxel" }).click();
+  await inspector
+    .getByRole("button", { name: "Inspect strongest visible voxel" })
+    .click();
   await expect(inspector).toContainText("Pressure");
 });
