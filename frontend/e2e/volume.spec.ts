@@ -88,9 +88,11 @@ test("v1.2 dissects retained voxels by integer temporal layer without losing ide
   await expect(page.getByTestId("voxel-selection-marker")).toBeVisible();
   const trajectory = page.getByTestId("voxel-trajectory");
   await expect(trajectory).toBeVisible();
-  expect(
-    await trajectory.locator('li[data-status="not_retained"]').count(),
-  ).toBeGreaterThan(0);
+  await expect(trajectory.locator("li")).toHaveCount(7);
+  await expect(trajectory).toContainText(
+    "Gaps mean no retained voxel survived threshold/LOD",
+  );
+  await expect(trajectory).toContainText("They are not zeros");
 
   await surgery.getByRole("button", { name: "Full", exact: true }).click();
   await expect(page.getByTestId("temporal-filter-hud")).toContainText("Full");
