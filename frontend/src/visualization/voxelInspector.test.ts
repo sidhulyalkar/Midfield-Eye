@@ -120,9 +120,7 @@ describe("voxel inspector metadata", () => {
     expect(voxel.evidence.forecast).toBe("focal_state_kinematics");
     expect(voxel.evidence.futureObservedFramesUsed).toBe(false);
     expect(voxel.evidence.visibility).toBe("orientation_proxy");
-    expect(voxel.evidence.uncertainty).toBe(
-      "covariance_confidence_tracking",
-    );
+    expect(voxel.evidence.uncertainty).toBe("covariance_confidence_tracking");
   });
 
   it("preserves local candidate contributions instead of only the final glow", () => {
