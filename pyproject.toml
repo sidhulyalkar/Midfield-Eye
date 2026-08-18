@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "midfielders-eye"
-version = "0.6.0"
-description = "Empirical soccer perception atlas with governed datasets, direct-gaze adapters, pose/biomechanics ingestion, tactical affordance fields, and evidence-aware showcase tooling."
+version = "0.7.0"
+description = "Evidence-aware soccer action-menu benchmark with governed datasets, tactical affordance fields, lifecycle analytics, and an interactive decision microscope."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -49,7 +49,6 @@ midfielders-eye = "midfielders_eye.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
 
 [tool.setuptools.package-data]
 "midfielders_eye.showcase" = ["*.yaml"]
