@@ -5,6 +5,8 @@ import { FeedbackState } from "../components/FeedbackState";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const ScenarioPage = lazy(() => import("../pages/ScenarioPage"));
+const PilotPage = lazy(() => import("../pages/PilotPage"));
+const VolumePage = lazy(() => import("../pages/VolumePage"));
 const EmpiricalPage = lazy(() => import("../pages/EmpiricalPage"));
 const EmpiricalExperimentPage = lazy(
   () => import("../pages/EmpiricalExperimentPage"),
@@ -46,6 +48,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: loading(<LandingPage />) },
       { path: "scenario/:scenarioId", element: loading(<ScenarioPage />) },
+      { path: "pilot", element: loading(<PilotPage />) },
+      { path: "volume", element: loading(<VolumePage />) },
       { path: "empirical", element: loading(<EmpiricalPage />) },
       {
         path: "empirical/experiments/:experimentId",

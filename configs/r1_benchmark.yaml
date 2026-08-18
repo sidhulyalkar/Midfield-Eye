@@ -1,0 +1,32 @@
+experiment_id: midfielders-eye-r1-tier-a
+protocols:
+  - sequence_held_out
+sequence_splits: 5
+target_column: label_value
+bootstrap_iterations: 1000
+random_seed: 17
+k: 3
+allow_synthetic_software_validation: false
+dynamic_eligible_providers:
+  - metrica
+b3_features:
+  - distance_m
+  - lane_clearance_m
+  - interception_margin_s
+  - pressure_shadow
+  - receiver_pressure
+  - receiver_space
+  - future_space
+  - forward_progress
+  - xt_start
+  - xt_end
+  - xt_gain
+  - body_orientation
+  - visibility
+  - target_motion_alignment
+  - option_creation
+  - uncertainty_adjusted_clearance_m
+  - target_uncertainty_m
+  - defender_uncertainty_m
+  - visible_pitch_fraction
+  - state_confidence

@@ -1,0 +1,16 @@
+target_sequences: 10
+label_hz: 5.0
+pre_context_s: 1.6
+label_duration_s: 1.4
+minimum_control_s: 0.45
+minimum_window_separation_s: 2.0
+minimum_label_frames: 4
+seed: 17
+require_continuous_tracking: true
+require_full_double_rating: true
+target_composition:
+  central_pressure: 3
+  transition: 2
+  settled_possession: 2
+  wide_overload: 2
+  negative_control: 1

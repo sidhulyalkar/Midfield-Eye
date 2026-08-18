@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
 from .action_menu import stable_option_key
 from .affordance import AffordanceEngine
 from .io import read_frames_jsonl
+from .schema import FrameState
 from .visualization import plot_affordance_frame, plot_annotation_frame
 
 AVAILABILITY_OPTIONS = ["uncertain", "yes", "no"]
@@ -22,6 +24,14 @@ FAILURE_REASONS = [
     "execution_difficulty",
     "other",
 ]
+ASSIGNMENT_COLUMNS = {
+    "annotator_id",
+    "display_order",
+    "sequence_id",
+    "frame_id",
+    "outcome_blinded",
+    "model_score_blinded",
+}
 
 
 def _neutral_option_order(options):
@@ -37,12 +47,102 @@ def _neutral_option_order(options):
     )
 
 
+def load_assignment_plan(
+    path: str | Path,
+    *,
+    frames: list[FrameState],
+    annotator_id: str,
+) -> pd.DataFrame:
+    """Validate and return one expert's blinded R1 assignment in display order."""
+
+    assignments = pd.read_csv(path)
+    missing = sorted(ASSIGNMENT_COLUMNS - set(assignments.columns))
+    if missing:
+        raise ValueError(f"R1 assignment file is missing columns: {missing}")
+    if assignments.empty:
+        raise ValueError("R1 assignment file is empty")
+    if assignments.duplicated(["annotator_id", "sequence_id", "frame_id"]).any():
+        raise ValueError("R1 assignment file contains duplicate annotator/frame rows")
+    if assignments["display_order"].isna().any():
+        raise ValueError("R1 assignment display_order cannot be missing")
+    if not assignments["outcome_blinded"].astype(bool).all():
+        raise ValueError("R1 publication assignments must be outcome blinded")
+    if not assignments["model_score_blinded"].astype(bool).all():
+        raise ValueError("R1 publication assignments must be model-score blinded")
+
+    normalized_id = str(annotator_id).strip()
+    selected = assignments[
+        assignments["annotator_id"].astype(str).str.strip() == normalized_id
+    ].copy()
+    if selected.empty:
+        known = sorted(assignments["annotator_id"].astype(str).unique())
+        raise ValueError(
+            f"Annotator {normalized_id!r} has no R1 assignment; known IDs: {known}"
+        )
+
+    valid_keys = {(str(frame.sequence_id), int(frame.frame_id)) for frame in frames}
+    assigned_keys = {
+        (str(row.sequence_id), int(row.frame_id))
+        for row in selected.itertuples(index=False)
+    }
+    unknown = sorted(assigned_keys - valid_keys)
+    if unknown:
+        raise ValueError(
+            "R1 assignment references focal frames absent from the annotation frame file: "
+            f"{unknown[:5]}"
+        )
+    selected["display_order"] = pd.to_numeric(
+        selected["display_order"], errors="raise"
+    ).astype(int)
+    selected = selected.sort_values(
+        ["display_order", "sequence_id", "frame_id"],
+        ignore_index=True,
+    )
+    if selected["display_order"].duplicated().any():
+        raise ValueError("R1 display_order must be unique within each annotator")
+    return selected
+
+
+def causal_history_for_frame(
+    context_frames: list[FrameState],
+    focal_frame: FrameState,
+    *,
+    maximum_frames: int = 3,
+) -> list[FrameState]:
+    """Return only earlier frames from the same R1 sequence."""
+
+    if maximum_frames < 1:
+        return []
+    eligible = [
+        frame
+        for frame in context_frames
+        if frame.sequence_id == focal_frame.sequence_id
+        and frame.timestamp_s < focal_frame.timestamp_s - 1e-9
+    ]
+    eligible.sort(key=lambda frame: (frame.timestamp_s, frame.frame_id))
+    return eligible[-maximum_frames:]
+
+
+def _frame_lookup(frames: list[FrameState]) -> dict[tuple[str, int], FrameState]:
+    lookup: dict[tuple[str, int], FrameState] = {}
+    for frame in frames:
+        key = (str(frame.sequence_id), int(frame.frame_id))
+        if key in lookup:
+            raise ValueError(f"Duplicate annotation frame key: {key}")
+        lookup[key] = frame
+    return lookup
+
+
 def run(
     frame_path: str,
     annotation_path: str,
     *,
     outcome_blinded: bool = True,
     model_score_blinded: bool = True,
+    context_frame_path: str | None = None,
+    assignment_path: str | None = None,
+    annotator_id_default: str = "annotator_01",
+    lock_annotator_id: bool = False,
 ) -> None:
     try:
         import streamlit as st
@@ -52,6 +152,14 @@ def run(
         ) from exc
 
     frames = read_frames_jsonl(frame_path)
+    if not frames:
+        raise ValueError("Annotation frame file is empty")
+    frame_by_key = _frame_lookup(frames)
+    context_frames = (
+        read_frames_jsonl(context_frame_path)
+        if context_frame_path is not None
+        else frames
+    )
     engine = AffordanceEngine()
     st.set_page_config(
         page_title="The Midfielder's Eye Action Menu Annotator",
@@ -63,25 +171,51 @@ def run(
         "The publication protocol hides selected outcomes and model scores by default."
     )
 
+    assignment: pd.DataFrame | None = None
     with st.sidebar:
-        annotator_id = st.text_input("Annotator ID", value="annotator_01")
-        sequence_ids = sorted({frame.sequence_id for frame in frames})
-        sequence_id = st.selectbox("Sequence", sequence_ids)
-        sequence_frames = [
-            frame for frame in frames if frame.sequence_id == sequence_id
-        ]
-        sequence_frames.sort(key=lambda item: (item.timestamp_s, item.frame_id))
-        index = st.slider(
-            "Frame within sequence",
-            0,
-            len(sequence_frames) - 1,
-            0,
+        annotator_id = st.text_input(
+            "Annotator ID",
+            value=annotator_id_default,
+            disabled=lock_annotator_id,
         )
-        st.write(f"Provider: `{sequence_frames[index].source_provider}`")
-        st.write(
-            "Quality flags: "
-            f"{', '.join(sequence_frames[index].quality_flags) or 'none'}"
-        )
+        if assignment_path is not None:
+            try:
+                assignment = load_assignment_plan(
+                    assignment_path,
+                    frames=frames,
+                    annotator_id=annotator_id,
+                )
+            except ValueError as exc:
+                st.error(str(exc))
+                st.stop()
+            position = st.slider(
+                "Assigned decision frame",
+                0,
+                len(assignment) - 1,
+                0,
+            )
+            assigned = assignment.iloc[position]
+            frame = frame_by_key[
+                (str(assigned["sequence_id"]), int(assigned["frame_id"]))
+            ]
+            st.write(f"Assignment: `{position + 1}/{len(assignment)}`")
+            st.write(f"Sequence: `{frame.sequence_id}`")
+        else:
+            sequence_ids = sorted({frame.sequence_id for frame in frames})
+            sequence_id = st.selectbox("Sequence", sequence_ids)
+            sequence_frames = [
+                frame for frame in frames if frame.sequence_id == sequence_id
+            ]
+            sequence_frames.sort(key=lambda item: (item.timestamp_s, item.frame_id))
+            index = st.slider(
+                "Frame within sequence",
+                0,
+                len(sequence_frames) - 1,
+                0,
+            )
+            frame = sequence_frames[index]
+        st.write(f"Provider: `{frame.source_provider}`")
+        st.write(f"Quality flags: {', '.join(frame.quality_flags) or 'none'}")
         st.divider()
         st.write(
             "Outcome status: "
@@ -91,13 +225,14 @@ def run(
             "Model score status: "
             + ("`BLINDED`" if model_score_blinded else "`VISIBLE EXPLORATORY`")
         )
+        if assignment_path is not None:
+            st.success("R1 assignment mode · randomized order · full double rating")
         if not outcome_blinded or not model_score_blinded:
             st.warning(
                 "Exploratory unblinded annotations must not be mixed into the "
                 "publication reliability or benchmark freeze."
             )
 
-    frame = sequence_frames[index]
     generated_options = engine.generate(frame)
     options = (
         _neutral_option_order(generated_options)
@@ -109,17 +244,17 @@ def run(
         )
     )
 
-    history_frames = sequence_frames[max(0, index - 3) : index]
+    history_frames = causal_history_for_frame(context_frames, frame, maximum_frames=3)
     with st.expander(
         "Causal history for creation labels",
         expanded=False,
     ):
         st.caption(
-            "Only earlier frames are shown. Future frames and selected outcomes are never "
-            "introduced into the publication annotation view."
+            "Only earlier frames from the same frozen R1 sequence are shown. Context is "
+            "view-only: it is not part of the focal candidate table or benchmark feature matrix."
         )
         if not history_frames:
-            st.info("No earlier frame is available inside this sequence.")
+            st.info("No earlier causal context is available inside this sequence.")
         else:
             history_columns = st.columns(len(history_frames))
             for history_column, history_frame in zip(
@@ -127,9 +262,7 @@ def run(
                 history_frames,
                 strict=True,
             ):
-                history_options = _neutral_option_order(
-                    engine.generate(history_frame)
-                )
+                history_options = _neutral_option_order(engine.generate(history_frame))
                 history_figure, _ = plot_annotation_frame(
                     history_frame,
                     history_options,
@@ -156,7 +289,7 @@ def run(
         "not display model rank or score. Body axes are state evidence, not literal gaze."
     )
 
-    rows = []
+    rows: list[dict[str, Any]] = []
     for option_index, option in enumerate(options, start=1):
         target = option.target_player_id or (
             f"({option.target_x:.1f}, {option.target_y:.1f})"
@@ -294,6 +427,23 @@ if __name__ == "__main__":  # pragma: no cover
         default="data/annotations/action_menu.csv",
     )
     parser.add_argument(
+        "--context-frames",
+        help="Optional R1 causal-context JSONL. Only earlier frames from the same sequence are shown.",
+    )
+    parser.add_argument(
+        "--assignment",
+        help="Optional R1 rater assignment CSV. Restricts the annotator to assigned focal frames.",
+    )
+    parser.add_argument(
+        "--annotator-id",
+        default="annotator_01",
+    )
+    parser.add_argument(
+        "--lock-annotator-id",
+        action="store_true",
+        help="Prevent accidental annotation under another rater identity.",
+    )
+    parser.add_argument(
         "--unblinded-exploratory",
         action="store_true",
         help="Show selected-action controls. Never use these ratings in the publication freeze.",
@@ -309,4 +459,8 @@ if __name__ == "__main__":  # pragma: no cover
         args.annotations,
         outcome_blinded=not args.unblinded_exploratory,
         model_score_blinded=not args.show_model_scores,
+        context_frame_path=args.context_frames,
+        assignment_path=args.assignment,
+        annotator_id_default=args.annotator_id,
+        lock_annotator_id=args.lock_annotator_id,
     )
