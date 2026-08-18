@@ -95,8 +95,18 @@ export function projectVoxelToScreen(
     height,
   );
   const projectedHalfSize = Math.max(
-    xEdge ? Math.hypot(xEdge.screenX - center.screenX, xEdge.screenY - center.screenY) : 0,
-    zEdge ? Math.hypot(zEdge.screenX - center.screenX, zEdge.screenY - center.screenY) : 0,
+    xEdge
+      ? Math.hypot(
+          xEdge.screenX - center.screenX,
+          xEdge.screenY - center.screenY,
+        )
+      : 0,
+    zEdge
+      ? Math.hypot(
+          zEdge.screenX - center.screenX,
+          zEdge.screenY - center.screenY,
+        )
+      : 0,
   );
   return {
     voxel,
