@@ -52,8 +52,12 @@ def test_selected_outcome_is_joined_after_blinded_labels() -> None:
 
     joined = join_selected_outcomes(annotations, selections)
 
-    assert joined.loc[joined["option_key"] == "pass:p8", "selected"].item() is True
-    assert joined.loc[joined["option_key"] == "hold", "selected"].item() is False
+    assert bool(
+        joined.loc[joined["option_key"] == "pass:p8", "selected"].item()
+    )
+    assert not bool(
+        joined.loc[joined["option_key"] == "hold", "selected"].item()
+    )
     assert set(joined["selection_join_status"]) == {"observed_candidate_selected"}
     summary = selection_join_summary(joined)
     assert summary["frames_with_selected_candidate"] == 1
