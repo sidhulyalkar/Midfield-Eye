@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
+from midfielders_eye.r1 import discover_receipt_windows
 from midfielders_eye.r1_metrica import build_metrica_receipt_source
 from midfielders_eye.schema import EventState
 from midfielders_eye.synthetic import generate_sequence
@@ -73,6 +74,7 @@ def test_metrica_r1_receipt_uses_pass_actor_then_recipient() -> None:
     before = [frame for frame in source if frame.frame_id <= 18]
     after = [frame for frame in source if frame.frame_id >= 20]
     assert before and after
+    assert len(before) <= 3
     assert all(frame.ball_carrier_id == actor_id for frame in before)
     assert all(frame.ball_carrier_id == recipient_id for frame in after)
     assert all(frame.possession_team == "home" for frame in source)
@@ -82,4 +84,12 @@ def test_metrica_r1_receipt_uses_pass_actor_then_recipient() -> None:
         frame.metadata["r1_window_selection_semantics"]
         == "retrospective_window_selection_not_model_feature"
         for frame in source
+    )
+
+    windows = discover_receipt_windows(source)
+    assert len(windows) == 1
+    assert windows[0].carrier_id == recipient_id
+    assert all(frame.ball_carrier_id == recipient_id for frame in windows[0].label_frames)
+    assert any(
+        frame.ball_carrier_id == actor_id for frame in windows[0].context_frames
     )
