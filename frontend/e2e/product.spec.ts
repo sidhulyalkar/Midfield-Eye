@@ -19,9 +19,7 @@ test("synthetic scenario stays synchronized and keyboard addressable", async ({
   await expect(
     page.getByRole("heading", { name: "Overload, escape, arrive" }),
   ).toBeVisible();
-  await expect(
-    page.getByText("Not measured player performance"),
-  ).toBeVisible();
+  await expect(page.getByText("Not measured player performance")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Action Menu Ribbon" }),
   ).toBeVisible();
@@ -54,17 +52,13 @@ test("action menu ribbon seeks the shared scenario clock", async ({ page }) => {
   await futureCell.click();
   const frameMatch = label?.match(/frame (\d+)/u);
   expect(frameMatch).not.toBeNull();
-  await expect(page).toHaveURL(
-    new RegExp(`frame=${frameMatch?.[1]}`, "u"),
-  );
+  await expect(page).toHaveURL(new RegExp(`frame=${frameMatch?.[1]}`, "u"));
 });
 
 test("empirical slice preserves snapshot and missing-signal boundaries", async ({
   page,
 }) => {
-  await page.goto(
-    "/empirical/experiments/statsbomb-pedri-3857263-28ff205e",
-  );
+  await page.goto("/empirical/experiments/statsbomb-pedri-3857263-28ff205e");
   await expect(
     page.getByText("Event-centered snapshot", { exact: true }),
   ).toBeVisible();
@@ -155,10 +149,7 @@ test("captures deterministic representative routes", async ({
   for (const [name, route] of [
     ["landing", "/"],
     ["synthetic", "/scenario/aitana-overload?frame=10"],
-    [
-      "empirical",
-      "/empirical/experiments/statsbomb-pedri-3857263-28ff205e",
-    ],
+    ["empirical", "/empirical/experiments/statsbomb-pedri-3857263-28ff205e"],
     ["atlas", "/atlas?cohort=women%27s+game"],
     ["gaze-lab", "/gaze-lab"],
   ] as const) {
