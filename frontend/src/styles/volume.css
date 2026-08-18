@@ -88,7 +88,11 @@
   position: relative;
   min-height: 480px;
   background:
-    radial-gradient(circle at 50% 44%, rgba(99, 230, 190, 0.07), transparent 38%),
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(99, 230, 190, 0.07),
+      transparent 38%
+    ),
     linear-gradient(180deg, rgba(5, 16, 14, 0.35), rgba(2, 8, 7, 0.9));
 }
 
