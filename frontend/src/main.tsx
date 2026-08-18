@@ -8,6 +8,7 @@ import "./styles/global.css";
 import "./styles/actionMenu.css";
 import "./styles/pilot.css";
 import "./styles/volume.css";
+import "./styles/volumeInspector.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");
