@@ -139,7 +139,9 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
     const [error, setError] = useState<string | null>(null);
     const [selectionMarker, setSelectionMarker] =
       useState<SelectionMarker | null>(null);
-    const [selectedVoxel, setSelectedVoxel] = useState<VolumeVoxel | null>(null);
+    const [selectedVoxel, setSelectedVoxel] = useState<VolumeVoxel | null>(
+      null,
+    );
     const [internalTemporalFilter, setInternalTemporalFilter] =
       useState<VolumeTemporalFilter>(FULL_TEMPORAL_FILTER);
 
@@ -173,7 +175,12 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
         frame.pitch_length,
         frame.pitch_width,
       );
-    }, [activeTemporalFilter, frame.pitch_length, frame.pitch_width, fullScene]);
+    }, [
+      activeTemporalFilter,
+      frame.pitch_length,
+      frame.pitch_width,
+      fullScene,
+    ]);
 
     const sceneRef = useRef(scene);
     const fullSceneRef = useRef(fullScene);
@@ -515,7 +522,10 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
               missing; values are never recomputed.
             </p>
           </div>
-          <div className="volume-temporal-modes" aria-label="Temporal view mode">
+          <div
+            className="volume-temporal-modes"
+            aria-label="Temporal view mode"
+          >
             <button
               type="button"
               aria-pressed={activeTemporalFilter.mode === "full"}
@@ -564,7 +574,9 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
                   <button
                     type="button"
                     key={layerIndex}
-                    aria-pressed={activeTemporalFilter.layerIndex === layerIndex}
+                    aria-pressed={
+                      activeTemporalFilter.layerIndex === layerIndex
+                    }
                     onClick={() =>
                       changeTemporalFilter({ mode: "slice", layerIndex })
                     }
@@ -715,8 +727,8 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
               ))}
             </ol>
             <p>
-              Gaps mean no retained voxel survived threshold/LOD at this cell and
-              layer. They are not zeros and are never interpolated.
+              Gaps mean no retained voxel survived threshold/LOD at this cell
+              and layer. They are not zeros and are never interpolated.
             </p>
           </div>
         ) : null}
