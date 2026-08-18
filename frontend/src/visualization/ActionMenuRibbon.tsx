@@ -70,8 +70,7 @@ export function ActionMenuRibbon({
     }
     return [...grouped.values()]
       .sort(
-        (a, b) =>
-          b.peakScore - a.peakScore || a.label.localeCompare(b.label),
+        (a, b) => b.peakScore - a.peakScore || a.label.localeCompare(b.label),
       )
       .slice(0, maxRows);
   }, [maxRows, options]);
@@ -143,9 +142,7 @@ export function ActionMenuRibbon({
                     key={frame.frame_id}
                     className={[
                       "ribbon-cell",
-                      frame.frame_id === currentFrameId
-                        ? "ribbon-current"
-                        : "",
+                      frame.frame_id === currentFrameId ? "ribbon-current" : "",
                       selected ? "ribbon-selected" : "",
                       option.label_selected === true
                         ? "ribbon-observed-selection"
