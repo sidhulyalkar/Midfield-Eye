@@ -164,6 +164,81 @@ export function horizonSecondsForLayer(
     : (layerIndex / (horizonSteps - 1)) * horizonSeconds;
 }
 
+export function temporalLayerWorldY(
+  layerIndex: TemporalLayerIndex,
+  scene: VolumeScene,
+): number {
+  assertLayerIndex(layerIndex, "layerIndex");
+  if (layerIndex >= scene.stats.horizonSteps) {
+    throw new Error("layerIndex is outside the configured temporal horizon.");
+  }
+  const fraction =
+    scene.stats.horizonSteps === 1
+      ? 0
+      : layerIndex / (scene.stats.horizonSteps - 1);
+  return 0.7 + fraction * scene.timeScaleMetres;
+}
+
+function guideLayerIndices(filter: VolumeTemporalFilter): TemporalLayerIndex[] {
+  if (filter.mode === "full") return [];
+  if (filter.mode === "slice") return [filter.layerIndex];
+  return filter.startLayerIndex === filter.endLayerIndex
+    ? [filter.startLayerIndex]
+    : [filter.startLayerIndex, filter.endLayerIndex];
+}
+
+export function addTemporalGuideRails(
+  scene: VolumeScene,
+  filter: VolumeTemporalFilter,
+  pitchLength: number,
+  pitchWidth: number,
+): VolumeScene {
+  if (filter.mode === "full") return scene;
+  validateTemporalFilter(filter, scene.stats.horizonSteps);
+
+  const layers = guideLayerIndices(filter);
+  const guideInstances = new Float32Array(layers.length * 4 * INSTANCE_STRIDE);
+  const halfLength = pitchLength / 2;
+  const halfWidth = pitchWidth / 2;
+  const rail = 0.12;
+  const railHeight = 0.08;
+  const color: readonly [number, number, number, number] = [
+    0.96, 0.82, 0.37, 1,
+  ];
+
+  let offset = 0;
+  const push = (
+    x: number,
+    y: number,
+    z: number,
+    sx: number,
+    sy: number,
+    sz: number,
+  ) => {
+    guideInstances.set(
+      [x, y, z, sx, sy, sz, color[0], color[1], color[2], color[3]],
+      offset,
+    );
+    offset += INSTANCE_STRIDE;
+  };
+
+  for (const layerIndex of layers) {
+    const y = temporalLayerWorldY(layerIndex, scene);
+    push(0, y, -halfWidth, pitchLength, railHeight, rail);
+    push(0, y, halfWidth, pitchLength, railHeight, rail);
+    push(-halfLength, y, 0, rail, railHeight, pitchWidth);
+    push(halfLength, y, 0, rail, railHeight, pitchWidth);
+  }
+
+  const solids = new Float32Array(scene.solids.length + guideInstances.length);
+  solids.set(scene.solids, 0);
+  solids.set(guideInstances, scene.solids.length);
+  return {
+    ...scene,
+    solids,
+  };
+}
+
 export function buildRetainedVoxelTrajectory(
   fullRetainedVoxels: readonly VolumeVoxel[],
   inspectedVoxel: VolumeVoxel,
