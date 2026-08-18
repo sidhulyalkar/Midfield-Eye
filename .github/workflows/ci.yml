@@ -47,7 +47,10 @@ jobs:
       - run: midfielders-eye showcase-build --output-dir artifacts/showcase --frame-count 18 --render-dpi 80
       - run: npm ci
         working-directory: frontend
-      - run: npm run format:check
+      - name: Verify frontend formatting
+        run: |
+          npm run format
+          git diff --exit-code -- .
         working-directory: frontend
       - run: npm run typecheck
         working-directory: frontend
