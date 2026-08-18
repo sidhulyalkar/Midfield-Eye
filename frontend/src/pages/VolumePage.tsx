@@ -26,12 +26,14 @@ export default function VolumePage() {
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
 
-  const frame = bundle.frames?.[
-    Math.min(frameIndex, Math.max(0, (bundle.frames?.length ?? 1) - 1))
-  ];
+  const frame =
+    bundle.frames?.[
+      Math.min(frameIndex, Math.max(0, (bundle.frames?.length ?? 1) - 1))
+    ];
   const currentOptions = useMemo(
     () =>
-      bundle.options?.filter((option) => option.frame_id === frame?.frame_id) ?? [],
+      bundle.options?.filter((option) => option.frame_id === frame?.frame_id) ??
+      [],
     [bundle.options, frame?.frame_id],
   );
 
@@ -62,21 +64,31 @@ export default function VolumePage() {
     <div className="volume-page page-pad">
       <header className="volume-page-heading">
         <div>
-          <p className="eyebrow">TEMPORAL AFFORDANCE VOLUME · 3D RESEARCH INSTRUMENT</p>
-          <h1>See the next second of football as a field you can move through.</h1>
+          <p className="eyebrow">
+            TEMPORAL AFFORDANCE VOLUME · 3D RESEARCH INSTRUMENT
+          </p>
+          <h1>
+            See the next second of football as a field you can move through.
+          </h1>
           <p>
-            X and Y remain the real pitch. The vertical axis is <strong>future time</strong>, not
-            physical height. Pressure fronts, screened space, passing corridors, visibility, and
-            opening options become one inspectable voxel lattice above the focal frame.
+            X and Y remain the real pitch. The vertical axis is{" "}
+            <strong>future time</strong>, not physical height. Pressure fronts,
+            screened space, passing corridors, visibility, and opening options
+            become one inspectable voxel lattice above the focal frame.
           </p>
         </div>
         <div className="volume-heading-evidence">
           <EvidenceBadge kind="synthetic" source="Scenario teaching bundle" />
-          <span>Forecast geometry is derived from focal-state kinematics only.</span>
+          <span>
+            Forecast geometry is derived from focal-state kinematics only.
+          </span>
         </div>
       </header>
 
-      <section className="volume-workbench" aria-label="3D affordance volume workbench">
+      <section
+        className="volume-workbench"
+        aria-label="3D affordance volume workbench"
+      >
         <div className="volume-stage">
           <div className="volume-stage-topline">
             <div>
@@ -95,7 +107,9 @@ export default function VolumePage() {
             quality={quality}
             threshold={threshold}
             horizonSeconds={horizonSeconds}
-            maxVoxels={quality === "high" ? 4200 : quality === "low" ? 1200 : 2800}
+            maxVoxels={
+              quality === "high" ? 4200 : quality === "low" ? 1200 : 2800
+            }
             onRuntime={setRuntime}
           />
           <label className="volume-frame-scrubber">
@@ -130,7 +144,9 @@ export default function VolumePage() {
                 </button>
               ))}
             </div>
-            <p className="volume-channel-explanation">{channelCopy.explanation}</p>
+            <p className="volume-channel-explanation">
+              {channelCopy.explanation}
+            </p>
           </div>
 
           <div className="volume-control-block volume-threshold-control">
@@ -148,8 +164,9 @@ export default function VolumePage() {
               onChange={(event) => setThreshold(Number(event.target.value))}
             />
             <p>
-              Raising the gate removes weak cells before upload. The renderer spends its budget on
-              the most informative parts of the tactical field.
+              Raising the gate removes weak cells before upload. The renderer
+              spends its budget on the most informative parts of the tactical
+              field.
             </p>
           </div>
 
@@ -211,27 +228,30 @@ export default function VolumePage() {
           <p className="eyebrow">WHY THE THIRD AXIS EXISTS</p>
           <h2>Height means when, not where.</h2>
           <p>
-            The bottom slice is the focal state. Every higher layer advances the same causal
-            kinematic state toward +{horizonSeconds.toFixed(1)} seconds. A pressure ridge leaning
-            forward is therefore a defender arriving, not a decorative mountain.
+            The bottom slice is the focal state. Every higher layer advances the
+            same causal kinematic state toward +{horizonSeconds.toFixed(1)}{" "}
+            seconds. A pressure ridge leaning forward is therefore a defender
+            arriving, not a decorative mountain.
           </p>
         </article>
         <article>
           <p className="eyebrow">WHY VOXELS</p>
           <h2>Discrete enough to compare. Dense enough to feel continuous.</h2>
           <p>
-            Each cell has a known pitch footprint, horizon slice, channel, value, and provenance.
-            That makes screenshots dramatic while keeping every glowing block auditable back to a
-            deterministic field computation.
+            Each cell has a known pitch footprint, horizon slice, channel,
+            value, and provenance. That makes screenshots dramatic while keeping
+            every glowing block auditable back to a deterministic field
+            computation.
           </p>
         </article>
         <article>
           <p className="eyebrow">WHAT THIS DOES NOT CLAIM</p>
           <h2>A beautiful forecast is still a forecast.</h2>
           <p>
-            Future layers are generated from focal-state motion and frozen visualization formulas.
-            They are not later observed tracking frames, calibrated probabilities, or expert
-            labels. R1 benchmark evidence remains separate.
+            Future layers are generated from focal-state motion and frozen
+            visualization formulas. They are not later observed tracking frames,
+            calibrated probabilities, or expert labels. R1 benchmark evidence
+            remains separate.
           </p>
         </article>
       </section>
@@ -239,28 +259,41 @@ export default function VolumePage() {
       <section className="volume-showcase-strip">
         <div>
           <p className="eyebrow">SHOWCASE SEQUENCE</p>
-          <h2>Start with Menu. Peel the field apart. Return to the decision.</h2>
+          <h2>
+            Start with Menu. Peel the field apart. Return to the decision.
+          </h2>
         </div>
         <ol>
           <li>
             <span>01</span>
             <strong>Composite</strong>
-            <p>Open on the full action-menu volume so the idea lands instantly.</p>
+            <p>
+              Open on the full action-menu volume so the idea lands instantly.
+            </p>
           </li>
           <li>
             <span>02</span>
             <strong>Pressure → shadow</strong>
-            <p>Reveal the moving defensive front, then the space it screens behind itself.</p>
+            <p>
+              Reveal the moving defensive front, then the space it screens
+              behind itself.
+            </p>
           </li>
           <li>
             <span>03</span>
             <strong>Space → creation</strong>
-            <p>Show the difference between space that exists and space that is becoming available.</p>
+            <p>
+              Show the difference between space that exists and space that is
+              becoming available.
+            </p>
           </li>
           <li>
             <span>04</span>
             <strong>Corridor → visibility</strong>
-            <p>Finish by separating a physically available route from a perceptually accessible one.</p>
+            <p>
+              Finish by separating a physically available route from a
+              perceptually accessible one.
+            </p>
           </li>
         </ol>
         <Link className="text-link" to={`/scenario/${scenarioId}`}>
