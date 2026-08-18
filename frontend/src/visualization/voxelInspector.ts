@@ -115,6 +115,22 @@ export function projectVoxelToScreen(
   };
 }
 
+function winsPickTie(
+  candidate: VoxelPick,
+  candidateNormalizedDistance: number,
+  best: VoxelPick | null,
+  bestNormalizedDistance: number,
+): boolean {
+  if (!best) return true;
+  if (candidateNormalizedDistance !== bestNormalizedDistance) {
+    return candidateNormalizedDistance < bestNormalizedDistance;
+  }
+  if (candidate.voxel.value !== best.voxel.value) {
+    return candidate.voxel.value > best.voxel.value;
+  }
+  return candidate.voxel.id.localeCompare(best.voxel.id) < 0;
+}
+
 export function pickVolumeVoxel(
   voxels: VolumeVoxel[],
   camera: OrbitCamera,
@@ -125,7 +141,7 @@ export function pickVolumeVoxel(
   minimumHitRadiusPx = 18,
 ): VoxelPick | null {
   let best: VoxelPick | null = null;
-  let bestScore = Number.POSITIVE_INFINITY;
+  let bestNormalizedDistance = Number.POSITIVE_INFINITY;
 
   for (const voxel of voxels) {
     const projected = projectVoxelToScreen(voxel, camera, width, height);
@@ -146,14 +162,15 @@ export function pickVolumeVoxel(
     if (distancePx > hitRadius) continue;
 
     const normalizedDistance = distancePx / hitRadius;
-    const valueTieBreaker = (1 - voxel.value) * 0.02;
-    const score = normalizedDistance + valueTieBreaker;
-    if (score < bestScore) {
-      bestScore = score;
-      best = {
-        ...projected,
-        distancePx,
-      };
+    const candidate: VoxelPick = {
+      ...projected,
+      distancePx,
+    };
+    if (
+      winsPickTie(candidate, normalizedDistance, best, bestNormalizedDistance)
+    ) {
+      bestNormalizedDistance = normalizedDistance;
+      best = candidate;
     }
   }
   return best;
@@ -165,17 +182,26 @@ export function strongestVisibleVoxel(
   width: number,
   height: number,
 ): ProjectedVoxel | null {
+  let best: ProjectedVoxel | null = null;
   for (const voxel of voxels) {
     const projected = projectVoxelToScreen(voxel, camera, width, height);
     if (!projected) continue;
     if (
-      projected.screenX >= 0 &&
-      projected.screenX <= width &&
-      projected.screenY >= 0 &&
-      projected.screenY <= height
+      projected.screenX < 0 ||
+      projected.screenX > width ||
+      projected.screenY < 0 ||
+      projected.screenY > height
     ) {
-      return projected;
+      continue;
+    }
+    if (
+      !best ||
+      voxel.value > best.voxel.value ||
+      (voxel.value === best.voxel.value &&
+        voxel.id.localeCompare(best.voxel.id) < 0)
+    ) {
+      best = projected;
     }
   }
-  return null;
+  return best;
 }
