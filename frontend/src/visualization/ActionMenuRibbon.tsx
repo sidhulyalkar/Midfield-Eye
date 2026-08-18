@@ -9,7 +9,8 @@ type RibbonSeries = {
 };
 
 export function stableActionKey(option: ActionOption): string {
-  if (option.kind === "pass") return `pass:${option.target_player_id ?? "unknown"}`;
+  if (option.kind === "pass")
+    return `pass:${option.target_player_id ?? "unknown"}`;
   if (option.kind === "hold") return "hold";
   const marker = ":carry:";
   const suffix = option.option_id.includes(marker)
@@ -19,7 +20,8 @@ export function stableActionKey(option: ActionOption): string {
 }
 
 function actionLabel(option: ActionOption): string {
-  if (option.kind === "pass") return `Pass · ${option.target_player_id ?? "unknown"}`;
+  if (option.kind === "pass")
+    return `Pass · ${option.target_player_id ?? "unknown"}`;
   if (option.kind === "hold") return "Hold";
   const key = stableActionKey(option).replace("carry:", "");
   return `Carry · ${key}°`;
@@ -53,7 +55,10 @@ export function ActionMenuRibbon({
       const existing = grouped.get(key);
       if (existing) {
         existing.optionsByFrame.set(option.frame_id, option);
-        existing.peakScore = Math.max(existing.peakScore, option.geometric_score);
+        existing.peakScore = Math.max(
+          existing.peakScore,
+          option.geometric_score,
+        );
       } else {
         grouped.set(key, {
           key,
@@ -64,7 +69,10 @@ export function ActionMenuRibbon({
       }
     }
     return [...grouped.values()]
-      .sort((a, b) => b.peakScore - a.peakScore || a.label.localeCompare(b.label))
+      .sort(
+        (a, b) =>
+          b.peakScore - a.peakScore || a.label.localeCompare(b.label),
+      )
       .slice(0, maxRows);
   }, [maxRows, options]);
 
@@ -84,8 +92,8 @@ export function ActionMenuRibbon({
           <h2>Action Menu Ribbon</h2>
         </div>
         <p>
-          Brightness follows this scenario&apos;s frame score. Gaps mean the candidate is absent;
-          they are not model predictions of impossibility.
+          Brightness follows this scenario&apos;s frame score. Gaps mean the
+          candidate is absent; they are not model predictions of impossibility.
         </p>
       </header>
       <div className="ribbon-clock" aria-hidden="true">
@@ -104,7 +112,12 @@ export function ActionMenuRibbon({
             </div>
             <div
               className="ribbon-track"
-              style={{ gridTemplateColumns: `repeat(${Math.max(orderedFrames.length, 1)}, minmax(8px, 1fr))` }}
+              style={{
+                gridTemplateColumns: `repeat(${Math.max(
+                  orderedFrames.length,
+                  1,
+                )}, minmax(8px, 1fr))`,
+              }}
             >
               {orderedFrames.map((frame) => {
                 const option = row.optionsByFrame.get(frame.frame_id);
@@ -121,7 +134,8 @@ export function ActionMenuRibbon({
                   );
                 }
                 const normalized =
-                  (option.geometric_score - minimum) / Math.max(0.001, maximum - minimum);
+                  (option.geometric_score - minimum) /
+                  Math.max(0.001, maximum - minimum);
                 const selected = option.option_id === selectedOptionId;
                 return (
                   <button
@@ -129,9 +143,13 @@ export function ActionMenuRibbon({
                     key={frame.frame_id}
                     className={[
                       "ribbon-cell",
-                      frame.frame_id === currentFrameId ? "ribbon-current" : "",
+                      frame.frame_id === currentFrameId
+                        ? "ribbon-current"
+                        : "",
                       selected ? "ribbon-selected" : "",
-                      option.label_selected === true ? "ribbon-observed-selection" : "",
+                      option.label_selected === true
+                        ? "ribbon-observed-selection"
+                        : "",
                     ]
                       .filter(Boolean)
                       .join(" ")}
@@ -144,7 +162,9 @@ export function ActionMenuRibbon({
                       onOptionSelect(option.option_id);
                     }}
                   >
-                    {option.label_selected === true ? <span className="selection-tick">●</span> : null}
+                    {option.label_selected === true ? (
+                      <span className="selection-tick">●</span>
+                    ) : null}
                   </button>
                 );
               })}
