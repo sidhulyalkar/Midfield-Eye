@@ -70,6 +70,7 @@ def run(
         sequence_frames = [
             frame for frame in frames if frame.sequence_id == sequence_id
         ]
+        sequence_frames.sort(key=lambda item: (item.timestamp_s, item.frame_id))
         index = st.slider(
             "Frame within sequence",
             0,
@@ -107,6 +108,40 @@ def run(
             reverse=True,
         )
     )
+
+    history_frames = sequence_frames[max(0, index - 3) : index]
+    with st.expander(
+        "Causal history for creation labels",
+        expanded=False,
+    ):
+        st.caption(
+            "Only earlier frames are shown. Future frames and selected outcomes are never "
+            "introduced into the publication annotation view."
+        )
+        if not history_frames:
+            st.info("No earlier frame is available inside this sequence.")
+        else:
+            history_columns = st.columns(len(history_frames))
+            for history_column, history_frame in zip(
+                history_columns,
+                history_frames,
+                strict=True,
+            ):
+                history_options = _neutral_option_order(
+                    engine.generate(history_frame)
+                )
+                history_figure, _ = plot_annotation_frame(
+                    history_frame,
+                    history_options,
+                )
+                history_column.pyplot(
+                    history_figure,
+                    use_container_width=True,
+                )
+                history_column.caption(
+                    f"t={history_frame.timestamp_s:.2f}s · frame {history_frame.frame_id}"
+                )
+
     if model_score_blinded:
         figure, _ = plot_annotation_frame(frame, options)
     else:
@@ -163,7 +198,7 @@ def run(
                 key=f"creation_{key}",
                 help=(
                     "Rate how much earlier movement improved this option relative to its "
-                    "recent baseline. Use only evidence allowed by the annotation protocol."
+                    "recent baseline. Use only the causal history shown above."
                 ),
             )
             confidence = column_a.slider(
