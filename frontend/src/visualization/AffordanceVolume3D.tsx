@@ -237,7 +237,9 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
         .catch((reason: unknown) => {
           if (cancelled) return;
           setError(
-            reason instanceof Error ? reason.message : "3D renderer unavailable.",
+            reason instanceof Error
+              ? reason.message
+              : "3D renderer unavailable.",
           );
         });
       return () => {
@@ -251,7 +253,10 @@ export const AffordanceVolume3D = forwardRef<AffordanceVolumeHandle, Props>(
     useEffect(() => {
       sceneRef.current = scene;
       const selectedId = selectedVoxelIdRef.current;
-      if (selectedId && !scene.voxels.some((voxel) => voxel.id === selectedId)) {
+      if (
+        selectedId &&
+        !scene.voxels.some((voxel) => voxel.id === selectedId)
+      ) {
         clearSelection();
       }
       const renderer = rendererRef.current;
