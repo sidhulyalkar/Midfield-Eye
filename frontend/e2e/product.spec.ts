@@ -20,6 +20,14 @@ test("synthetic scenario stays synchronized and keyboard addressable", async ({
     page.getByRole("heading", { name: "Overload, escape, arrive" }),
   ).toBeVisible();
   await expect(page.getByText("Not measured player performance")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Action Menu Ribbon" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      /retrospective visualization, not a future-aware model input/u,
+    ),
+  ).toBeVisible();
   await page.keyboard.press("ArrowRight");
   await expect(page).toHaveURL(/frame=1/u);
   await page.getByRole("button", { name: "Lock selected option" }).click();
@@ -30,6 +38,21 @@ test("synthetic scenario stays synchronized and keyboard addressable", async ({
   await expect(
     page.getByRole("button", { name: "Lock selected option" }),
   ).toBeVisible();
+});
+
+test("action menu ribbon seeks the shared scenario clock", async ({ page }) => {
+  await page.goto("/scenario/aitana-overload?frame=0");
+  const ribbon = page.getByRole("region", { name: "Action menu ribbon" });
+  const futureCell = ribbon
+    .getByRole("button", { name: /frame \d+, score/u })
+    .nth(1);
+  await expect(futureCell).toBeVisible();
+  const label = await futureCell.getAttribute("aria-label");
+  expect(label).toMatch(/frame \d+, score/u);
+  await futureCell.click();
+  const frameMatch = label?.match(/frame (\d+)/u);
+  expect(frameMatch).not.toBeNull();
+  await expect(page).toHaveURL(new RegExp(`frame=${frameMatch?.[1]}`, "u"));
 });
 
 test("empirical slice preserves snapshot and missing-signal boundaries", async ({

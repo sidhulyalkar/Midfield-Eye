@@ -1,0 +1,55 @@
+schema_version: action-menu-annotation-v1
+research_object: action_menu
+unit_of_analysis: candidate_action_at_decision_frame
+
+labels:
+  available:
+    type: categorical
+    values: [yes, no, uncertain]
+    prompt: Could this action reasonably be completed from the observed state?
+  visible:
+    type: categorical
+    values: [yes, no, uncertain]
+    prompt: Was enough information plausibly available to the carrier to consider this action?
+  value_ordinal:
+    type: ordinal
+    range: [0, 4]
+    prompt: If executed competently, how useful is the resulting state?
+  creation_ordinal:
+    type: ordinal
+    range: [0, 4]
+    prompt: How much did earlier movement improve this option relative to its recent baseline?
+  selected:
+    type: observed_event
+    values: [true, false, null]
+    prompt: Was this action eventually selected?
+  confidence:
+    type: continuous
+    range: [0.0, 1.0]
+
+blinding:
+  availability: selected_action_hidden
+  visibility: selected_action_hidden
+  value: selected_action_hidden
+  creation: selected_action_hidden
+  selected: joined_from_event_after_expert_labels
+
+sampling:
+  sequence_is_statistical_unit: true
+  adjacent_frame_random_split_forbidden: true
+  target_pilot_sequences: [10, 20]
+  target_main_sequences_minimum: 150
+  preferred_decision_frames_per_sequence: 3
+  double_rate_fraction_minimum: 0.25
+
+quality_gates:
+  availability_agreement_minimum: 0.60
+  preserve_uncertain_as_missing_for_binary_recall: true
+  retain_negative_results: true
+  freeze_code_config_data_and_label_hashes: true
+
+causal_guardrails:
+  - Stable option identities may be computed from the focal candidate itself.
+  - Birth and extinction are retrospective visualization labels only.
+  - No later frame may enter B0-B3 model features unless explicitly declared as a retrospective target.
+  - Selection must never substitute for availability, visibility, value, or creation.

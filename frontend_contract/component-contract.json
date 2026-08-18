@@ -1,5 +1,5 @@
 {
-  "version": "0.6.0",
+  "version": "0.7.0",
   "global": {
     "dataBoundary": "ShowcaseDataSource",
     "playbackCursor": "currentFrameId",
@@ -126,6 +126,42 @@
       "events": [
         "onSeek",
         "onMarkerSelect"
+      ]
+    },
+    "ActionMenuRibbon": {
+      "requiredProps": [
+        "frames",
+        "options",
+        "currentFrameId",
+        "selectedOptionId"
+      ],
+      "events": [
+        "onSeek",
+        "onOptionSelect"
+      ],
+      "constraints": [
+        "stable_option_identity_across_frames",
+        "candidate_absence_is_distinct_from_low_score",
+        "observed_selection_is_distinct_from_model_score",
+        "birth_and_extinction_are_retrospective_only",
+        "reduced_motion_supported"
+      ]
+    },
+    "DecisionMicroscope": {
+      "requiredProps": [
+        "frames",
+        "options",
+        "currentFrameId",
+        "selectedOptionId"
+      ],
+      "events": [
+        "onSeek",
+        "onOptionSelect"
+      ],
+      "constraints": [
+        "one_shared_frame_clock",
+        "ribbon_selection_matches_pitch_selection",
+        "retrospective_lifecycle_is_never_presented_as_causal_input"
       ]
     },
     "PlaybackController": {
@@ -321,6 +357,8 @@
       "ActionMenuRail",
       "PlaybackController",
       "SynchronizedTimeline",
+      "DecisionMicroscope",
+      "ActionMenuRibbon",
       "GazeField",
       "BodyMechanicsOverlay",
       "RelationalControlGraph",

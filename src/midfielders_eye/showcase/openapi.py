@@ -3,14 +3,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .. import __version__
+
 
 def write_frontend_contract(path: str | Path) -> Path:
     payload = {
         "openapi": "3.1.0",
         "info": {
             "title": "The Midfielder's Eye Showcase API",
-            "version": "0.6.0",
-            "description": "Stable frontend contract for the 100-player perception atlas and empirical evidence studio. Runtime OpenAPI is also available from FastAPI at /openapi.json.",
+            "version": __version__,
+            "description": "Stable frontend contract for the action-menu benchmark, 100-player hypothesis atlas, and empirical evidence studio. Runtime OpenAPI is also available from FastAPI at /openapi.json.",
         },
         "servers": [{"url": "http://localhost:8000"}],
         "paths": {
