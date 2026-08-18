@@ -5,6 +5,6 @@ type: software
 authors:
   - family-names: Hulyalkar
     given-names: Sidharth
-version: 0.8.0
+version: 0.7.0
 date-released: 2026-08-17
 license: MIT
