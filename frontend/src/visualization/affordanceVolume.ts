@@ -33,9 +33,69 @@ export type VolumeStats = {
   maxValue: number;
 };
 
+export type VolumeVisibilityEvidence =
+  | "visibility_polygon"
+  | "orientation_proxy"
+  | "unknown";
+
+export type VolumeUncertaintyEvidence =
+  | "covariance_confidence_tracking"
+  | "covariance_tracking"
+  | "confidence_tracking"
+  | "tracking_status_only";
+
+export type VolumeEvidence = {
+  forecast: "focal_state_kinematics";
+  sourceProvider: string;
+  visibility: VolumeVisibilityEvidence;
+  uncertainty: VolumeUncertaintyEvidence;
+  futureObservedFramesUsed: false;
+};
+
+export type VolumeOptionContribution = {
+  optionId: string;
+  kind: ActionOption["kind"];
+  targetPlayerId: string | null;
+  geometricScore: number;
+  localContribution: number;
+};
+
+export type VolumeDriver = {
+  playerId: string;
+  team: PlayerState["team"];
+  distanceM: number;
+};
+
+export type VolumeSignalVector = Record<VolumeChannel, number>;
+
+export type VolumeVoxel = {
+  id: string;
+  frameId: number;
+  channel: VolumeChannel;
+  layerIndex: number;
+  gridXIndex: number;
+  gridYIndex: number;
+  pitchX: number;
+  pitchY: number;
+  forecastSeconds: number;
+  worldX: number;
+  worldY: number;
+  worldZ: number;
+  sizeX: number;
+  sizeY: number;
+  sizeZ: number;
+  value: number;
+  signals: VolumeSignalVector;
+  optionContributions: VolumeOptionContribution[];
+  nearestDefender: VolumeDriver | null;
+  nearestTeammate: VolumeDriver | null;
+  evidence: VolumeEvidence;
+};
+
 export type VolumeScene = {
   field: Float32Array;
   solids: Float32Array;
+  voxels: VolumeVoxel[];
   stats: VolumeStats;
   timeScaleMetres: number;
 };
@@ -62,7 +122,7 @@ export const volumeChannelCopy: Record<
     label: "Pressure shadows",
     short: "Shadows",
     explanation:
-      "Space screened behind defenders relative to the carrier. This is geometric occlusion pressure, not literal visual occlusion.",
+      "Space screened behind defenders relative to the carrier. This is geometric screening pressure, not literal visual occlusion.",
   },
   future_space: {
     label: "Future space",
@@ -86,7 +146,7 @@ export const volumeChannelCopy: Record<
     label: "Perceptual access",
     short: "Visible",
     explanation:
-      "Provider visibility polygons when present, otherwise a clearly labeled body/head/gaze-direction proxy around the carrier.",
+      "Visibility polygons when present, otherwise a clearly labeled body/head/gaze-direction proxy around the carrier.",
   },
   uncertainty: {
     label: "State uncertainty",
@@ -133,18 +193,34 @@ function playerPotential(
   return clamp01(1 - Math.exp(-sum));
 }
 
+function nearestPlayer(
+  players: PlayerState[],
+  x: number,
+  y: number,
+  t: number,
+): VolumeDriver | null {
+  let best: VolumeDriver | null = null;
+  for (const player of players) {
+    const [px, py] = predictedPlayer(player, t);
+    const distanceM = Math.hypot(px - x, py - y);
+    if (!best || distanceM < best.distanceM) {
+      best = {
+        playerId: player.player_id,
+        team: player.team,
+        distanceM,
+      };
+    }
+  }
+  return best;
+}
+
 function nearestDistance(
   players: PlayerState[],
   x: number,
   y: number,
   t: number,
 ): number {
-  let nearest = Number.POSITIVE_INFINITY;
-  for (const player of players) {
-    const [px, py] = predictedPlayer(player, t);
-    nearest = Math.min(nearest, Math.hypot(px - x, py - y));
-  }
-  return Number.isFinite(nearest) ? nearest : 30;
+  return nearestPlayer(players, x, y, t)?.distanceM ?? 30;
 }
 
 function distanceToSegment(
@@ -197,6 +273,19 @@ function angularDifference(a: number, b: number): number {
   return Math.abs(delta);
 }
 
+function carrierHeading(frame: FrameState): number | null {
+  const carrier = frame.players.find(
+    (player) => player.player_id === frame.ball_carrier_id,
+  );
+  if (!carrier) return null;
+  return carrier.gaze_angle ?? carrier.head_angle ?? carrier.body_angle ?? null;
+}
+
+function visibilityEvidence(frame: FrameState): VolumeVisibilityEvidence {
+  if (frame.visibility_polygon?.length) return "visibility_polygon";
+  return carrierHeading(frame) === null ? "unknown" : "orientation_proxy";
+}
+
 function visibilityAt(frame: FrameState, x: number, y: number): number {
   if (frame.visibility_polygon?.length) {
     return pointInPolygon([x, y], frame.visibility_polygon) ? 1 : 0.04;
@@ -204,10 +293,8 @@ function visibilityAt(frame: FrameState, x: number, y: number): number {
   const carrier = frame.players.find(
     (player) => player.player_id === frame.ball_carrier_id,
   );
-  if (!carrier) return 0.35;
-  const heading =
-    carrier.gaze_angle ?? carrier.head_angle ?? carrier.body_angle;
-  if (heading === null || heading === undefined) return 0.35;
+  const heading = carrierHeading(frame);
+  if (!carrier || heading === null) return 0.35;
   const dx = x - carrier.x;
   const dy = y - carrier.y;
   const distance = Math.hypot(dx, dy);
@@ -226,12 +313,13 @@ function corridorAt(
   options: ActionOption[],
   x: number,
   y: number,
-): number {
+): { value: number; contributions: VolumeOptionContribution[] } {
   const actor = frame.players.find(
     (player) => player.player_id === frame.ball_carrier_id,
   );
-  if (!actor) return 0;
+  if (!actor) return { value: 0, contributions: [] };
   let best = 0;
+  const contributions: VolumeOptionContribution[] = [];
   for (const option of options) {
     if (option.frame_id !== frame.frame_id || option.kind === "hold") continue;
     const { distance, progress } = distanceToSegment(
@@ -248,12 +336,27 @@ function corridorAt(
       Math.hypot(option.target_x - x, option.target_y - y),
       option.kind === "pass" ? 4.5 : 6,
     );
-    best = Math.max(
-      best,
-      score * (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
+    const localContribution = clamp01(
+      score *
+        (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
     );
+    best = Math.max(best, localContribution);
+    if (localContribution >= 0.01) {
+      contributions.push({
+        optionId: option.option_id,
+        kind: option.kind,
+        targetPlayerId: option.target_player_id ?? null,
+        geometricScore: score,
+        localContribution,
+      });
+    }
   }
-  return clamp01(best);
+  contributions.sort(
+    (a, b) =>
+      b.localContribution - a.localContribution ||
+      a.optionId.localeCompare(b.optionId),
+  );
+  return { value: clamp01(best), contributions: contributions.slice(0, 4) };
 }
 
 function pressureShadowAt(
@@ -326,13 +429,48 @@ function uncertaintyAt(
   return clamp01(value);
 }
 
-function fieldSignals(
+function uncertaintyEvidence(frame: FrameState): VolumeUncertaintyEvidence {
+  const hasCovariance = frame.players.some(
+    (player) => player.position_covariance && player.position_covariance.length > 0,
+  );
+  const hasConfidence = frame.players.some(
+    (player) => player.confidence !== null && player.confidence !== undefined,
+  );
+  if (hasCovariance && hasConfidence) return "covariance_confidence_tracking";
+  if (hasCovariance) return "covariance_tracking";
+  if (hasConfidence) return "confidence_tracking";
+  return "tracking_status_only";
+}
+
+type CellEvaluation = {
+  signals: VolumeSignalVector;
+  optionContributions: VolumeOptionContribution[];
+  nearestDefender: VolumeDriver | null;
+  nearestTeammate: VolumeDriver | null;
+};
+
+function channelValue(
+  channel: VolumeChannel,
+  signals: Omit<VolumeSignalVector, "menu">,
+): number {
+  if (channel !== "menu") return signals[channel];
+  return clamp01(
+    0.34 * signals.future_space +
+      0.3 * signals.passing_corridors +
+      0.24 * signals.option_creation +
+      0.12 * signals.visibility -
+      0.22 * signals.pressure -
+      0.08 * signals.uncertainty,
+  );
+}
+
+function evaluateCell(
   frame: FrameState,
   options: ActionOption[],
   x: number,
   y: number,
   t: number,
-): Record<Exclude<VolumeChannel, "menu">, number> {
+): CellEvaluation {
   const carrier = frame.players.find(
     (player) => player.player_id === frame.ball_carrier_id,
   );
@@ -346,9 +484,11 @@ function fieldSignals(
   );
   const pressure = playerPotential(defenders, x, y, t, 5.2);
   const support = playerPotential(teammates, x, y, t, 6.5);
-  const nearestDefender = nearestDistance(defenders, x, y, t);
+  const nearestDefender = nearestPlayer(defenders, x, y, t);
+  const nearestTeammate = nearestPlayer(teammates, x, y, t);
+  const nearestDefenderDistance = nearestDefender?.distanceM ?? 30;
   const futureSpace = clamp01(
-    0.72 * clamp01((nearestDefender - 2) / 13) +
+    0.72 * clamp01((nearestDefenderDistance - 2) / 13) +
       0.18 * support +
       0.1 * (1 - pressure),
   );
@@ -364,30 +504,24 @@ function fieldSignals(
   const carrierDistance = carrier
     ? Math.hypot(carrier.x - x, carrier.y - y)
     : 0;
-  return {
+  const baseSignals: Omit<VolumeSignalVector, "menu"> = {
     pressure: clamp01(pressure * (0.9 + 0.1 * clamp01(carrierDistance / 25))),
     pressure_shadow: pressureShadow,
     future_space: futureSpace,
-    passing_corridors: corridor,
+    passing_corridors: corridor.value,
     option_creation: creation,
     visibility,
     uncertainty,
   };
-}
-
-function channelValue(
-  channel: VolumeChannel,
-  signals: Record<Exclude<VolumeChannel, "menu">, number>,
-): number {
-  if (channel !== "menu") return signals[channel];
-  return clamp01(
-    0.34 * signals.future_space +
-      0.3 * signals.passing_corridors +
-      0.24 * signals.option_creation +
-      0.12 * signals.visibility -
-      0.22 * signals.pressure -
-      0.08 * signals.uncertainty,
-  );
+  return {
+    signals: {
+      menu: channelValue("menu", baseSignals),
+      ...baseSignals,
+    },
+    optionContributions: corridor.contributions,
+    nearestDefender,
+    nearestTeammate,
+  };
 }
 
 function qualityGrid(quality: VolumeQuality): [number, number] {
@@ -489,7 +623,14 @@ export function buildAffordanceVolume(
     0.16,
     timeScaleMetres / config.horizonSteps / 8,
   );
-  const candidates: Array<{ value: number; data: number[] }> = [];
+  const evidence: VolumeEvidence = {
+    forecast: "focal_state_kinematics",
+    sourceProvider: frame.source_provider,
+    visibility: visibilityEvidence(frame),
+    uncertainty: uncertaintyEvidence(frame),
+    futureObservedFramesUsed: false,
+  };
+  const candidates: VolumeVoxel[] = [];
   let sum = 0;
   let maxValue = 0;
 
@@ -502,39 +643,70 @@ export function buildAffordanceVolume(
       const x = (ix + 0.5) * cellX;
       for (let iy = 0; iy < gridY; iy += 1) {
         const y = (iy + 0.5) * cellY;
-        const signals = fieldSignals(frame, options, x, y, t);
-        const value = channelValue(config.channel, signals);
+        const evaluation = evaluateCell(frame, options, x, y, t);
+        const value = evaluation.signals[config.channel];
         if (value < config.threshold) continue;
-        const alpha = 0.08 + 0.62 * Math.pow(value, 1.35);
-        const color = palettes[config.channel];
-        const data = [
-          x - frame.pitch_length / 2,
+        candidates.push({
+          id: `${frame.frame_id}:${config.channel}:${layer}:${ix}:${iy}`,
+          frameId: frame.frame_id,
+          channel: config.channel,
+          layerIndex: layer,
+          gridXIndex: ix,
+          gridYIndex: iy,
+          pitchX: x,
+          pitchY: y,
+          forecastSeconds: t,
+          worldX: x - frame.pitch_length / 2,
           worldY,
-          y - frame.pitch_width / 2,
-          cellX * 0.82,
-          layerThickness,
-          cellY * 0.82,
-          color[0],
-          color[1],
-          color[2],
-          alpha,
-        ];
-        candidates.push({ value, data });
+          worldZ: y - frame.pitch_width / 2,
+          sizeX: cellX * 0.82,
+          sizeY: layerThickness,
+          sizeZ: cellY * 0.82,
+          value,
+          signals: evaluation.signals,
+          optionContributions: evaluation.optionContributions,
+          nearestDefender: evaluation.nearestDefender,
+          nearestTeammate: evaluation.nearestTeammate,
+          evidence,
+        });
         sum += value;
         maxValue = Math.max(maxValue, value);
       }
     }
   }
 
-  candidates.sort((a, b) => b.value - a.value);
+  candidates.sort(
+    (a, b) =>
+      b.value - a.value ||
+      a.layerIndex - b.layerIndex ||
+      a.gridXIndex - b.gridXIndex ||
+      a.gridYIndex - b.gridYIndex,
+  );
   const retained = candidates.slice(0, Math.max(1, config.maxVoxels));
   const field = new Float32Array(retained.length * INSTANCE_STRIDE);
+  const color = palettes[config.channel];
   retained.forEach((voxel, index) => {
-    field.set(voxel.data, index * INSTANCE_STRIDE);
+    const alpha = 0.08 + 0.62 * Math.pow(voxel.value, 1.35);
+    field.set(
+      [
+        voxel.worldX,
+        voxel.worldY,
+        voxel.worldZ,
+        voxel.sizeX,
+        voxel.sizeY,
+        voxel.sizeZ,
+        color[0],
+        color[1],
+        color[2],
+        alpha,
+      ],
+      index * INSTANCE_STRIDE,
+    );
   });
   return {
     field,
     solids: buildPitchAndActors(frame),
+    voxels: retained,
     timeScaleMetres,
     stats: {
       channel: config.channel,
