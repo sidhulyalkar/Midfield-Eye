@@ -14,7 +14,13 @@ from midfielders_eye.action_menu import (
 from midfielders_eye.schema import ActionOption
 
 
-def _option(frame_id: int, kind: str, target: str | None, score: float, suffix: str) -> ActionOption:
+def _option(
+    frame_id: int,
+    kind: str,
+    target: str | None,
+    score: float,
+    suffix: str,
+) -> ActionOption:
     return ActionOption(
         sequence_id="seq-1",
         frame_id=frame_id,
@@ -51,7 +57,9 @@ def test_action_menu_tables_capture_birth_extinction_and_topk_stability() -> Non
     dataframe = pd.DataFrame(rows)
     lifecycles, timeline, summary = build_action_menu_tables(dataframe, top_k=2)
 
-    pass_lifecycle = lifecycles[lifecycles["stable_option_key"] == "pass:p8"].iloc[0]
+    pass_lifecycle = lifecycles[
+        lifecycles["stable_option_key"] == "pass:p8"
+    ].iloc[0]
     assert pass_lifecycle["birth_frame_id"] == 1
     assert pass_lifecycle["death_frame_id"] == 2
     assert pass_lifecycle["frames_seen"] == 2
@@ -73,6 +81,17 @@ def test_duplicate_stable_candidate_within_frame_is_rejected() -> None:
     row = _option(1, "pass", "p8", 0.8, "pass:p8").to_flat_dict()
     with pytest.raises(ValueError, match="duplicate stable options"):
         build_action_menu_tables(pd.DataFrame([row, dict(row)]))
+
+
+def test_selection_string_booleans_are_parsed_explicitly() -> None:
+    first = _option(1, "pass", "p8", 0.6, "pass:p8").to_flat_dict()
+    second = _option(2, "pass", "p8", 0.7, "pass:p8").to_flat_dict()
+    first["label_selected"] = "no"
+    second["label_selected"] = "yes"
+
+    lifecycles, _, _ = build_action_menu_tables(pd.DataFrame([first, second]))
+
+    assert lifecycles.iloc[0]["selected_frames"] == "2"
 
 
 def test_annotation_contract_keeps_targets_separate_and_validated() -> None:
@@ -110,6 +129,55 @@ def test_annotation_contract_keeps_targets_separate_and_validated() -> None:
     assert summary["double_rated_fraction"] == 1.0
     assert summary["outcome_blinded_fraction"] == 1.0
     assert summary["uncertain_visibility_fraction"] == 0.5
+
+
+def test_blinding_string_booleans_are_parsed_explicitly() -> None:
+    annotations = [
+        ActionMenuAnnotation(
+            sequence_id="seq-1",
+            frame_id=2,
+            option_key="pass:p8",
+            annotator_id="expert-a",
+            available="yes",
+            visible="yes",
+            value_ordinal=3,
+            creation_ordinal=2,
+        ),
+        ActionMenuAnnotation(
+            sequence_id="seq-1",
+            frame_id=3,
+            option_key="hold",
+            annotator_id="expert-a",
+            available="yes",
+            visible="yes",
+            value_ordinal=2,
+            creation_ordinal=1,
+        ),
+    ]
+    dataframe = annotations_to_dataframe(annotations)
+    dataframe["blinded_to_outcome"] = ["false", "true"]
+
+    summary = annotation_contract_summary(dataframe)
+
+    assert summary["outcome_blinded_fraction"] == 0.5
+
+
+def test_annotation_contract_refuses_invalid_boolean_string() -> None:
+    annotation = ActionMenuAnnotation(
+        sequence_id="seq-1",
+        frame_id=2,
+        option_key="hold",
+        annotator_id="expert-a",
+        available="yes",
+        visible="yes",
+        value_ordinal=2,
+        creation_ordinal=1,
+    )
+    dataframe = annotations_to_dataframe([annotation])
+    dataframe["blinded_to_outcome"] = ["sometimes"]
+
+    with pytest.raises(ValueError, match="unsupported boolean value"):
+        validate_annotation_dataframe(dataframe)
 
 
 def test_annotation_contract_refuses_invalid_scales() -> None:
