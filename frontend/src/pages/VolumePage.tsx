@@ -29,19 +29,13 @@ const signalOrder: VolumeChannel[] = [
   "uncertainty",
 ];
 
-const visibilityEvidenceCopy: Record<
-  VolumeVisibilityEvidence,
-  string
-> = {
+const visibilityEvidenceCopy: Record<VolumeVisibilityEvidence, string> = {
   visibility_polygon: "Visibility polygon in the focal state",
   orientation_proxy: "Carrier orientation proxy",
   unknown: "Visibility evidence unavailable",
 };
 
-const uncertaintyEvidenceCopy: Record<
-  VolumeUncertaintyEvidence,
-  string
-> = {
+const uncertaintyEvidenceCopy: Record<VolumeUncertaintyEvidence, string> = {
   covariance_confidence_tracking: "Covariance + confidence + tracking status",
   covariance_tracking: "Covariance + tracking status",
   confidence_tracking: "Confidence + tracking status",
@@ -57,8 +51,9 @@ export default function VolumePage() {
   const [quality, setQuality] = useState<VolumeQuality>("auto");
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
-  const [inspectedVoxel, setInspectedVoxel] =
-    useState<VolumeVoxel | null>(null);
+  const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(
+    null,
+  );
 
   const frame =
     bundle.frames?.[
@@ -200,8 +195,8 @@ export default function VolumePage() {
               </div>
               {inspectedVoxel ? (
                 <span className="volume-inspector-index">
-                  L{inspectedVoxel.layerIndex + 1} · {inspectedVoxel.gridXIndex},
-                  {inspectedVoxel.gridYIndex}
+                  L{inspectedVoxel.layerIndex + 1} · {inspectedVoxel.gridXIndex}
+                  ,{inspectedVoxel.gridYIndex}
                 </span>
               ) : null}
             </div>
@@ -284,27 +279,30 @@ export default function VolumePage() {
                   </div>
                   {inspectedVoxel.optionContributions.length ? (
                     <ul className="volume-option-contributions">
-                      {inspectedVoxel.optionContributions.map((contribution) => (
-                        <li key={contribution.optionId}>
-                          <div>
-                            <strong>{contribution.optionId}</strong>
-                            <span>
-                              {contribution.kind}
-                              {contribution.targetPlayerId
-                                ? ` → ${contribution.targetPlayerId}`
-                                : ""}
-                            </span>
-                          </div>
-                          <div>
-                            <span>
-                              local {contribution.localContribution.toFixed(3)}
-                            </span>
-                            <span>
-                              geo {contribution.geometricScore.toFixed(3)}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
+                      {inspectedVoxel.optionContributions.map(
+                        (contribution) => (
+                          <li key={contribution.optionId}>
+                            <div>
+                              <strong>{contribution.optionId}</strong>
+                              <span>
+                                {contribution.kind}
+                                {contribution.targetPlayerId
+                                  ? ` → ${contribution.targetPlayerId}`
+                                  : ""}
+                              </span>
+                            </div>
+                            <div>
+                              <span>
+                                local{" "}
+                                {contribution.localContribution.toFixed(3)}
+                              </span>
+                              <span>
+                                geo {contribution.geometricScore.toFixed(3)}
+                              </span>
+                            </div>
+                          </li>
+                        ),
+                      )}
                     </ul>
                   ) : (
                     <p className="volume-inspector-empty-copy">
@@ -355,8 +353,8 @@ export default function VolumePage() {
                 <span aria-hidden="true">⌖</span>
                 <p>
                   Click a voxel in the 3D field, or use{" "}
-                  <strong>Inspect strongest voxel</strong>. Drag still orbits the
-                  camera, so inspection never steals the navigation gesture.
+                  <strong>Inspect strongest voxel</strong>. Drag still orbits
+                  the camera, so inspection never steals the navigation gesture.
                 </p>
               </div>
             )}
