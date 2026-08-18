@@ -1,0 +1,67 @@
+.volume-inspector-card {
+  isolation: isolate;
+}
+
+.volume-inspector-card > button,
+.volume-inspector-empty-state button {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  scroll-margin-block-start: 72px;
+  scroll-margin-block-end: 84px;
+}
+
+.volume-inspector-empty-state > div {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.volume-inspector-empty-state p {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.volume-channel-grid button,
+.volume-quality-picker button,
+.volume-threshold-control input,
+.volume-frame-scrubber input {
+  scroll-margin-block-start: 72px;
+  scroll-margin-block-end: 84px;
+}
+
+@media (max-width: 767px) {
+  .volume-controls {
+    overflow: visible;
+  }
+
+  .volume-inspector-empty-state {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .volume-inspector-empty-state > span {
+    display: none;
+  }
+
+  .volume-inspector-empty-state > div {
+    gap: 0.8rem;
+    padding-block: 0.25rem;
+  }
+
+  .volume-inspector-empty-state button {
+    margin-top: 0 !important;
+  }
+
+  .volume-page button,
+  .volume-page input {
+    scroll-margin-block-start: 72px;
+    scroll-margin-block-end: 84px;
+  }
+}

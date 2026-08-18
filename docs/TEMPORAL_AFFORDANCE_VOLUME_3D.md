@@ -1,8 +1,14 @@
 # Temporal Affordance Volume 3D
 
+## Status
+
+- **v1.0:** sparse temporal affordance lattice, WebGPU-first renderer, WebGL2 fallback.
+- **v1.1:** Voxel Inspector, deterministic picking, per-cell forensic metadata, evidence-aware drill-down.
+- **v1.2 planned:** Time Slice Surgery. See [`V1_2_TIME_SLICE_SURGERY_PLAN.md`](./V1_2_TIME_SLICE_SURGERY_PLAN.md).
+
 ## Purpose
 
-The **Temporal Affordance Volume** is the 3D research instrument for The Midfielder's Eye. It is designed to make the central research object visible: not only the action eventually selected, but the changing field of actions, pressure, space, accessibility, and uncertainty surrounding a decision.
+The **Temporal Affordance Volume** is the 3D research instrument for The Midfielder's Eye. It makes the central research object visible: not only the action eventually selected, but the changing field of actions, pressure, space, accessibility, and uncertainty surrounding a decision.
 
 The design is intentionally not a stadium diorama. The third dimension carries scientific meaning.
 
@@ -16,9 +22,9 @@ The bottom layer is the focal state. Higher layers move toward the configured sh
 
 ## Core semantic contract
 
-### X/Y pitch coordinates
+### Pitch coordinates
 
-Pitch position always remains in the canonical metric coordinate system. The volume does not stretch one pitch axis independently, silently flip attack direction, or reinterpret coordinates for visual convenience.
+Pitch position always remains in the canonical metric coordinate system. The volume does not silently flip attack direction, stretch one pitch axis independently, or reinterpret coordinates for visual convenience.
 
 ### Vertical coordinate = future time
 
@@ -26,74 +32,48 @@ The vertical axis is a rendering transform of forecast horizon only. It must nev
 
 The current implementation propagates the **focal state** using available velocity and deterministic geometry. It does not read later observed tracking frames to populate future layers.
 
-This distinction is non-negotiable:
+A future voxel is therefore:
 
-- a future voxel is a focal-state-derived forecast visualization;
-- it is not an observed future state;
-- it is not calibrated probability unless a later model explicitly provides calibration metadata;
-- it is not an expert label;
-- it is not evidence that the forecast was correct.
+- a focal-state-derived forecast visualization;
+- not an observed future state;
+- not calibrated probability unless a later model explicitly provides calibration metadata;
+- not an expert label;
+- not evidence that the forecast was correct.
 
 ## Voxel channels
 
-The renderer exposes eight switchable fields.
+The renderer exposes eight switchable fields:
 
-### 1. Action menu composite
-
-A fused visualization of future space, passing corridors, option creation, perceptual access, pressure, and uncertainty.
-
-This is an explanatory visualization score, not a learned probability and not the R1 benchmark target.
-
-### 2. Pressure fronts
-
-Opponent influence is propagated from focal position and velocity. The channel makes defensive pressure visible as a moving front through the temporal volume.
-
-### 3. Pressure shadows
-
-The channel estimates space screened behind defenders relative to the ball carrier. It is a geometric pressure-shadow proxy. It is not literal visual occlusion.
-
-### 4. Future space
-
-The channel estimates how open each pitch location becomes under focal-state motion propagation, using defender distance, support, and pressure.
-
-### 5. Passing corridors
-
-Current pass/carry candidates produce corridor tubes from the carrier toward their target. Corridor intensity is weighted by the frozen geometric option score.
-
-### 6. Option creation
-
-The channel highlights places whose openness improves relative to the focal slice. This visualizes emerging geometry. It does not establish that a particular player movement causally created the option.
-
-### 7. Perceptual access
-
-If a provider visibility polygon exists, the renderer can use it directly. Otherwise it falls back to a clearly labeled body/head/gaze-direction proxy around the carrier.
-
-A proxy must never be described as observed gaze.
-
-### 8. State uncertainty
-
-The channel combines available tracking status, confidence, and position covariance into an uncertainty field. Missing uncertainty evidence remains missing rather than being silently treated as certainty.
+1. **Action menu composite**: fused future space, corridors, option creation, perceptual access, pressure, and uncertainty. It is explanatory, not a learned probability.
+2. **Pressure fronts**: opponent influence propagated from focal position and velocity.
+3. **Pressure shadows**: geometric space screened behind defenders relative to the carrier. This is not literal visual occlusion.
+4. **Future space**: estimated openness under focal-state motion propagation.
+5. **Passing corridors**: candidate-aligned tubes weighted by the frozen geometric option score.
+6. **Option creation**: places whose openness improves relative to the focal slice. This does not establish causal responsibility.
+7. **Perceptual access**: visibility polygons when present, otherwise an explicitly labeled carrier orientation proxy.
+8. **State uncertainty**: uncertainty accumulated from tracking status, confidence, and covariance when available.
 
 ## Rendering architecture
 
-The current R1 implementation deliberately uses **sparse instanced voxels**, not a general-purpose 3D scene graph and not dense ray marching.
+The current implementation deliberately uses **sparse instanced voxels**, not a general-purpose 3D scene graph and not dense ray marching.
 
 ### Field generation
 
 For every focal frame:
 
 1. choose an adaptive X/Y grid;
-2. evaluate the selected channel across each horizon slice;
-3. discard cells below the user-controlled signal threshold;
-4. sort surviving cells by signal strength;
-5. enforce the configured voxel budget;
-6. upload only the retained instances to the GPU.
+2. evaluate the selected field channel across each horizon slice;
+3. attach a forensic metadata record to every evaluated retained cell;
+4. discard cells below the user-controlled signal threshold;
+5. sort surviving cells deterministically by signal strength and stable grid identity;
+6. enforce the configured voxel budget;
+7. upload only retained instances to the GPU.
 
-This means low-value empty volume is removed before rendering work begins.
+Low-value empty volume is removed before rendering work begins.
 
-### Shared mesh
+### Shared mesh and two passes
 
-All voxels, pitch segments, players, and the ball reuse one cube primitive. Per-instance data contains:
+All voxels, pitch segments, players, and the ball reuse one cube primitive. Per-instance GPU data remains:
 
 ```text
 position.xyz
@@ -101,187 +81,171 @@ scale.xyz
 color.rgba
 ```
 
-The instance stride is 10 float values.
-
-### Two GPU passes
+The instance stride remains 10 floats.
 
 The renderer performs two conceptual draws:
 
 1. opaque/depth-writing geometry for pitch, players, and ball;
 2. translucent/non-depth-writing field voxels.
 
-Voxel count can therefore grow without draw-call count growing linearly with it.
+The v1.1 inspector does **not** add a GPU picking pass and does not require GPU readback.
 
 ### WebGPU first, WebGL2 fallback
 
 The runtime attempts WebGPU first. If WebGPU is unavailable or initialization fails, it uses WebGL2 instancing.
 
-The fallback is part of the renderer contract, not an optional compatibility patch. The research instrument should remain inspectable on browsers without WebGPU.
+The fallback is part of the renderer contract. The research instrument should remain inspectable without WebGPU.
 
-## Why sparse instancing is the R1 optimum
+## v1.1 · Voxel Inspector
 
-No renderer is universally optimal. The correct architecture depends on the scientific workload.
+v1.1 turns the volume from a dramatic tactical landscape into a forensic research instrument.
 
-For R1, the important properties are:
+### Selection behavior
 
-- only a few thousand meaningful cells are needed;
-- every visible cell should retain interpretable X/Y/time/channel semantics;
-- thresholding and top-K pruning should be explicit;
-- the browser fallback should remain straightforward;
-- screenshots and demos should map cleanly back to deterministic calculations;
-- renderer complexity should not outrun the evidence quality.
+A click on the canvas performs deterministic CPU-side screen-space picking over the **retained voxel set**. Dragging continues to orbit the camera. A short movement threshold separates a click from a navigation gesture.
 
-For that workload, sparse instancing is intentionally preferred over dense texture ray marching. A ray marcher becomes more attractive only when the scientific workload requires genuinely dense volumes, many uncertainty samples, or substantially longer temporal horizons.
+For keyboard and non-precision-pointer use, **Inspect strongest voxel** selects the strongest currently visible retained cell.
+
+The selected cell is marked by a screen-space crosshair that is reprojected whenever the camera moves or the canvas resizes.
+
+Selection is invalidated if a frame, channel, quality, threshold, or sparse-budget change removes that voxel from the current scene. The inspector cannot display a stale cell from a previous visual state.
+
+### Forensic payload
+
+Every retained voxel exposes:
+
+- stable voxel ID;
+- frame ID;
+- channel;
+- layer and X/Y grid indices;
+- exact pitch X/Y in metres;
+- forecast horizon in seconds;
+- world-space render coordinates and cell dimensions;
+- active channel value;
+- all eight channel component values at that same X/Y/time cell;
+- nearest defender and teammate IDs and forecast distances;
+- up to four strongest local pass/carry corridor contributions;
+- each contribution's local value and frozen geometric option score;
+- visibility evidence mode;
+- uncertainty evidence mode;
+- source provider;
+- explicit `futureObservedFramesUsed = false` provenance.
+
+The GPU instance buffer and the forensic record remain index-aligned after pruning.
+
+### Evidence modes
+
+Visibility is labeled as one of:
+
+- `visibility_polygon`;
+- `orientation_proxy`;
+- `unknown`.
+
+Uncertainty is labeled according to the available focal-state fields:
+
+- covariance + confidence + tracking status;
+- covariance + tracking status;
+- confidence + tracking status;
+- tracking status only.
+
+The inspector does not silently promote an orientation proxy to observed gaze or a tracking-status heuristic to measured covariance.
+
+### Why CPU picking is intentional
+
+At the current maximum of only a few thousand retained cells, CPU projection is the more auditable engineering choice:
+
+- no additional render pass;
+- no encoded ID buffer;
+- no GPU readback synchronization;
+- identical behavior across WebGPU and WebGL2;
+- deterministic unit tests can project a voxel and round-trip the click back to the same ID;
+- selection remains a UI query over the scientific scene rather than a second rendering truth.
+
+If a later dense ray-marched tier contains hundreds of thousands or millions of samples, the picking architecture can be revisited without changing the v1.1 voxel identity contract.
 
 ## Current performance budgets
 
 The current showcase uses the following pitch grids before pruning:
 
-| Quality | Pitch grid | Default temporal slices | Raw cells before pruning |
+| Quality | Pitch grid | Temporal slices | Raw cells before pruning |
 | --- | ---: | ---: | ---: |
 | Low | 20 × 13 | 7 | 1,820 |
 | Medium | 28 × 18 | 7 | 3,528 |
 | High | 38 × 25 | 7 | 6,650 |
 
-The UI applies additional sparse budgets:
+Sparse UI budgets remain approximately:
 
-- low: up to roughly 1,200 field voxels;
-- normal/auto: up to roughly 2,800 field voxels;
-- high: up to roughly 4,200 field voxels.
+- low: 1,200 field voxels;
+- normal/auto: 2,800 field voxels;
+- high: 4,200 field voxels.
 
-Other runtime safeguards:
+Other safeguards:
 
-- device-pixel ratio is capped at 2 for the 3D canvas;
-- auto LOD reduces the pitch grid on narrow/high-DPR screens;
-- weak cells are removed before GPU upload;
-- buffer growth uses power-of-two capacity on the WebGPU path;
-- the live UI reports backend, grid, rendered voxel count, and draw calls.
+- canvas device-pixel ratio capped at 2;
+- auto LOD on narrow/high-DPR screens;
+- weak cells removed before GPU upload;
+- power-of-two WebGPU buffer growth;
+- live backend/grid/voxel/draw-call diagnostics;
+- inspector picking requires no extra GPU draw call.
 
-These are implementation budgets, not empirical claims about universal frame-rate performance on all hardware.
+These are implementation budgets, not universal frame-rate claims.
 
 ## Showcase choreography
 
-The strongest demonstration is a controlled decomposition rather than a rapid tour of every control.
+The recommended v1.1 demonstration is:
 
-### Beat 1 · Action menu composite
+1. **Action menu composite**: establish that height means when, not where.
+2. **Pressure → pressure shadow**: show where the defense is arriving and what geometry it screens.
+3. **Future space → option creation**: distinguish room that exists from room becoming available.
+4. **Voxel Inspector**: click a bright cell and expose the exact coordinates, horizon, component values, contributors, nearby players, and evidence status underneath the glow.
+5. **Passing corridor → perceptual access**: show that a route may be physically available without being equally accessible from the player's information state.
+6. **Decision Microscope**: return to the synchronized 2D action-menu view for exact frame/candidate interpretation.
 
-Open on the full temporal lattice. Establish the visual grammar immediately:
+The signature v1.1 reveal is simple:
 
-> **Height means when, not where.**
-
-The viewer should understand that they are looking into the next short interval of the decision.
-
-### Beat 2 · Pressure → pressure shadow
-
-Switch to pressure fronts and orbit slightly so their direction through time is visible. Then switch to pressure shadows.
-
-The conceptual question becomes:
-
-> Where is the defense arriving, and what space is it screening while it gets there?
-
-### Beat 3 · Future space → option creation
-
-Future space answers where room will exist. Option creation answers where room is **becoming** more available relative to now.
-
-This is one of the most important distinctions in the project.
-
-### Beat 4 · Passing corridor → perceptual access
-
-Show a strong physical corridor, then switch to perceptual access.
-
-The conceptual reveal is:
-
-> A route can be physically available without being equally accessible from the player's information state.
-
-When visibility is only a proxy, the UI must say so.
-
-### Beat 5 · Return to the Decision Microscope
-
-Finish by returning to the synchronized 2D Decision Microscope / Action Menu Ribbon. The 3D volume explains the field; the 2D instrument preserves exact frame/candidate inspection and evidence detail.
-
-The pair is stronger than either view alone.
+> **Every glow can now defend itself.**
 
 ## Evidence and claim boundary
 
-The 3D instrument must remain subordinate to the evidence contract.
-
-It may visually communicate:
+The 3D instrument may communicate:
 
 - deterministic focal-frame geometry;
 - focal-state-derived short-horizon forecasts;
-- provider-observed visibility when present;
-- explicitly labeled proxies;
-- explicit uncertainty fields;
-- candidate corridors from the frozen action-menu generator.
+- visibility polygons when present;
+- explicitly labeled orientation proxies;
+- explicit uncertainty evidence modes;
+- candidate corridors from the frozen action-menu generator;
+- exact per-voxel component values and local contributors.
 
-It must not visually imply:
+It must not imply:
 
 - that a synthetic scenario is measured match evidence;
 - that a focal-state forecast is later observed truth;
 - that a visibility proxy is observed gaze;
 - that option creation establishes causal responsibility;
-- that a bright voxel is a calibrated probability;
+- that a bright voxel is calibrated probability;
 - that B2 beats B1 before the real expert benchmark establishes that result.
 
 R1 benchmark metrics and reliability state remain controlled by the existing fail-closed pilot artifacts.
 
-## Evolution path
+## v1.2 · Time Slice Surgery
 
-### V1 · Sparse temporal affordance lattice
+v1.2 is deliberately planned as a temporal analysis release rather than a renderer rewrite.
 
-Implemented now:
+It will add:
 
-- eight field channels;
-- vertical future-time semantics;
-- adaptive grid and sparse threshold/top-K pruning;
-- WebGPU-first rendering;
-- WebGL2 fallback;
-- instanced two-pass GPU rendering;
-- orbit/zoom/reset camera;
-- frame scrubbing;
-- live renderer diagnostics;
-- unit and browser regression tests.
+- Full / exact Slice / temporal Band modes;
+- named horizon presets including now, +0.25 s, +0.5 s, +1.0 s, and +1.5 s;
+- a linked top-down slice using the **same voxel IDs and values** as the 3D volume;
+- selection synchronization with the v1.1 inspector;
+- previous/next retained-cell comparison for the same pitch location;
+- explicit distinction between a pruned/missing voxel and a true zero if a later representation supports evaluated zeros.
 
-### V1.1 · Voxel Inspector
+The full architecture, test plan, performance constraints, and delivery sequence are frozen in [`V1_2_TIME_SLICE_SURGERY_PLAN.md`](./V1_2_TIME_SLICE_SURGERY_PLAN.md).
 
-Add GPU or CPU picking so a click exposes the exact:
+## Later dense tier
 
-- pitch X/Y;
-- forecast time;
-- channel value;
-- component values;
-- source/proxy status;
-- candidate IDs contributing to the cell;
-- uncertainty metadata.
-
-This is the highest-value next visualization improvement because it turns the dramatic volume into a precise analytical microscope.
-
-### V1.2 · Time-slice surgery
-
-Add movable horizontal clipping planes and an isolated-slice mode. Researchers should be able to compare `now`, `+0.25s`, `+0.5s`, `+1.0s`, and `+1.5s` without perspective occlusion.
-
-### V1.3 · Difference volumes
-
-Only when bound to legitimate benchmark/model artifacts, support signed difference volumes such as:
-
-- B2 dynamic minus B1 static;
-- full observation minus masked observation;
-- expert consensus value minus model value;
-- source A minus independent replication source B.
-
-Difference voxels should preserve both source values and never display an unexplained residual.
-
-### R2 · Real replication binding
-
-Bind the same 3D grammar to the independent Tier B tracking replication. The visualization should not be redesigned to flatter a provider.
-
-### R3 · Observation stress test
-
-Use the volume to compare full-pitch and partial-observation conditions, explicitly separating unavailable regions from low model values.
-
-### R4 · Dense GPU volume tier
-
-Only after the workload earns the complexity, add a dense WebGPU path using compute shaders and 3D storage textures.
+Only after the scientific workload earns the complexity should the project add a dense WebGPU backend using compute shaders and 3D storage textures.
 
 Candidate architecture:
 
@@ -299,31 +263,23 @@ ray-marched volume
 instanced players/candidates/annotations overlay
 ```
 
-Useful techniques at that stage include:
+The sparse backend should remain available for exact cell inspection, debugging, publication figures, and reproducible comparison even after a dense renderer exists.
 
-- 3D storage textures;
-- compute-shader field evaluation;
-- sparse bricks or clipmaps;
-- empty-space skipping;
-- temporal interpolation in texture space;
-- uncertainty ensembles;
-- order-independent transparency where needed;
-- dynamic resolution tied to measured frame time.
+## Validation contract
 
-The dense renderer should be added as another backend, not by deleting the sparse auditable path. Sparse voxels remain valuable for debugging, publication figures, and exact cell inspection.
-
-## Validation
-
-The implementation is covered by:
+v1.1 is expected to remain gated by:
 
 - strict TypeScript compilation;
 - ESLint;
 - Prettier;
-- voxel field unit tests;
-- deterministic camera-matrix tests;
+- existing voxel field invariants;
+- forensic metadata alignment tests;
+- deterministic projection and picking tests;
+- candidate-contribution tests;
+- visibility evidence-mode tests;
 - production frontend build;
-- Playwright coverage of `/volume`;
+- Playwright coverage of selection, invalidation, and evidence copy;
 - the full Python/R1 suite on Python 3.10, 3.11, and 3.12;
 - existing demo and demo-v2 smoke tests.
 
-The visualization is therefore integrated into the same quality gates as the rest of the research system rather than maintained as a separate demo.
+The visualization remains part of the same repository quality gates as the research system rather than a separate demo.
