@@ -49,10 +49,14 @@ export function validateTemporalFilter(
   assertLayerIndex(filter.startLayerIndex, "startLayerIndex");
   assertLayerIndex(filter.endLayerIndex, "endLayerIndex");
   if (filter.startLayerIndex > filter.endLayerIndex) {
-    throw new Error("startLayerIndex must be less than or equal to endLayerIndex.");
+    throw new Error(
+      "startLayerIndex must be less than or equal to endLayerIndex.",
+    );
   }
   if (horizonSteps !== undefined && filter.endLayerIndex >= horizonSteps) {
-    throw new Error("Temporal band is outside the configured temporal horizon.");
+    throw new Error(
+      "Temporal band is outside the configured temporal horizon.",
+    );
   }
 }
 
@@ -201,7 +205,8 @@ export function temporalFilterLabel(
   horizonSeconds: number,
 ): string {
   validateTemporalFilter(filter, horizonSteps);
-  if (filter.mode === "full") return `Full · 0.00–+${horizonSeconds.toFixed(2)} s`;
+  if (filter.mode === "full")
+    return `Full · 0.00–+${horizonSeconds.toFixed(2)} s`;
   if (filter.mode === "slice") {
     return `Slice · +${horizonSecondsForLayer(
       filter.layerIndex,
