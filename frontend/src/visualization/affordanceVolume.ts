@@ -34,9 +34,7 @@ export type VolumeStats = {
 };
 
 export type VolumeVisibilityEvidence =
-  | "visibility_polygon"
-  | "orientation_proxy"
-  | "unknown";
+  "visibility_polygon" | "orientation_proxy" | "unknown";
 
 export type VolumeUncertaintyEvidence =
   | "covariance_confidence_tracking"
@@ -337,8 +335,7 @@ function corridorAt(
       option.kind === "pass" ? 4.5 : 6,
     );
     const localContribution = clamp01(
-      score *
-        (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
+      score * (0.75 * corridor * (0.35 + 0.65 * progress) + 0.25 * targetGlow),
     );
     best = Math.max(best, localContribution);
     if (localContribution >= 0.01) {
@@ -431,7 +428,8 @@ function uncertaintyAt(
 
 function uncertaintyEvidence(frame: FrameState): VolumeUncertaintyEvidence {
   const hasCovariance = frame.players.some(
-    (player) => player.position_covariance && player.position_covariance.length > 0,
+    (player) =>
+      player.position_covariance && player.position_covariance.length > 0,
   );
   const hasConfidence = frame.players.some(
     (player) => player.confidence !== null && player.confidence !== undefined,
