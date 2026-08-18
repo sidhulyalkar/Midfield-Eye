@@ -31,10 +31,11 @@ test("3D affordance volume exposes scientific channels and evidence boundaries",
     page.getByText("A beautiful forecast is still a forecast."),
   ).toBeVisible();
   await expect(page.getByText("2-pass instancing")).toBeVisible();
-  await expect(page.getByText("Inspector v1.1")).toBeVisible();
+  await expect(page.getByText("Inspector v1.2")).toBeVisible();
+  await expect(page.getByTestId("temporal-filter-hud")).toContainText("Full");
 });
 
-test("v1.1 turns a rendered voxel into an auditable forensic record", async ({
+test("v1.1 forensic inspection remains auditable inside v1.2", async ({
   page,
 }) => {
   await page.goto("/volume");
@@ -52,6 +53,9 @@ test("v1.1 turns a rendered voxel into an auditable forensic record", async ({
   await expect(inspector).toContainText("Component field");
   await expect(inspector).toContainText("Nearest defender");
   await expect(inspector).toContainText("not a calibrated probability");
+  await expect(page.getByTestId("voxel-trajectory")).toContainText(
+    "Gaps mean no retained voxel",
+  );
   await expect(
     inspector.getByRole("button", { name: "Clear inspected voxel" }),
   ).toBeVisible();
@@ -62,4 +66,48 @@ test("v1.1 turns a rendered voxel into an auditable forensic record", async ({
     .getByRole("button", { name: "Inspect strongest visible voxel" })
     .click();
   await expect(inspector).toContainText("Pressure");
+});
+
+test("v1.2 dissects retained voxels by integer temporal layer without losing identity", async ({
+  page,
+}) => {
+  await page.goto("/volume");
+
+  const surgery = page.getByTestId("temporal-surgery");
+  const inspector = page.getByTestId("voxel-inspector");
+
+  await surgery.getByRole("button", { name: "Slice", exact: true }).click();
+  await surgery.getByRole("button", { name: "+0.50 s" }).click();
+  await expect(page.getByTestId("temporal-filter-hud")).toHaveText(
+    "Slice · +0.50 s",
+  );
+
+  await inspector
+    .getByRole("button", { name: "Inspect strongest visible voxel" })
+    .click();
+  await expect(page.getByTestId("voxel-selection-marker")).toBeVisible();
+  const trajectory = page.getByTestId("voxel-trajectory");
+  await expect(trajectory).toBeVisible();
+  expect(
+    await trajectory.locator('li[data-status="not_retained"]').count(),
+  ).toBeGreaterThan(0);
+
+  await surgery.getByRole("button", { name: "Full", exact: true }).click();
+  await expect(page.getByTestId("temporal-filter-hud")).toContainText("Full");
+  await expect(page.getByTestId("voxel-selection-marker")).toBeVisible();
+
+  await surgery.getByRole("button", { name: "Slice", exact: true }).click();
+  await surgery.getByRole("button", { name: "+1.00 s" }).click();
+  await expect(page.getByTestId("temporal-filter-hud")).toHaveText(
+    "Slice · +1.00 s",
+  );
+  await expect(inspector).toContainText("Ask one glowing cell what it means.");
+
+  await surgery.getByRole("button", { name: "Band", exact: true }).click();
+  await page.getByLabel("Band start layer").selectOption("1");
+  await page.getByLabel("Band end layer").selectOption("4");
+  await expect(page.getByTestId("temporal-filter-hud")).toHaveText(
+    "Band · +0.25–+1.00 s",
+  );
+  await expect(page.getByText("2-pass instancing")).toBeVisible();
 });
