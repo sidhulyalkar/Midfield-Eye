@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import fields
+from dataclasses import fields, replace
 from pathlib import Path
 
 import yaml
@@ -46,12 +46,7 @@ def main() -> None:
     args = parse_args()
     config = _load_config(args.config)
     if args.synthetic_software_validation:
-        config = FrozenBenchmarkConfig(
-            **{
-                **config.__dict__,
-                "allow_synthetic_software_validation": True,
-            }
-        )
+        config = replace(config, allow_synthetic_software_validation=True)
     manifest = run_action_menu_benchmark(
         args.options,
         args.output_dir,
