@@ -7,6 +7,9 @@ import {
   volumeChannelCopy,
   type VolumeChannel,
   type VolumeQuality,
+  type VolumeUncertaintyEvidence,
+  type VolumeVisibilityEvidence,
+  type VolumeVoxel,
 } from "../visualization/affordanceVolume";
 import {
   AffordanceVolume3D,
@@ -15,6 +18,29 @@ import {
 
 const channels = Object.keys(volumeChannelCopy) as VolumeChannel[];
 const qualities: VolumeQuality[] = ["auto", "low", "medium", "high"];
+const signalOrder: VolumeChannel[] = [
+  "menu",
+  "future_space",
+  "passing_corridors",
+  "option_creation",
+  "visibility",
+  "pressure",
+  "pressure_shadow",
+  "uncertainty",
+];
+
+const visibilityEvidenceCopy: Record<VolumeVisibilityEvidence, string> = {
+  visibility_polygon: "Visibility polygon in the focal state",
+  orientation_proxy: "Carrier orientation proxy",
+  unknown: "Visibility evidence unavailable",
+};
+
+const uncertaintyEvidenceCopy: Record<VolumeUncertaintyEvidence, string> = {
+  covariance_confidence_tracking: "Covariance + confidence + tracking status",
+  covariance_tracking: "Covariance + tracking status",
+  confidence_tracking: "Confidence + tracking status",
+  tracking_status_only: "Tracking status only",
+};
 
 export default function VolumePage() {
   const [searchParams] = useSearchParams();
@@ -25,6 +51,7 @@ export default function VolumePage() {
   const [quality, setQuality] = useState<VolumeQuality>("auto");
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
+  const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(null);
 
   const frame =
     bundle.frames?.[
@@ -111,6 +138,7 @@ export default function VolumePage() {
               quality === "high" ? 4200 : quality === "low" ? 1200 : 2800
             }
             onRuntime={setRuntime}
+            onInspect={setInspectedVoxel}
           />
           <label className="volume-frame-scrubber">
             <span>Decision timeline</span>
@@ -148,6 +176,172 @@ export default function VolumePage() {
               {channelCopy.explanation}
             </p>
           </div>
+
+          <section
+            className={`volume-inspector-card ${inspectedVoxel ? "has-selection" : "is-empty"}`}
+            data-testid="voxel-inspector"
+            aria-live="polite"
+          >
+            <div className="volume-inspector-heading">
+              <div>
+                <p className="eyebrow">VOXEL INSPECTOR · V1.1</p>
+                <h2>
+                  {inspectedVoxel
+                    ? `${volumeChannelCopy[inspectedVoxel.channel].short} ${inspectedVoxel.value.toFixed(3)}`
+                    : "Ask one glowing cell what it means."}
+                </h2>
+              </div>
+              {inspectedVoxel ? (
+                <span className="volume-inspector-index">
+                  L{inspectedVoxel.layerIndex + 1} · {inspectedVoxel.gridXIndex},
+                  {inspectedVoxel.gridYIndex}
+                </span>
+              ) : null}
+            </div>
+
+            {inspectedVoxel ? (
+              <>
+                <dl className="volume-inspector-coordinates">
+                  <div>
+                    <dt>Pitch X</dt>
+                    <dd>{inspectedVoxel.pitchX.toFixed(2)} m</dd>
+                  </div>
+                  <div>
+                    <dt>Pitch Y</dt>
+                    <dd>{inspectedVoxel.pitchY.toFixed(2)} m</dd>
+                  </div>
+                  <div>
+                    <dt>Forecast horizon</dt>
+                    <dd>+{inspectedVoxel.forecastSeconds.toFixed(2)} s</dd>
+                  </div>
+                  <div>
+                    <dt>Cell value</dt>
+                    <dd>{inspectedVoxel.value.toFixed(3)}</dd>
+                  </div>
+                </dl>
+
+                <div className="volume-inspector-section">
+                  <div className="volume-inspector-section-heading">
+                    <strong>Component field</strong>
+                    <span>0 → 1 visualization scale</span>
+                  </div>
+                  <div className="volume-signal-stack">
+                    {signalOrder.map((id) => {
+                      const value = inspectedVoxel.signals[id];
+                      return (
+                        <div className="volume-signal-row" key={id}>
+                          <span>{volumeChannelCopy[id].short}</span>
+                          <i>
+                            <b style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} />
+                          </i>
+                          <output>{value.toFixed(3)}</output>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="volume-inspector-section">
+                  <div className="volume-inspector-section-heading">
+                    <strong>Local drivers</strong>
+                    <span>forecast geometry</span>
+                  </div>
+                  <dl className="volume-inspector-drivers">
+                    <div>
+                      <dt>Nearest defender</dt>
+                      <dd>
+                        {inspectedVoxel.nearestDefender
+                          ? `${inspectedVoxel.nearestDefender.playerId} · ${inspectedVoxel.nearestDefender.distanceM.toFixed(2)} m`
+                          : "None in state"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Nearest teammate</dt>
+                      <dd>
+                        {inspectedVoxel.nearestTeammate
+                          ? `${inspectedVoxel.nearestTeammate.playerId} · ${inspectedVoxel.nearestTeammate.distanceM.toFixed(2)} m`
+                          : "None in state"}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div className="volume-inspector-section">
+                  <div className="volume-inspector-section-heading">
+                    <strong>Candidate contributions</strong>
+                    <span>top local corridor terms</span>
+                  </div>
+                  {inspectedVoxel.optionContributions.length ? (
+                    <ul className="volume-option-contributions">
+                      {inspectedVoxel.optionContributions.map((contribution) => (
+                        <li key={contribution.optionId}>
+                          <div>
+                            <strong>{contribution.optionId}</strong>
+                            <span>
+                              {contribution.kind}
+                              {contribution.targetPlayerId
+                                ? ` → ${contribution.targetPlayerId}`
+                                : ""}
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              local {contribution.localContribution.toFixed(3)}
+                            </span>
+                            <span>
+                              geo {contribution.geometricScore.toFixed(3)}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="volume-inspector-empty-copy">
+                      No current pass/carry corridor contributes materially at
+                      this cell.
+                    </p>
+                  )}
+                </div>
+
+                <div className="volume-inspector-evidence">
+                  <div>
+                    <span>Forecast</span>
+                    <strong>Focal-state kinematics</strong>
+                  </div>
+                  <div>
+                    <span>Visibility</span>
+                    <strong>
+                      {visibilityEvidenceCopy[inspectedVoxel.evidence.visibility]}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Uncertainty</span>
+                    <strong>
+                      {uncertaintyEvidenceCopy[inspectedVoxel.evidence.uncertainty]}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Source</span>
+                    <strong>{inspectedVoxel.evidence.sourceProvider}</strong>
+                  </div>
+                </div>
+                <p className="volume-inspector-guardrail">
+                  This cell is a deterministic focal-state forecast
+                  visualization. It does not contain later observed tracking
+                  frames and its brightness is not a calibrated probability.
+                </p>
+              </>
+            ) : (
+              <div className="volume-inspector-empty-state">
+                <span aria-hidden="true">⌖</span>
+                <p>
+                  Click a voxel in the 3D field, or use{" "}
+                  <strong>Inspect strongest voxel</strong>. Drag still orbits the
+                  camera, so inspection never steals the navigation gesture.
+                </p>
+              </div>
+            )}
+          </section>
 
           <div className="volume-control-block volume-threshold-control">
             <div>
@@ -235,13 +429,13 @@ export default function VolumePage() {
           </p>
         </article>
         <article>
-          <p className="eyebrow">WHY VOXELS</p>
-          <h2>Discrete enough to compare. Dense enough to feel continuous.</h2>
+          <p className="eyebrow">V1.1 · VOXEL INSPECTOR</p>
+          <h2>Every glow can now defend itself.</h2>
           <p>
-            Each cell has a known pitch footprint, horizon slice, channel,
-            value, and provenance. That makes screenshots dramatic while keeping
-            every glowing block auditable back to a deterministic field
-            computation.
+            A selected voxel exposes its exact pitch cell, future horizon,
+            component field values, local option contributors, nearby players,
+            and evidence status. The dramatic view and the forensic view are now
+            the same instrument.
           </p>
         </article>
         <article>
@@ -260,7 +454,8 @@ export default function VolumePage() {
         <div>
           <p className="eyebrow">SHOWCASE SEQUENCE</p>
           <h2>
-            Start with Menu. Peel the field apart. Return to the decision.
+            Start with Menu. Peel the field apart. Interrogate one voxel. Return
+            to the decision.
           </h2>
         </div>
         <ol>
@@ -281,10 +476,10 @@ export default function VolumePage() {
           </li>
           <li>
             <span>03</span>
-            <strong>Space → creation</strong>
+            <strong>Inspect</strong>
             <p>
-              Show the difference between space that exists and space that is
-              becoming available.
+              Pick a cell and expose the exact geometry, component scores,
+              contributors, and evidence boundary underneath the glow.
             </p>
           </li>
           <li>
