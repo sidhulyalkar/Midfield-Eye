@@ -1,10 +1,10 @@
-cff-version: 0.6.0
+cff-version: 1.2.0
 title: "The Midfielder's Eye"
 message: "Please cite this repository if you use it in research or public analysis."
 type: software
 authors:
   - family-names: Hulyalkar
     given-names: Sidharth
-version: 0.6.0
-date-released: 2026-07-28
+version: 0.7.0
+date-released: 2026-08-17
 license: MIT
