@@ -7,6 +7,7 @@ import { FeedbackState } from "../components/FeedbackState";
 const navItems = [
   ["/", "Eye", "Overview"],
   ["/scenario/aitana-overload", "Menu", "Action menu"],
+  ["/pilot", "R1", "Real pilot"],
   ["/empirical", "Data", "Evidence"],
   ["/atlas", "100", "Atlas"],
   ["/gaze-lab", "Lab", "Laboratories"],
