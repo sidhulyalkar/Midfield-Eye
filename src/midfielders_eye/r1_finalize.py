@@ -22,7 +22,10 @@ from .pilot import (
     validate_causal_feature_contract,
     verify_pilot_freeze,
 )
-from .provider_quality_review import build_provider_quality_review
+from .provider_quality_review import (
+    build_provider_quality_review,
+    verify_provider_quality_review,
+)
 from .reliability import ReliabilityGate, reliability_report
 
 FORECAST_FEATURES = {
@@ -145,6 +148,88 @@ def write_causal_contract(
     return _write_json(output_path, payload)
 
 
+def _reuse_or_write_causal_contract(
+    candidates_path: Path,
+    benchmark_config_path: Path,
+    output_path: Path,
+    *,
+    reviewed_by: str,
+    required_features: Sequence[str],
+) -> Path:
+    if not output_path.exists():
+        return write_causal_contract(
+            candidates_path,
+            benchmark_config_path,
+            output_path,
+            reviewed_by=reviewed_by,
+        )
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    if payload.get("benchmark_config_sha256") != sha256_file(benchmark_config_path):
+        raise ValueError(
+            "Existing R1 causal contract is bound to a different benchmark config; "
+            "do not silently replace an immutable contract."
+        )
+    validate_causal_feature_contract(
+        payload,
+        candidate_sha256=sha256_file(candidates_path),
+        required_features=list(required_features),
+    )
+    return output_path
+
+
+def _reuse_or_freeze_expert_pilot(
+    expert_freeze_path: Path,
+    *,
+    frames_path: Path,
+    candidates_path: Path,
+    annotation_paths: Sequence[str | Path],
+    reliability_path: Path,
+    adjudication_file: Path | None,
+    consensus_path: Path,
+    causal_path: Path,
+    benchmark_config_path: Path,
+) -> Path:
+    if not expert_freeze_path.exists():
+        freeze_pilot(
+            frames_path=frames_path,
+            candidates_path=candidates_path,
+            annotation_paths=annotation_paths,
+            protocol_path="docs/ANNOTATION_GUIDE.md",
+            reliability_report_path=reliability_path,
+            adjudication_path=adjudication_file,
+            consensus_path=consensus_path,
+            causal_feature_contract_path=causal_path,
+            benchmark_config_path=benchmark_config_path,
+            output_path=expert_freeze_path,
+        )
+    freeze_failures = verify_pilot_freeze(expert_freeze_path)
+    if freeze_failures:
+        raise ValueError(f"R1 expert freeze verification failed: {freeze_failures}")
+    return expert_freeze_path
+
+
+def _reuse_or_build_quality_review(
+    quality_review_path: Path,
+    *,
+    expert_freeze_path: Path,
+    benchmark_config_path: Path,
+    provider_review_config_path: str | Path,
+    reviewed_by: str,
+) -> Path:
+    if not quality_review_path.exists():
+        build_provider_quality_review(
+            pilot_freeze_path=expert_freeze_path,
+            benchmark_config_path=benchmark_config_path,
+            review_config_path=provider_review_config_path,
+            reviewer=reviewed_by,
+            output_path=quality_review_path,
+        )
+    failures = verify_provider_quality_review(quality_review_path)
+    if failures:
+        raise ValueError(f"R1 provider quality review verification failed: {failures}")
+    return quality_review_path
+
+
 def finalize_r1_pilot(
     r1_dir: str | Path,
     annotation_paths: Sequence[str | Path],
@@ -162,7 +247,9 @@ def finalize_r1_pilot(
     Every invocation writes ``r1_finalization_status.json``. A scientifically
     incomplete state is a successful *artifact*, not a benchmark success. The
     benchmark is launched only after reliability, adjudication, expert freeze,
-    causal timing, and provider-quality review all pass.
+    causal timing, and provider-quality review all pass. Immutable intermediate
+    artifacts are verified and reused on later invocations, which lets the real
+    workflow pause for human review without regenerating the study.
     """
 
     root = Path(r1_dir)
@@ -273,28 +360,24 @@ def finalize_r1_pilot(
             "R1 benchmark dynamic provider allowlist does not cover the frozen sample: "
             f"{sorted(unapproved)}"
         )
-    causal_path = write_causal_contract(
+    causal_path = _reuse_or_write_causal_contract(
         candidates_path,
         benchmark_config_path,
         root / "causal_feature_contract.json",
         reviewed_by=reviewed_by,
+        required_features=benchmark_config.b3_features,
     )
-    expert_freeze_path = root / "pilot_expert_freeze.json"
-    freeze_pilot(
+    expert_freeze_path = _reuse_or_freeze_expert_pilot(
+        root / "pilot_expert_freeze.json",
         frames_path=frames_path,
         candidates_path=candidates_path,
         annotation_paths=annotation_paths,
-        protocol_path="docs/ANNOTATION_GUIDE.md",
-        reliability_report_path=reliability_path,
-        adjudication_path=adjudication_file,
+        reliability_path=reliability_path,
+        adjudication_file=adjudication_file,
         consensus_path=consensus_path,
-        causal_feature_contract_path=causal_path,
+        causal_path=causal_path,
         benchmark_config_path=benchmark_config_path,
-        output_path=expert_freeze_path,
     )
-    freeze_failures = verify_pilot_freeze(expert_freeze_path)
-    if freeze_failures:
-        raise ValueError(f"R1 expert freeze verification failed: {freeze_failures}")
 
     base_status["expert_freeze"] = str(expert_freeze_path)
     base_status["consensus"] = str(consensus_path)
@@ -306,12 +389,12 @@ def finalize_r1_pilot(
         ]
         return _write_json(root / "r1_finalization_status.json", base_status)
 
-    quality_review_path = build_provider_quality_review(
-        pilot_freeze_path=expert_freeze_path,
+    quality_review_path = _reuse_or_build_quality_review(
+        root / "provider_quality_review.json",
+        expert_freeze_path=expert_freeze_path,
         benchmark_config_path=benchmark_config_path,
-        review_config_path=provider_review_config_path,
-        reviewer=reviewed_by,
-        output_path=root / "provider_quality_review.json",
+        provider_review_config_path=provider_review_config_path,
+        reviewed_by=reviewed_by,
     )
     base_status["provider_quality_review"] = str(quality_review_path)
     if not run_benchmark:
