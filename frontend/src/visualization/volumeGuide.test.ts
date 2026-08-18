@@ -97,6 +97,8 @@ describe("v1.2 cutting-plane guide", () => {
       105,
       68,
     );
-    expect(guided.solids.length).toBe(scene.solids.length + 8 * INSTANCE_STRIDE);
+    expect(guided.solids.length).toBe(
+      scene.solids.length + 8 * INSTANCE_STRIDE,
+    );
   });
 });
