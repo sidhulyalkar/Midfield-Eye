@@ -337,23 +337,59 @@ export function AffordanceVolume3D({
 
   return (
     <div className="affordance-volume-shell">
-      <canvas
-        ref={canvasRef}
-        className="affordance-volume-canvas"
-        aria-label={`3D temporal affordance volume for frame ${frame.frame_id}. Click a voxel to inspect it; drag to orbit and scroll to zoom.`}
-        onPointerDown={pointerDown}
-        onPointerMove={pointerMove}
-        onPointerUp={pointerUp}
-        onPointerCancel={pointerCancel}
-        onWheel={wheel}
-      />
-      <div className="volume-canvas-hud" aria-live="polite">
-        <span>{backend ? backend.toUpperCase() : "GPU init"}</span>
-        <span>{scene.stats.renderedVoxels.toLocaleString()} voxels</span>
-        <span>2-pass instancing</span>
-        <span>Inspector v1.1</span>
+      <div
+        className="volume-canvas-stage"
+        style={{ position: "relative", minHeight: "inherit" }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="affordance-volume-canvas"
+          aria-label={`3D temporal affordance volume for frame ${frame.frame_id}. Click a voxel to inspect it; drag to orbit and scroll to zoom.`}
+          onPointerDown={pointerDown}
+          onPointerMove={pointerMove}
+          onPointerUp={pointerUp}
+          onPointerCancel={pointerCancel}
+          onWheel={wheel}
+        />
+        <div className="volume-canvas-hud" aria-live="polite">
+          <span>{backend ? backend.toUpperCase() : "GPU init"}</span>
+          <span>{scene.stats.renderedVoxels.toLocaleString()} voxels</span>
+          <span>2-pass instancing</span>
+          <span>Inspector v1.1</span>
+        </div>
+        {selectionMarker ? (
+          <div
+            className="volume-selection-marker"
+            data-testid="voxel-selection-marker"
+            style={{ left: selectionMarker.left, top: selectionMarker.top }}
+            aria-hidden="true"
+          >
+            <i />
+          </div>
+        ) : null}
+        <div className="volume-time-axis" aria-hidden="true">
+          <span>+{horizonSeconds.toFixed(1)}s</span>
+          <i />
+          <span>Now</span>
+        </div>
+        {error ? (
+          <div className="volume-render-error" role="status">
+            <strong>3D acceleration unavailable</strong>
+            <span>{error}</span>
+          </div>
+        ) : null}
       </div>
-      <div className="volume-camera-actions">
+      <div
+        className="volume-camera-actions"
+        style={{
+          position: "static",
+          maxWidth: "none",
+          padding: "0.55rem 0.75rem",
+          borderTop: "1px solid var(--color-border)",
+          background: "rgba(4, 13, 11, 0.78)",
+          justifyContent: "flex-start",
+        }}
+      >
         <button type="button" onClick={inspectStrongest}>
           Inspect strongest voxel
         </button>
@@ -366,27 +402,6 @@ export function AffordanceVolume3D({
           Reset view
         </button>
       </div>
-      {selectionMarker ? (
-        <div
-          className="volume-selection-marker"
-          data-testid="voxel-selection-marker"
-          style={{ left: selectionMarker.left, top: selectionMarker.top }}
-          aria-hidden="true"
-        >
-          <i />
-        </div>
-      ) : null}
-      <div className="volume-time-axis" aria-hidden="true">
-        <span>+{horizonSeconds.toFixed(1)}s</span>
-        <i />
-        <span>Now</span>
-      </div>
-      {error ? (
-        <div className="volume-render-error" role="status">
-          <strong>3D acceleration unavailable</strong>
-          <span>{error}</span>
-        </div>
-      ) : null}
     </div>
   );
 }
