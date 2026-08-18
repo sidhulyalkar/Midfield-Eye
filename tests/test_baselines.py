@@ -9,3 +9,6 @@ def test_baseline_columns_are_added():
     result = add_baseline_scores(data)
     assert result["naive_score"].notna().all()
     assert result["static_score"].notna().all()
+    assert result["dynamic_score"].notna().all()
+    assert result["viewpoint_score"].notna().all()
+    assert (result["dynamic_score"] != result["viewpoint_score"]).any()
