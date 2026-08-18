@@ -4,6 +4,7 @@ import { EvidenceBadge } from "../components/Evidence";
 import { FeedbackState } from "../components/FeedbackState";
 import { useScenarioBundle } from "../data/hooks";
 import {
+  defaultVolumeConfig,
   volumeChannelCopy,
   type VolumeChannel,
   type VolumeQuality,
@@ -15,7 +16,22 @@ import {
   AffordanceVolume3D,
   type AffordanceVolumeHandle,
   type AffordanceVolumeRuntime,
+  type AffordanceVolumeSceneState,
 } from "../visualization/AffordanceVolume3D";
+import { LinkedTemporalSlice } from "../visualization/LinkedTemporalSlice";
+import {
+  horizonSecondsForLayer,
+  type VolumeTemporalFilter,
+} from "../visualization/volumeTemporal";
+import {
+  parseTemporalFilterFromSearchParams,
+  temporalFiltersEqual,
+  writeTemporalFilterToSearchParams,
+} from "../visualization/volumeUrlState";
+import {
+  serializeVoxelInspection,
+  serializedVoxelFilename,
+} from "../visualization/voxelSerialization";
 
 const channels = Object.keys(volumeChannelCopy) as VolumeChannel[];
 const qualities: VolumeQuality[] = ["auto", "low", "medium", "high"];
@@ -57,7 +73,7 @@ const inspectorActionStyle = {
 };
 
 export default function VolumePage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const scenarioId = searchParams.get("scenario") ?? "aitana-overload";
   const bundle = useScenarioBundle(scenarioId);
   const volumeRef = useRef<AffordanceVolumeHandle>(null);
@@ -66,8 +82,22 @@ export default function VolumePage() {
   const [quality, setQuality] = useState<VolumeQuality>("auto");
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
+  const [sceneState, setSceneState] =
+    useState<AffordanceVolumeSceneState | null>(null);
   const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(
     null,
+  );
+
+  const horizonSeconds = 1.5;
+  const horizonSteps = defaultVolumeConfig(channel).horizonSteps;
+  const searchKey = searchParams.toString();
+  const temporalFilter = useMemo(
+    () =>
+      parseTemporalFilterFromSearchParams(
+        new URLSearchParams(searchKey),
+        horizonSteps,
+      ),
+    [horizonSteps, searchKey],
   );
 
   const frame =
@@ -102,7 +132,46 @@ export default function VolumePage() {
   }
 
   const channelCopy = volumeChannelCopy[channel];
-  const horizonSeconds = 1.5;
+  const syncedScene =
+    sceneState && temporalFiltersEqual(sceneState.temporalFilter, temporalFilter)
+      ? sceneState
+      : null;
+  const sliceSeconds =
+    temporalFilter.mode === "slice"
+      ? horizonSecondsForLayer(
+          temporalFilter.layerIndex,
+          horizonSteps,
+          horizonSeconds,
+        )
+      : null;
+
+  const setTemporalFilter = (next: VolumeTemporalFilter) => {
+    setSearchParams(writeTemporalFilterToSearchParams(searchParams, next), {
+      replace: true,
+    });
+  };
+
+  const exportInspectedVoxel = () => {
+    if (!inspectedVoxel || !syncedScene) return;
+    const record = serializeVoxelInspection(
+      inspectedVoxel,
+      syncedScene.fullScene.voxels,
+      temporalFilter,
+      syncedScene.fullScene.stats.horizonSteps,
+      horizonSeconds,
+    );
+    const blob = new Blob([`${JSON.stringify(record, null, 2)}\n`], {
+      type: "application/json",
+    });
+    const href = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = href;
+    anchor.download = serializedVoxelFilename(inspectedVoxel);
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(href), 0);
+  };
 
   return (
     <div className="volume-page page-pad">
@@ -155,9 +224,27 @@ export default function VolumePage() {
             maxVoxels={
               quality === "high" ? 4200 : quality === "low" ? 1200 : 2800
             }
+            temporalFilter={temporalFilter}
+            onTemporalFilterChange={setTemporalFilter}
             onRuntime={setRuntime}
+            onScene={setSceneState}
             onInspect={setInspectedVoxel}
           />
+          {temporalFilter.mode === "slice" &&
+          syncedScene &&
+          sliceSeconds !== null ? (
+            <LinkedTemporalSlice
+              voxels={syncedScene.visibleScene.voxels}
+              pitchLength={frame.pitch_length}
+              pitchWidth={frame.pitch_width}
+              layerIndex={temporalFilter.layerIndex}
+              forecastSeconds={sliceSeconds}
+              selectedVoxelId={inspectedVoxel?.id ?? null}
+              onSelectVoxel={(voxelId) =>
+                volumeRef.current?.selectVoxelById(voxelId)
+              }
+            />
+          ) : null}
           <label className="volume-frame-scrubber">
             <span>Decision timeline</span>
             <input
@@ -202,7 +289,7 @@ export default function VolumePage() {
           >
             <div className="volume-inspector-heading">
               <div>
-                <p className="eyebrow">VOXEL INSPECTOR · V1.1</p>
+                <p className="eyebrow">VOXEL INSPECTOR · V1.2</p>
                 <h2>
                   {inspectedVoxel
                     ? `${volumeChannelCopy[inspectedVoxel.channel].short} ${inspectedVoxel.value.toFixed(3)}`
@@ -219,13 +306,24 @@ export default function VolumePage() {
 
             {inspectedVoxel ? (
               <>
-                <button
-                  type="button"
-                  style={inspectorActionStyle}
-                  onClick={() => volumeRef.current?.clearSelection()}
-                >
-                  Clear inspected voxel
-                </button>
+                <div className="volume-inspector-actions">
+                  <button
+                    type="button"
+                    style={inspectorActionStyle}
+                    onClick={() => volumeRef.current?.clearSelection()}
+                  >
+                    Clear inspected voxel
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="export-voxel-json"
+                    style={inspectorActionStyle}
+                    disabled={!syncedScene}
+                    onClick={exportInspectedVoxel}
+                  >
+                    Export inspected voxel JSON
+                  </button>
+                </div>
                 <dl className="volume-inspector-coordinates">
                   <div>
                     <dt>Pitch X</dt>
@@ -442,8 +540,12 @@ export default function VolumePage() {
                 <dd>{runtime?.renderer.drawCalls ?? 0}</dd>
               </div>
               <div>
-                <dt>Field voxels</dt>
-                <dd>{runtime?.field.renderedVoxels.toLocaleString() ?? "—"}</dd>
+                <dt>Visible / full</dt>
+                <dd>
+                  {runtime
+                    ? `${runtime.field.renderedVoxels.toLocaleString()} / ${runtime.fullField.renderedVoxels.toLocaleString()}`
+                    : "—"}
+                </dd>
               </div>
               <div>
                 <dt>Grid</dt>
@@ -478,13 +580,12 @@ export default function VolumePage() {
           </p>
         </article>
         <article>
-          <p className="eyebrow">V1.1 · VOXEL INSPECTOR</p>
-          <h2>Every glow can now defend itself.</h2>
+          <p className="eyebrow">V1.2 · TIME SLICE SURGERY</p>
+          <h2>One retained voxel, two synchronized views.</h2>
           <p>
-            A selected voxel exposes its exact pitch cell, future horizon,
-            component field values, local option contributors, nearby players,
-            and evidence status. The dramatic view and the forensic view are now
-            the same instrument.
+            Exact integer layers can be isolated in 3D and inspected again from
+            the linked top-down slice. Both views reference the same stable voxel
+            IDs and values, while pruned cells remain absent rather than zero.
           </p>
         </article>
         <article>
@@ -503,8 +604,8 @@ export default function VolumePage() {
         <div>
           <p className="eyebrow">SHOWCASE SEQUENCE</p>
           <h2>
-            Start with Menu. Peel the field apart. Interrogate one voxel. Return
-            to the decision.
+            See the future. Cut one horizon. Interrogate a cell. Reproduce the
+            exact view.
           </h2>
         </div>
         <ol>
@@ -512,31 +613,32 @@ export default function VolumePage() {
             <span>01</span>
             <strong>Composite</strong>
             <p>
-              Open on the full action-menu volume so the idea lands instantly.
+              Open on the full action-menu volume so the temporal landscape lands
+              instantly.
             </p>
           </li>
           <li>
             <span>02</span>
-            <strong>Pressure → shadow</strong>
+            <strong>Slice</strong>
             <p>
-              Reveal the moving defensive front, then the space it screens
-              behind itself.
+              Cut to an exact integer horizon and expose the same retained cells
+              in the linked top-down view.
             </p>
           </li>
           <li>
             <span>03</span>
-            <strong>Inspect</strong>
+            <strong>Inspect + export</strong>
             <p>
-              Pick a cell and expose the exact geometry, component scores,
-              contributors, and evidence boundary underneath the glow.
+              Select one stable voxel ID, read its trajectory gaps, and export
+              the forensic record as JSON.
             </p>
           </li>
           <li>
             <span>04</span>
-            <strong>Corridor → visibility</strong>
+            <strong>Reload</strong>
             <p>
-              Finish by separating a physically available route from a
-              perceptually accessible one.
+              Preserve the temporal filter in the URL so the same analytical cut
+              can be reopened without reconstructing it by hand.
             </p>
           </li>
         </ol>
