@@ -9,6 +9,9 @@ from .schema import ActionOption
 
 TriStateLabel = Literal["yes", "no", "uncertain"]
 
+_TRUE_VALUES = {"true", "yes", "1", "y"}
+_FALSE_VALUES = {"false", "no", "0", "n", ""}
+
 
 @dataclass(frozen=True, slots=True)
 class ActionMenuAnnotation:
@@ -50,6 +53,10 @@ class ActionMenuAnnotation:
             raise ValueError("value_ordinal must be in [0, 4]")
         if not 0 <= self.creation_ordinal <= 4:
             raise ValueError("creation_ordinal must be in [0, 4]")
+        if self.selected is not None and not isinstance(self.selected, bool):
+            raise ValueError("selected must be boolean or null")
+        if not isinstance(self.blinded_to_outcome, bool):
+            raise ValueError("blinded_to_outcome must be boolean")
         if not 0.0 <= self.confidence <= 1.0:
             raise ValueError("confidence must be in [0, 1]")
 
@@ -86,6 +93,35 @@ def stable_option_key(option: ActionOption | Mapping[str, Any]) -> str:
     if kind == "hold":
         return "hold"
     raise ValueError(f"unsupported action kind {kind!r}")
+
+
+def _coerce_boolean_series(
+    series: pd.Series,
+    *,
+    column_name: str,
+    allow_missing: bool,
+) -> pd.Series:
+    parsed: list[bool] = []
+    for value in series.tolist():
+        if pd.isna(value):
+            if allow_missing:
+                parsed.append(False)
+                continue
+            raise ValueError(f"{column_name} may not contain missing values")
+        if isinstance(value, bool):
+            parsed.append(value)
+            continue
+        if isinstance(value, (int, float)) and value in {0, 1}:
+            parsed.append(bool(value))
+            continue
+        normalized = str(value).strip().lower()
+        if normalized in _TRUE_VALUES:
+            parsed.append(True)
+        elif normalized in _FALSE_VALUES:
+            parsed.append(False)
+        else:
+            raise ValueError(f"{column_name} contains unsupported boolean value {value!r}")
+    return pd.Series(parsed, index=series.index, dtype=bool)
 
 
 def _prepare_candidates(
@@ -188,7 +224,11 @@ def build_action_menu_tables(
         ordered = group.sort_values("frame_id")
         selected_frames: list[int] = []
         if selection_column in ordered.columns:
-            selected_mask = ordered[selection_column].fillna(False).astype(bool)
+            selected_mask = _coerce_boolean_series(
+                ordered[selection_column],
+                column_name=selection_column,
+                allow_missing=True,
+            )
             selected_frames = ordered.loc[selected_mask, "frame_id"].astype(int).tolist()
         first = ordered.iloc[0]
         lifecycle_rows.append(
@@ -295,12 +335,28 @@ def validate_annotation_dataframe(dataframe: pd.DataFrame) -> None:
     confidence = pd.to_numeric(dataframe["confidence"], errors="raise")
     if not confidence.between(0, 1).all():
         raise ValueError("confidence must be in [0, 1]")
+    _coerce_boolean_series(
+        dataframe["blinded_to_outcome"],
+        column_name="blinded_to_outcome",
+        allow_missing=False,
+    )
+    if "selected" in dataframe.columns:
+        _coerce_boolean_series(
+            dataframe["selected"],
+            column_name="selected",
+            allow_missing=True,
+        )
 
 
 def annotation_contract_summary(dataframe: pd.DataFrame) -> dict[str, Any]:
     validate_annotation_dataframe(dataframe)
     keys = ["sequence_id", "frame_id", "option_key"]
     counts = dataframe.groupby(keys)["annotator_id"].nunique()
+    blinded = _coerce_boolean_series(
+        dataframe["blinded_to_outcome"],
+        column_name="blinded_to_outcome",
+        allow_missing=False,
+    )
     return {
         "schema_version": "action-menu-annotation-v1",
         "annotation_rows": int(len(dataframe)),
@@ -308,7 +364,7 @@ def annotation_contract_summary(dataframe: pd.DataFrame) -> dict[str, Any]:
         "sequence_count": int(dataframe["sequence_id"].nunique()),
         "annotator_count": int(dataframe["annotator_id"].nunique()),
         "double_rated_fraction": float((counts >= 2).mean()) if len(counts) else 0.0,
-        "outcome_blinded_fraction": float(dataframe["blinded_to_outcome"].astype(bool).mean()),
+        "outcome_blinded_fraction": float(blinded.mean()) if len(blinded) else 0.0,
         "uncertain_availability_fraction": float((dataframe["available"] == "uncertain").mean()),
         "uncertain_visibility_fraction": float((dataframe["visible"] == "uncertain").mean()),
     }
