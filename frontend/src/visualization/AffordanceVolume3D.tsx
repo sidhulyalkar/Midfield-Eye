@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ActionOption, FrameState } from "../data/schemas";
 import {
   buildAffordanceVolume,
@@ -127,7 +121,9 @@ export function AffordanceVolume3D({
       setSelectionMarker(null);
       return;
     }
-    const voxel = sceneRef.current.voxels.find((item) => item.id === selectedId);
+    const voxel = sceneRef.current.voxels.find(
+      (item) => item.id === selectedId,
+    );
     if (!voxel) {
       setSelectionMarker(null);
       return;
@@ -293,7 +289,10 @@ export function AffordanceVolume3D({
     pointer.lastX = event.clientX;
     pointer.lastY = event.clientY;
     if (
-      Math.hypot(event.clientX - pointer.startX, event.clientY - pointer.startY) > 5
+      Math.hypot(
+        event.clientX - pointer.startX,
+        event.clientY - pointer.startY,
+      ) > 5
     ) {
       pointer.moved = true;
     }
