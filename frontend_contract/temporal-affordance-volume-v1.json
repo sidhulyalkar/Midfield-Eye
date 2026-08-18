@@ -1,13 +1,14 @@
 {
   "schema_version": "temporal-affordance-volume-v1",
   "instrument": "Temporal Affordance Volume",
-  "instrument_version": "1.1.0",
+  "instrument_version": "1.2.0",
   "route": "/volume",
   "coordinate_semantics": {
     "render_x": "canonical_pitch_x_metres",
     "render_z": "canonical_pitch_y_metres",
     "render_y": "causal_forecast_horizon_not_physical_height",
     "default_horizon_seconds": 1.5,
+    "temporal_identity": "integer_layer_index",
     "future_observed_frames_forbidden": true
   },
   "channels": {
@@ -38,11 +39,13 @@
       "alpha"
     ],
     "passes": [
-      "opaque_pitch_players_ball_depth_write",
+      "opaque_pitch_players_ball_and_temporal_guide_rails_depth_write",
       "translucent_field_no_depth_write"
     ],
     "target_draw_calls": 2,
-    "sparse_pruning_before_upload": true
+    "sparse_pruning_before_upload": true,
+    "temporal_filtering_requires_shader_clipping": false,
+    "temporal_filtering_requires_gpu_readback": false
   },
   "lod": {
     "low_grid": [20, 13, 7],
@@ -55,8 +58,17 @@
     "threshold_user_controllable": true
   },
   "voxel_inspector": {
-    "version": "1.1.0",
+    "version": "1.2.0",
     "selection_method": "deterministic_cpu_projection_over_retained_voxels",
+    "strongest_visible_tie_break": [
+      "highest_active_field_value",
+      "lexicographically_smallest_stable_voxel_id"
+    ],
+    "click_tie_break": [
+      "smallest_normalized_pointer_distance",
+      "highest_active_field_value",
+      "lexicographically_smallest_stable_voxel_id"
+    ],
     "navigation_gesture": "drag_orbits_click_inspects",
     "keyboard_pointer_fallback": "inspect_strongest_visible_voxel_button",
     "selection_invalidates_when_voxel_leaves_current_scene": true,
@@ -83,6 +95,55 @@
     "picking_requires_gpu_readback": false,
     "picking_changes_renderer_pass_count": false
   },
+  "time_slice_surgery": {
+    "version": "1.2.0",
+    "modes": ["full", "slice", "band"],
+    "filter_key": "integer_layer_index",
+    "visible_set_definition": "full_retained_voxels_filtered_by_selected_integer_layer_set",
+    "full_mode_returns_original_scene": true,
+    "slice_and_band_recompute_tactical_values": false,
+    "slice_and_band_interpolate_missing_voxels": false,
+    "slice_and_band_zero_fill_missing_voxels": false,
+    "single_slice_guide": "four_solid_pitch_boundary_rails_at_exact_layer_height",
+    "band_guide": "solid_pitch_boundary_rails_at_start_and_end_layer_heights",
+    "same_cell_key": [
+      "frame_id",
+      "channel",
+      "grid_x_index",
+      "grid_y_index"
+    ],
+    "trajectory_order": "ascending_integer_layer_index",
+    "missing_trajectory_state": "not_retained_with_null_voxel_id_and_null_value",
+    "linked_top_down_slice": {
+      "source": "same_filtered_retained_voxel_array_as_3d_view",
+      "separate_2d_heatmap_computation_forbidden": true,
+      "selection_sync_key": "stable_voxel_id",
+      "missing_cells_remain_absent": true
+    },
+    "url_state": {
+      "mode_parameter": "tm",
+      "slice_layer_parameter": "layer",
+      "band_start_parameter": "from",
+      "band_end_parameter": "to",
+      "indices_must_be_nonnegative_integers": true,
+      "malformed_or_out_of_range_state_fails_closed_to_full": true,
+      "unrelated_query_parameters_preserved": true
+    }
+  },
+  "serialization": {
+    "inspection_schema_version": "1.2.0",
+    "format": "json",
+    "includes_stable_voxel_record": true,
+    "includes_temporal_filter": true,
+    "includes_same_cell_trajectory": true,
+    "missing_layer_value": null,
+    "missing_layer_status": "not_retained",
+    "claim_boundary_fields": [
+      "futureObservedFramesUsed",
+      "missingLayerSemantics",
+      "calibratedProbability"
+    ]
+  },
   "evidence_guardrails": [
     "synthetic_or_proxy_fields_must_remain_labeled",
     "future_voxels_are_forecasts_not_observed_future_truth",
@@ -90,21 +151,10 @@
     "brightness_must_not_be_called_probability_without_calibration_metadata",
     "option_creation_visualization_must_not_be_called_causal_attribution",
     "inspector_must_expose_source_or_proxy_status",
+    "not_retained_must_not_be_interpreted_as_zero",
+    "linked_2d_and_3d_views_must_share_stable_voxel_identity_and_value",
     "r1_benchmark_claims_remain_bound_to_real_expert_artifacts"
   ],
-  "planned_v1_2": {
-    "name": "Time Slice Surgery",
-    "goal": "isolate_and_compare_exact_forecast_horizons_without_perspective_occlusion",
-    "required_modes": [
-      "full_volume",
-      "single_slice",
-      "bounded_slice_band",
-      "linked_top_down_slice"
-    ],
-    "required_horizon_presets_seconds": [0, 0.25, 0.5, 1.0, 1.5],
-    "must_preserve_v1_1_inspector": true,
-    "future_observed_frames_forbidden": true
-  },
   "next_dense_tier": {
     "trigger": "dense_scientific_workload_requires_more_than_sparse_auditable_cells",
     "candidate_backend": "webgpu_compute_plus_3d_storage_texture_raymarch",
