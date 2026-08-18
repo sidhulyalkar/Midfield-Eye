@@ -172,8 +172,8 @@ class WebGlVoxelBackend implements RenderBackend {
   private readonly matrixLocation: WebGLUniformLocation;
   private width = 1;
   private height = 1;
-  private solids = new Float32Array();
-  private field = new Float32Array();
+  private solids: Float32Array<ArrayBufferLike> = new Float32Array();
+  private field: Float32Array<ArrayBufferLike> = new Float32Array();
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl2", {
