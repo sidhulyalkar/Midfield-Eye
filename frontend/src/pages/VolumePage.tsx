@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { EvidenceBadge } from "../components/Evidence";
 import { FeedbackState } from "../components/FeedbackState";
@@ -13,6 +13,7 @@ import {
 } from "../visualization/affordanceVolume";
 import {
   AffordanceVolume3D,
+  type AffordanceVolumeHandle,
   type AffordanceVolumeRuntime,
 } from "../visualization/AffordanceVolume3D";
 
@@ -42,10 +43,24 @@ const uncertaintyEvidenceCopy: Record<VolumeUncertaintyEvidence, string> = {
   tracking_status_only: "Tracking status only",
 };
 
+const inspectorActionStyle = {
+  border: "1px solid rgba(244, 211, 94, 0.42)",
+  borderRadius: "999px",
+  background: "rgba(244, 211, 94, 0.08)",
+  color: "var(--color-text)",
+  cursor: "pointer",
+  fontFamily: "var(--font-mono)",
+  fontSize: "0.68rem",
+  letterSpacing: "0.04em",
+  padding: "0.55rem 0.75rem",
+  textTransform: "uppercase" as const,
+};
+
 export default function VolumePage() {
   const [searchParams] = useSearchParams();
   const scenarioId = searchParams.get("scenario") ?? "aitana-overload";
   const bundle = useScenarioBundle(scenarioId);
+  const volumeRef = useRef<AffordanceVolumeHandle>(null);
   const [frameIndex, setFrameIndex] = useState(10);
   const [channel, setChannel] = useState<VolumeChannel>("menu");
   const [quality, setQuality] = useState<VolumeQuality>("auto");
@@ -130,6 +145,7 @@ export default function VolumePage() {
             </div>
           </div>
           <AffordanceVolume3D
+            ref={volumeRef}
             frame={frame}
             options={currentOptions}
             channel={channel}
@@ -203,6 +219,13 @@ export default function VolumePage() {
 
             {inspectedVoxel ? (
               <>
+                <button
+                  type="button"
+                  style={inspectorActionStyle}
+                  onClick={() => volumeRef.current?.clearSelection()}
+                >
+                  Clear inspected voxel
+                </button>
                 <dl className="volume-inspector-coordinates">
                   <div>
                     <dt>Pitch X</dt>
@@ -351,11 +374,20 @@ export default function VolumePage() {
             ) : (
               <div className="volume-inspector-empty-state">
                 <span aria-hidden="true">⌖</span>
-                <p>
-                  Click a voxel in the 3D field, or use{" "}
-                  <strong>Inspect strongest voxel</strong>. Drag still orbits
-                  the camera, so inspection never steals the navigation gesture.
-                </p>
+                <div>
+                  <p>
+                    Click a voxel in the 3D field, or use the inspector action
+                    below. Drag still orbits the camera, so inspection never
+                    steals the navigation gesture.
+                  </p>
+                  <button
+                    type="button"
+                    style={{ ...inspectorActionStyle, marginTop: "0.65rem" }}
+                    onClick={() => volumeRef.current?.inspectStrongest()}
+                  >
+                    Inspect strongest visible voxel
+                  </button>
+                </div>
               </div>
             )}
           </section>
