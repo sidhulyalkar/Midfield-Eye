@@ -2,10 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { FeedbackState } from "../components/FeedbackState";
 import { useScenarioBundle } from "../data/hooks";
-import {
-  addTemporalGuideRails,
-  defaultVolumeConfig,
-} from "../visualization/affordanceVolume";
+import { defaultVolumeConfig } from "../visualization/affordanceVolume";
 import {
   DifferenceVolume3D,
   type DifferenceVolumeRuntime,
@@ -32,6 +29,7 @@ import {
 } from "../visualization/volumeDifferenceSerialization";
 import { filterVolumeDifferenceCells } from "../visualization/volumeDifferenceView";
 import {
+  addTemporalGuideRails,
   horizonSecondsForLayer,
   temporalFilterLabel,
   type VolumeTemporalFilter,
@@ -68,6 +66,11 @@ const channelCopy: Record<
     explanation:
       "Where future openness improves relative to the focal slice after the same earlier-run teaching intervention.",
   },
+};
+
+type ComparisonSelection = {
+  key: string;
+  fingerprint: string;
 };
 
 function maxVoxelsForQuality(quality: DeterministicComparisonQuality) {
@@ -107,7 +110,7 @@ export default function DifferenceVolumePage() {
     defaultFrameIndex,
   );
   const frame = data.frames?.[frameIndex];
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [selection, setSelection] = useState<ComparisonSelection | null>(null);
   const [runtime, setRuntime] = useState<DifferenceVolumeRuntime | null>(null);
 
   useEffect(() => {
@@ -172,9 +175,21 @@ export default function DifferenceVolumePage() {
     () => buildVolumeDifferenceRenderPayload(visibleCells),
     [visibleCells],
   );
+  const comparisonFingerprint = [
+    scenarioId,
+    frame?.frame_id ?? "no-frame",
+    comparisonUrl.channel,
+    comparisonUrl.leadSeconds.toFixed(2),
+    comparisonUrl.quality,
+    comparisonUrl.threshold.toFixed(3),
+    HORIZON_SECONDS.toFixed(2),
+    horizonSteps,
+    maxVoxelsForQuality(comparisonUrl.quality),
+  ].join("|");
   const activeSelectedKey =
-    selectedKey && visibleCells.some((cell) => cell.key === selectedKey)
-      ? selectedKey
+    selection?.fingerprint === comparisonFingerprint &&
+    visibleCells.some((cell) => cell.key === selection.key)
+      ? selection.key
       : null;
   const inspection =
     activeSelectedKey && comparisonResult.bundle
@@ -215,6 +230,10 @@ export default function DifferenceVolumePage() {
     ? renderPayload.stats.intersectionCells / visibleCells.length
     : 0;
 
+  const selectKey = (key: string | null) => {
+    setSelection(key ? { key, fingerprint: comparisonFingerprint } : null);
+  };
+
   const writeComparisonState = (
     patch: Partial<{
       channel: VolumeComparisonChannel;
@@ -227,12 +246,11 @@ export default function DifferenceVolumePage() {
       ...comparisonUrl,
       ...patch,
     });
-    setSelectedKey(null);
+    setSelection(null);
     setSearchParams(next, { replace: true });
   };
 
   const writeTemporalFilter = (nextFilter: VolumeTemporalFilter) => {
-    setSelectedKey(null);
     setSearchParams(
       writeTemporalFilterToSearchParams(searchParams, nextFilter),
       { replace: true },
@@ -240,7 +258,7 @@ export default function DifferenceVolumePage() {
   };
 
   const writeFrameIndex = (nextFrameIndex: number) => {
-    setSelectedKey(null);
+    setSelection(null);
     setSearchParams(writeComparisonFrameIndex(searchParams, nextFrameIndex), {
       replace: true,
     });
@@ -379,8 +397,18 @@ export default function DifferenceVolumePage() {
             x2={intervention.to[0]}
             y2={intervention.to[1]}
           />
-          <circle className="is-before" cx={intervention.from[0]} cy={intervention.from[1]} r={1.5} />
-          <circle className="is-after" cx={intervention.to[0]} cy={intervention.to[1]} r={1.8} />
+          <circle
+            className="is-before"
+            cx={intervention.from[0]}
+            cy={intervention.from[1]}
+            r={1.5}
+          />
+          <circle
+            className="is-after"
+            cx={intervention.to[0]}
+            cy={intervention.to[1]}
+            r={1.8}
+          />
         </svg>
       </section>
 
@@ -400,7 +428,7 @@ export default function DifferenceVolumePage() {
             solids={renderSolids}
             payload={renderPayload}
             selectedKey={activeSelectedKey}
-            onSelectKey={setSelectedKey}
+            onSelectKey={selectKey}
             onRuntime={setRuntime}
           />
           {temporalFilter.mode === "slice" && sliceSeconds !== null ? (
@@ -411,7 +439,7 @@ export default function DifferenceVolumePage() {
               layerIndex={temporalFilter.layerIndex}
               forecastSeconds={sliceSeconds}
               selectedKey={activeSelectedKey}
-              onSelectKey={setSelectedKey}
+              onSelectKey={(key) => selectKey(key)}
             />
           ) : null}
           <label className="difference-frame-scrubber">
@@ -494,7 +522,10 @@ export default function DifferenceVolumePage() {
             </label>
           </section>
 
-          <section className="difference-control-card" data-testid="difference-temporal-controls">
+          <section
+            className="difference-control-card"
+            data-testid="difference-temporal-controls"
+          >
             <p className="eyebrow">TEMPORAL CUT</p>
             <strong>
               {temporalFilterLabel(
@@ -514,7 +545,9 @@ export default function DifferenceVolumePage() {
               <button
                 type="button"
                 aria-pressed={temporalFilter.mode === "slice"}
-                onClick={() => writeTemporalFilter({ mode: "slice", layerIndex: 2 })}
+                onClick={() =>
+                  writeTemporalFilter({ mode: "slice", layerIndex: 2 })
+                }
               >
                 Slice
               </button>
@@ -543,7 +576,12 @@ export default function DifferenceVolumePage() {
                       writeTemporalFilter({ mode: "slice", layerIndex })
                     }
                   >
-                    +{horizonSecondsForLayer(layerIndex, horizonSteps, HORIZON_SECONDS).toFixed(2)}
+                    +
+                    {horizonSecondsForLayer(
+                      layerIndex,
+                      horizonSteps,
+                      HORIZON_SECONDS,
+                    ).toFixed(2)}
                   </button>
                 ))}
               </div>
@@ -569,7 +607,13 @@ export default function DifferenceVolumePage() {
                   >
                     {layerIndices.map((layerIndex) => (
                       <option key={layerIndex} value={layerIndex}>
-                        +{horizonSecondsForLayer(layerIndex, horizonSteps, HORIZON_SECONDS).toFixed(2)} s
+                        +
+                        {horizonSecondsForLayer(
+                          layerIndex,
+                          horizonSteps,
+                          HORIZON_SECONDS,
+                        ).toFixed(2)}{" "}
+                        s
                       </option>
                     ))}
                   </select>
@@ -593,7 +637,13 @@ export default function DifferenceVolumePage() {
                   >
                     {layerIndices.map((layerIndex) => (
                       <option key={layerIndex} value={layerIndex}>
-                        +{horizonSecondsForLayer(layerIndex, horizonSteps, HORIZON_SECONDS).toFixed(2)} s
+                        +
+                        {horizonSecondsForLayer(
+                          layerIndex,
+                          horizonSteps,
+                          HORIZON_SECONDS,
+                        ).toFixed(2)}{" "}
+                        s
                       </option>
                     ))}
                   </select>
@@ -647,14 +697,29 @@ export default function DifferenceVolumePage() {
           <p className="eyebrow">SUPPORT GRAMMAR</p>
           <h2>Color says direction. Shape says whether a number exists.</h2>
           <ul>
-            <li><i className="legend-filled positive" /> Filled mint: shared support, B−A &gt; 0.</li>
-            <li><i className="legend-filled negative" /> Filled coral: shared support, B−A &lt; 0.</li>
-            <li><i className="legend-rails vertical" /> Vertical gold rails: retained only in A, no numeric Δ.</li>
-            <li><i className="legend-rails horizontal" /> Horizontal blue rails: retained only in B, no numeric Δ.</li>
+            <li>
+              <i className="legend-filled positive" /> Filled mint: shared
+              support, B−A &gt; 0.
+            </li>
+            <li>
+              <i className="legend-filled negative" /> Filled coral: shared
+              support, B−A &lt; 0.
+            </li>
+            <li>
+              <i className="legend-rails vertical" /> Vertical gold rails:
+              retained only in A, no numeric Δ.
+            </li>
+            <li>
+              <i className="legend-rails horizontal" /> Horizontal blue rails:
+              retained only in B, no numeric Δ.
+            </li>
           </ul>
         </article>
 
-        <article className={`difference-inspector-card ${inspection ? "has-selection" : "is-empty"}`} data-testid="difference-inspector">
+        <article
+          className={`difference-inspector-card ${inspection ? "has-selection" : "is-empty"}`}
+          data-testid="difference-inspector"
+        >
           <p className="eyebrow">DIFFERENCE FORENSICS</p>
           {inspection ? (
             <>
@@ -665,11 +730,19 @@ export default function DifferenceVolumePage() {
               <dl>
                 <div>
                   <dt>Condition A</dt>
-                  <dd>{inspection.conditionA.retained ? `${inspection.conditionA.value?.toFixed(4)} · ${inspection.conditionA.voxelId}` : "not retained"}</dd>
+                  <dd>
+                    {inspection.conditionA.retained
+                      ? `${inspection.conditionA.value?.toFixed(4)} · ${inspection.conditionA.voxelId}`
+                      : "not retained"}
+                  </dd>
                 </div>
                 <div>
                   <dt>Condition B</dt>
-                  <dd>{inspection.conditionB.retained ? `${inspection.conditionB.value?.toFixed(4)} · ${inspection.conditionB.voxelId}` : "not retained"}</dd>
+                  <dd>
+                    {inspection.conditionB.retained
+                      ? `${inspection.conditionB.value?.toFixed(4)} · ${inspection.conditionB.voxelId}`
+                      : "not retained"}
+                  </dd>
                 </div>
                 <div>
                   <dt>B−A</dt>
@@ -677,28 +750,36 @@ export default function DifferenceVolumePage() {
                 </div>
                 <div>
                   <dt>Numerical comparison</dt>
-                  <dd>{inspection.numericComparisonAvailable ? "valid on retained intersection" : "not defined for one-sided support"}</dd>
+                  <dd>
+                    {inspection.numericComparisonAvailable
+                      ? "valid on retained intersection"
+                      : "not defined for one-sided support"}
+                  </dd>
                 </div>
               </dl>
               <p>
-                One-sided presence is not zero. Missing support is not interpolated.
-                Intensity is not calibrated probability, and no future observed frame
-                is used.
+                One-sided presence is not zero. Missing support is not
+                interpolated. Intensity is not calibrated probability, and no
+                future observed frame is used.
               </p>
               <div className="difference-inspector-actions">
-                <button type="button" onClick={() => setSelectedKey(null)}>
+                <button type="button" onClick={() => selectKey(null)}>
                   Clear
                 </button>
-                <button type="button" onClick={exportInspection} data-testid="export-difference-json">
+                <button
+                  type="button"
+                  onClick={exportInspection}
+                  data-testid="export-difference-json"
+                >
                   Export comparison JSON
                 </button>
               </div>
             </>
           ) : (
             <p>
-              Click a 3D cell, use the linked slice, or choose the most informative
-              visible cell. A comparison number appears only when both conditions
-              retained the same canonical cell.
+              Click a 3D cell, use the linked slice, or choose the most
+              informative visible cell. A comparison number appears only when
+              both conditions retained the same canonical cell.
             </p>
           )}
         </article>
@@ -707,11 +788,16 @@ export default function DifferenceVolumePage() {
       <section className="difference-publication-strip">
         <div>
           <p className="eyebrow">REPRODUCIBLE STATE</p>
-          <h2>One URL now identifies the frame, intervention, field, lattice, and temporal cut.</h2>
+          <h2>
+            One URL now identifies the frame, intervention, field, lattice, and
+            temporal cut.
+          </h2>
         </div>
         <code>{`scenario=${scenarioId} · fi=${frameIndex} · cmp=earlier-run · lead=${comparisonUrl.leadSeconds.toFixed(2)} · dc=${comparisonUrl.channel} · dq=${comparisonUrl.quality} · dt=${comparisonUrl.threshold.toFixed(3)}`}</code>
         <p>
-          Full difference summary: {difference.summary.intersection} shared, {difference.summary.leftOnly} A-only, {difference.summary.rightOnly} B-only, {difference.summary.neither} retained in neither condition.
+          Full difference summary: {difference.summary.intersection} shared, {" "}
+          {difference.summary.leftOnly} A-only, {difference.summary.rightOnly}{" "}
+          B-only, {difference.summary.neither} retained in neither condition.
         </p>
         <Link className="text-link" to={`/volume?scenario=${scenarioId}`}>
           Return to the single-condition Temporal Affordance Volume →
