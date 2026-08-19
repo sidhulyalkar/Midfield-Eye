@@ -43,6 +43,17 @@ function inspectionSide(
   };
 }
 
+function compareCellIdentity(
+  left: VolumeDifferenceCell,
+  right: VolumeDifferenceCell,
+) {
+  return (
+    left.layerIndex - right.layerIndex ||
+    left.gridXIndex - right.gridXIndex ||
+    left.gridYIndex - right.gridYIndex
+  );
+}
+
 function assertInspectionCell(cell: VolumeDifferenceCell) {
   if (cell.support === "intersection") {
     if (!cell.left || !cell.right || cell.delta === null) {
@@ -111,7 +122,7 @@ export function mostInformativeDifferenceCell(
     if (
       candidateMagnitude > bestMagnitude ||
       (candidateMagnitude === bestMagnitude &&
-        cell.key.localeCompare(bestIntersection.key) < 0)
+        compareCellIdentity(cell, bestIntersection) < 0)
     ) {
       bestIntersection = cell;
     }
@@ -120,7 +131,7 @@ export function mostInformativeDifferenceCell(
 
   let categorical: VolumeDifferenceCell | null = null;
   for (const cell of difference.cells) {
-    if (!categorical || cell.key.localeCompare(categorical.key) < 0) {
+    if (!categorical || compareCellIdentity(cell, categorical) < 0) {
       categorical = cell;
     }
   }
