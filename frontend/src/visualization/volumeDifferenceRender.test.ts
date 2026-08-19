@@ -150,18 +150,18 @@ describe("v1.3 difference render payload", () => {
     const rightRailA = readInstance(payload.field, 3);
     const rightRailB = readInstance(payload.field, 4);
 
-    expect(filled[1]).toBeCloseTo(aShared.worldY);
-    expect(leftRailA[1]).toBeCloseTo(aOnly.worldY);
-    expect(leftRailB[1]).toBeCloseTo(aOnly.worldY);
-    expect(rightRailA[1]).toBeCloseTo(bOnly.worldY);
-    expect(rightRailB[1]).toBeCloseTo(bOnly.worldY);
+    expect(filled[1] ?? 0).toBeCloseTo(aShared.worldY);
+    expect(leftRailA[1] ?? 0).toBeCloseTo(aOnly.worldY);
+    expect(leftRailB[1] ?? 0).toBeCloseTo(aOnly.worldY);
+    expect(rightRailA[1] ?? 0).toBeCloseTo(bOnly.worldY);
+    expect(rightRailB[1] ?? 0).toBeCloseTo(bOnly.worldY);
 
-    expect(leftRailA[0]).not.toBeCloseTo(leftRailB[0] ?? 0);
-    expect(leftRailA[2]).toBeCloseTo(leftRailB[2] ?? 0);
+    expect(leftRailA[0] ?? 0).not.toBeCloseTo(leftRailB[0] ?? 0);
+    expect(leftRailA[2] ?? 0).toBeCloseTo(leftRailB[2] ?? 0);
     expect((leftRailA[3] ?? 0) < (leftRailA[5] ?? 0)).toBe(true);
 
-    expect(rightRailA[0]).toBeCloseTo(rightRailB[0] ?? 0);
-    expect(rightRailA[2]).not.toBeCloseTo(rightRailB[2] ?? 0);
+    expect(rightRailA[0] ?? 0).toBeCloseTo(rightRailB[0] ?? 0);
+    expect(rightRailA[2] ?? 0).not.toBeCloseTo(rightRailB[2] ?? 0);
     expect((rightRailA[3] ?? 0) > (rightRailA[5] ?? 0)).toBe(true);
   });
 
@@ -182,7 +182,7 @@ describe("v1.3 difference render payload", () => {
     expect(payload.cells[0]?.signedDelta).toBe(0);
     expect(payload.cells[0]?.absoluteDelta).toBe(0);
     expect(payload.stats.maxAbsoluteDelta).toBe(0);
-    expect(readInstance(payload.field, 0)[9]).toBeCloseTo(0.24);
+    expect(readInstance(payload.field, 0)[9] ?? 0).toBeCloseTo(0.24);
   });
 
   it("fails closed when support metadata would imply a fake numerical difference", () => {
