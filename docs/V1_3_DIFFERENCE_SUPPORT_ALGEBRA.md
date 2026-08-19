@@ -131,12 +131,23 @@ Therefore one-sided presence is useful evidence, but it is **not** a numerical s
 
 ## Validation status
 
-GitHub Actions quota is currently exhausted. These tests are authored as the executable contract but have not been run in the normal repository CI matrix. The branch is intentionally limited to the pure support module, its unit tests, and this documentation so it can be reviewed independently of rendering.
+GitHub Actions quota is currently exhausted, so the normal repository-wide matrix has not run for v1.3.0-a.
 
-When execution capacity is available again, the first required verification is:
+The pure comparison module itself has received standalone execution verification in the sandbox using a faithful local copy of the branch implementation and a minimal `affordanceVolume` type/runtime stub:
+
+- TypeScript compilation passed with `--strict`, `--noUncheckedIndexedAccess`, and `--exactOptionalPropertyTypes`;
+- the deterministic harness produced one valid intersection delta of `+0.35` for `B - A`;
+- `left_only` and `right_only` both preserved `delta = null`;
+- original left/right voxel object identity was preserved;
+- the summary returned `intersection=1`, `leftOnly=1`, `rightOnly=1`, `neither=9` for a 12-cell canonical lattice;
+- the harness correctly rejected threshold mismatch, malformed layer time, duplicate canonical cells, and GPU/forensic buffer misalignment.
+
+This is meaningful execution evidence for the new pure scientific core, but it is **not** a substitute claim that repository formatting, lint, Vitest, production build, Playwright, or Python checks passed.
+
+When execution capacity is available again, the remaining promotion gate is:
 
 ```text
-format → strict TypeScript → lint → unit tests
+format → repository strict TypeScript → lint → Vitest
 ```
 
-before v1.3.0-a is promoted from draft.
+before v1.3.0-a is considered fully verified in the normal project environment.
