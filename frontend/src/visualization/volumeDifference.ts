@@ -1,7 +1,8 @@
-import type {
-  VolumeChannel,
-  VolumeScene,
-  VolumeVoxel,
+import {
+  INSTANCE_STRIDE,
+  type VolumeChannel,
+  type VolumeScene,
+  type VolumeVoxel,
 } from "./affordanceVolume";
 
 export type VolumeDifferenceSupport =
@@ -11,6 +12,7 @@ export type VolumeDifferenceSupport =
 
 export type VolumeDifferenceCondition = {
   id: string;
+  retentionScope: "full_retained_scene";
   scene: VolumeScene;
   horizonSeconds: number;
   pitchLength: number;
@@ -59,6 +61,18 @@ export function comparisonCellKey(
   gridXIndex: number,
   gridYIndex: number,
 ): string {
+  if (
+    !Number.isInteger(layerIndex) ||
+    !Number.isInteger(gridXIndex) ||
+    !Number.isInteger(gridYIndex) ||
+    layerIndex < 0 ||
+    gridXIndex < 0 ||
+    gridYIndex < 0
+  ) {
+    throw new Error(
+      `Comparison cell indices must be non-negative integers: ${layerIndex}:${gridXIndex}:${gridYIndex}`,
+    );
+  }
   return `${layerIndex}:${gridXIndex}:${gridYIndex}`;
 }
 
@@ -78,13 +92,7 @@ function parseComparisonCellKey(key: string): [number, number, number] {
   const layerIndex = Number(layerText);
   const gridXIndex = Number(xText);
   const gridYIndex = Number(yText);
-  if (
-    !Number.isInteger(layerIndex) ||
-    !Number.isInteger(gridXIndex) ||
-    !Number.isInteger(gridYIndex)
-  ) {
-    throw new Error(`Invalid canonical comparison cell key ${key}`);
-  }
+  comparisonCellKey(layerIndex, gridXIndex, gridYIndex);
   return [layerIndex, gridXIndex, gridYIndex];
 }
 
@@ -101,12 +109,59 @@ function expectedLayerForecastSeconds(
   return (layerIndex / (horizonSteps - 1)) * horizonSeconds;
 }
 
+function assertSceneMetadata(
+  condition: VolumeDifferenceCondition,
+  side: "left" | "right",
+) {
+  const scene = condition.scene;
+  const stats = scene.stats;
+  if (!Number.isInteger(stats.gridX) || stats.gridX <= 0) {
+    throw new Error(`${side} scene has invalid gridX ${stats.gridX}`);
+  }
+  if (!Number.isInteger(stats.gridY) || stats.gridY <= 0) {
+    throw new Error(`${side} scene has invalid gridY ${stats.gridY}`);
+  }
+  if (!Number.isInteger(stats.horizonSteps) || stats.horizonSteps <= 0) {
+    throw new Error(
+      `${side} scene has invalid horizonSteps ${stats.horizonSteps}`,
+    );
+  }
+  if (!Number.isInteger(stats.maxVoxels) || stats.maxVoxels < 0) {
+    throw new Error(`${side} scene has invalid maxVoxels ${stats.maxVoxels}`);
+  }
+  if (!Number.isFinite(scene.timeScaleMetres) || scene.timeScaleMetres <= 0) {
+    throw new Error(
+      `${side} scene has invalid timeScaleMetres ${scene.timeScaleMetres}`,
+    );
+  }
+  if (stats.renderedVoxels !== scene.voxels.length) {
+    throw new Error(
+      `${side} scene renderedVoxels ${stats.renderedVoxels} does not match retained voxel count ${scene.voxels.length}`,
+    );
+  }
+  if (scene.voxels.length > stats.maxVoxels) {
+    throw new Error(
+      `${side} scene retained ${scene.voxels.length} voxels above maxVoxels ${stats.maxVoxels}`,
+    );
+  }
+  if (scene.field.length !== scene.voxels.length * INSTANCE_STRIDE) {
+    throw new Error(
+      `${side} scene field buffer is not index-aligned with retained voxels`,
+    );
+  }
+}
+
 function assertConditionContract(
   condition: VolumeDifferenceCondition,
   side: "left" | "right",
 ) {
   if (!condition.id.trim()) {
     throw new Error(`${side} comparison condition must have a non-empty id`);
+  }
+  if (condition.retentionScope !== "full_retained_scene") {
+    throw new Error(
+      `${side} comparison condition must use the full retained scene`,
+    );
   }
   if (!Number.isFinite(condition.horizonSeconds) || condition.horizonSeconds < 0) {
     throw new Error(
@@ -132,6 +187,7 @@ function assertConditionContract(
       `${side} comparison condition has invalid threshold ${condition.threshold}`,
     );
   }
+  assertSceneMetadata(condition, side);
 }
 
 function assertSceneCompatibility(
@@ -202,6 +258,102 @@ function assertSceneCompatibility(
   }
 }
 
+function assertRetainedVoxelContract(
+  voxel: VolumeVoxel,
+  condition: VolumeDifferenceCondition,
+  side: "left" | "right",
+) {
+  const scene = condition.scene;
+  if (!voxel.id.trim()) {
+    throw new Error(`${side} scene contains a retained voxel with an empty id`);
+  }
+  if (voxel.channel !== scene.stats.channel) {
+    throw new Error(
+      `${side} scene contains voxel ${voxel.id} from channel ${voxel.channel}, expected ${scene.stats.channel}`,
+    );
+  }
+  if (
+    !Number.isInteger(voxel.layerIndex) ||
+    !Number.isInteger(voxel.gridXIndex) ||
+    !Number.isInteger(voxel.gridYIndex) ||
+    voxel.layerIndex < 0 ||
+    voxel.layerIndex >= scene.stats.horizonSteps ||
+    voxel.gridXIndex < 0 ||
+    voxel.gridXIndex >= scene.stats.gridX ||
+    voxel.gridYIndex < 0 ||
+    voxel.gridYIndex >= scene.stats.gridY
+  ) {
+    throw new Error(
+      `${side} scene contains out-of-range voxel ${voxel.id} at ${voxel.layerIndex}:${voxel.gridXIndex}:${voxel.gridYIndex}`,
+    );
+  }
+  if (
+    !Number.isFinite(voxel.value) ||
+    voxel.value < 0 ||
+    voxel.value > 1
+  ) {
+    throw new Error(
+      `${side} scene voxel ${voxel.id} has invalid retained value ${voxel.value}`,
+    );
+  }
+  if (voxel.value + GEOMETRY_EPSILON < condition.threshold) {
+    throw new Error(
+      `${side} scene voxel ${voxel.id} value ${voxel.value} is below retention threshold ${condition.threshold}`,
+    );
+  }
+
+  const finiteGeometry: Array<[string, number]> = [
+    ["pitchX", voxel.pitchX],
+    ["pitchY", voxel.pitchY],
+    ["forecastSeconds", voxel.forecastSeconds],
+    ["worldX", voxel.worldX],
+    ["worldY", voxel.worldY],
+    ["worldZ", voxel.worldZ],
+    ["sizeX", voxel.sizeX],
+    ["sizeY", voxel.sizeY],
+    ["sizeZ", voxel.sizeZ],
+  ];
+  for (const [name, value] of finiteGeometry) {
+    if (!Number.isFinite(value)) {
+      throw new Error(
+        `${side} scene voxel ${voxel.id} has non-finite ${name} ${value}`,
+      );
+    }
+  }
+  if (voxel.sizeX <= 0 || voxel.sizeY <= 0 || voxel.sizeZ <= 0) {
+    throw new Error(
+      `${side} scene voxel ${voxel.id} has non-positive cell dimensions`,
+    );
+  }
+  if (
+    voxel.pitchX < -GEOMETRY_EPSILON ||
+    voxel.pitchX > condition.pitchLength + GEOMETRY_EPSILON ||
+    voxel.pitchY < -GEOMETRY_EPSILON ||
+    voxel.pitchY > condition.pitchWidth + GEOMETRY_EPSILON
+  ) {
+    throw new Error(
+      `${side} scene voxel ${voxel.id} lies outside the declared pitch`,
+    );
+  }
+
+  const expectedForecastSeconds = expectedLayerForecastSeconds(
+    voxel.layerIndex,
+    scene.stats.horizonSteps,
+    condition.horizonSeconds,
+  );
+  if (
+    !approximatelyEqual(
+      voxel.forecastSeconds,
+      expectedForecastSeconds,
+      TIME_EPSILON,
+    )
+  ) {
+    throw new Error(
+      `${side} scene voxel ${voxel.id} has forecastSeconds ${voxel.forecastSeconds}, expected ${expectedForecastSeconds} for layer ${voxel.layerIndex}`,
+    );
+  }
+}
+
 function indexScene(
   condition: VolumeDifferenceCondition,
   side: "left" | "right",
@@ -210,41 +362,7 @@ function indexScene(
   const byKey = new Map<string, VolumeVoxel>();
 
   for (const voxel of scene.voxels) {
-    if (voxel.channel !== scene.stats.channel) {
-      throw new Error(
-        `${side} scene contains voxel ${voxel.id} from channel ${voxel.channel}, expected ${scene.stats.channel}`,
-      );
-    }
-    if (
-      voxel.layerIndex < 0 ||
-      voxel.layerIndex >= scene.stats.horizonSteps ||
-      voxel.gridXIndex < 0 ||
-      voxel.gridXIndex >= scene.stats.gridX ||
-      voxel.gridYIndex < 0 ||
-      voxel.gridYIndex >= scene.stats.gridY
-    ) {
-      throw new Error(
-        `${side} scene contains out-of-range voxel ${voxel.id} at ${voxel.layerIndex}:${voxel.gridXIndex}:${voxel.gridYIndex}`,
-      );
-    }
-
-    const expectedForecastSeconds = expectedLayerForecastSeconds(
-      voxel.layerIndex,
-      scene.stats.horizonSteps,
-      condition.horizonSeconds,
-    );
-    if (
-      !approximatelyEqual(
-        voxel.forecastSeconds,
-        expectedForecastSeconds,
-        TIME_EPSILON,
-      )
-    ) {
-      throw new Error(
-        `${side} scene voxel ${voxel.id} has forecastSeconds ${voxel.forecastSeconds}, expected ${expectedForecastSeconds} for layer ${voxel.layerIndex}`,
-      );
-    }
-
+    assertRetainedVoxelContract(voxel, condition, side);
     const key = comparisonCellKey(
       voxel.layerIndex,
       voxel.gridXIndex,
