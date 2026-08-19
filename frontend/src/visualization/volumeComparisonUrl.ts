@@ -1,3 +1,4 @@
+import type { VolumeQuality } from "./affordanceVolume";
 import type { VolumeComparisonChannel } from "./volumeComparison";
 
 export const DEFAULT_COMPARISON_CHANNEL: VolumeComparisonChannel =
@@ -5,16 +6,31 @@ export const DEFAULT_COMPARISON_CHANNEL: VolumeComparisonChannel =
 export const EARLIER_RUN_COMPARISON_ID = "earlier-run";
 export const EARLIER_RUN_LEAD_PRESETS = [0.5, 0.75, 1] as const;
 export type EarlierRunLeadSeconds = (typeof EARLIER_RUN_LEAD_PRESETS)[number];
+export type DeterministicComparisonQuality = Exclude<VolumeQuality, "auto">;
 
 export type VolumeComparisonUrlState = {
   comparisonId: typeof EARLIER_RUN_COMPARISON_ID;
   channel: VolumeComparisonChannel;
   leadSeconds: EarlierRunLeadSeconds;
+  quality: DeterministicComparisonQuality;
+  threshold: number;
 };
 
 function parseLead(value: string | null): EarlierRunLeadSeconds {
   const parsed = Number(value);
   return EARLIER_RUN_LEAD_PRESETS.find((preset) => preset === parsed) ?? 0.75;
+}
+
+function parseQuality(value: string | null): DeterministicComparisonQuality {
+  return value === "low" || value === "high" ? value : "medium";
+}
+
+function parseThreshold(value: string | null) {
+  if (value === null) return 0.2;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0.05 || parsed > 0.65) return 0.2;
+  const snapped = Math.round(parsed / 0.025) * 0.025;
+  return Math.min(0.65, Math.max(0.05, Number(snapped.toFixed(3))));
 }
 
 export function parseVolumeComparisonUrl(
@@ -28,6 +44,8 @@ export function parseVolumeComparisonUrl(
         ? channel
         : DEFAULT_COMPARISON_CHANNEL,
     leadSeconds: parseLead(params.get("lead")),
+    quality: parseQuality(params.get("dq")),
+    threshold: parseThreshold(params.get("dt")),
   };
 }
 
@@ -55,6 +73,8 @@ export function writeVolumeComparisonUrl(
   next.set("cmp", state.comparisonId);
   next.set("dc", state.channel);
   next.set("lead", state.leadSeconds.toFixed(2));
+  next.set("dq", state.quality);
+  next.set("dt", state.threshold.toFixed(3));
   return next;
 }
 
