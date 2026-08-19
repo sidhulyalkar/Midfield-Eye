@@ -15,6 +15,26 @@ const HORIZON_STEPS = 3;
 const GRID_X = 2;
 const GRID_Y = 2;
 const TIME_SCALE_METRES = 16;
+const PITCH_LENGTH = 105;
+const PITCH_WIDTH = 68;
+const THRESHOLD = 0.2;
+
+type ConditionContractOverrides = Partial<
+  Pick<
+    VolumeDifferenceCondition,
+    "horizonSeconds" | "pitchLength" | "pitchWidth" | "threshold"
+  >
+>;
+
+const incompatibleSceneCases: Array<
+  [string, Partial<VolumeScene["stats"]>, RegExp]
+> = [
+  ["channel", { channel: "pressure" as VolumeChannel }, /same channel/u],
+  ["grid x", { gridX: 3 }, /same gridX/u],
+  ["grid y", { gridY: 3 }, /same gridY/u],
+  ["horizon steps", { horizonSteps: 4 }, /same horizonSteps/u],
+  ["voxel budget", { maxVoxels: 99 }, /same voxel budget/u],
+];
 
 function forecastSeconds(layerIndex: number) {
   return (layerIndex / (HORIZON_STEPS - 1)) * HORIZON_SECONDS;
@@ -106,12 +126,16 @@ function condition(
   id: string,
   voxels: VolumeVoxel[],
   sceneOverrides: Partial<VolumeScene["stats"]> = {},
-  horizonSeconds = HORIZON_SECONDS,
+  contractOverrides: ConditionContractOverrides = {},
 ): VolumeDifferenceCondition {
   return {
     id,
     scene: scene(voxels, sceneOverrides),
-    horizonSeconds,
+    horizonSeconds: HORIZON_SECONDS,
+    pitchLength: PITCH_LENGTH,
+    pitchWidth: PITCH_WIDTH,
+    threshold: THRESHOLD,
+    ...contractOverrides,
   };
 }
 
@@ -208,24 +232,56 @@ describe("v1.3 evidence-aware difference support", () => {
     expect(() =>
       buildVolumeDifference(
         condition("a", [voxel("a", 0, 0, 0, 0.2)]),
-        condition("b", [voxel("b", 2, 1, 1, 0.8)], {}, 0.75),
+        condition(
+          "b",
+          [voxel("b", 2, 1, 1, 0.8)],
+          {},
+          { horizonSeconds: 0.75 },
+        ),
       ),
     ).toThrow(/same horizonSeconds/u);
   });
 
-  it.each([
-    ["channel", { channel: "pressure" as VolumeChannel }, /same channel/u],
-    ["grid x", { gridX: 3 }, /same gridX/u],
-    ["grid y", { gridY: 3 }, /same gridY/u],
-    ["horizon steps", { horizonSteps: 4 }, /same horizonSteps/u],
-    ["voxel budget", { maxVoxels: 99 }, /same voxel budget/u],
-  ])("rejects incompatible %s contracts", (_label, rightOverrides, message) => {
+  it("rejects pitch or threshold mismatches even when sparse supports do not overlap", () => {
+    expect(() =>
+      buildVolumeDifference(
+        condition("a", [voxel("a", 0, 0, 0, 0.2)]),
+        condition(
+          "b",
+          [voxel("b", 2, 1, 1, 0.8)],
+          {},
+          { pitchLength: 100 },
+        ),
+      ),
+    ).toThrow(/same pitchLength/u);
+
     expect(() =>
       buildVolumeDifference(
         condition("a", []),
-        condition("b", [], rightOverrides),
+        condition("b", [], {}, { threshold: 0.35 }),
       ),
-    ).toThrow(message);
+    ).toThrow(/same retention threshold/u);
+  });
+
+  it.each(incompatibleSceneCases)(
+    "rejects incompatible %s contracts",
+    (_label, rightOverrides, message) => {
+      expect(() =>
+        buildVolumeDifference(
+          condition("a", []),
+          condition("b", [], rightOverrides),
+        ),
+      ).toThrow(message);
+    },
+  );
+
+  it("rejects a mismatched temporal render scale", () => {
+    const left = condition("a", []);
+    const right = condition("b", []);
+    right.scene.timeScaleMetres = 17;
+    expect(() => buildVolumeDifference(left, right)).toThrow(
+      /same temporal render scale/u,
+    );
   });
 
   it("rejects incompatible intersection geometry instead of calculating a false delta", () => {
@@ -244,17 +300,19 @@ describe("v1.3 evidence-aware difference support", () => {
 
   it("rejects malformed condition metadata and out-of-range retained cells", () => {
     expect(() =>
-      buildVolumeDifference(
-        condition("", []),
-        condition("b", []),
-      ),
+      buildVolumeDifference(condition("", []), condition("b", [])),
     ).toThrow(/non-empty id/u);
 
     expect(() =>
       buildVolumeDifference(
-        condition("a", [
-          voxel("outside-grid", 1, 2, 0, 0.4),
-        ]),
+        condition("a", [], {}, { threshold: 1.5 }),
+        condition("b", []),
+      ),
+    ).toThrow(/invalid threshold/u);
+
+    expect(() =>
+      buildVolumeDifference(
+        condition("a", [voxel("outside-grid", 1, 2, 0, 0.4)]),
         condition("b", []),
       ),
     ).toThrow(/out-of-range voxel/u);
