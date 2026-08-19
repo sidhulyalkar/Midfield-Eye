@@ -2,6 +2,7 @@ type FeedbackKind =
   | "loading"
   | "recoverable_error"
   | "not_found"
+  | "empty"
   | "empty_filter_result"
   | "missing_signal"
   | "source_gated"
