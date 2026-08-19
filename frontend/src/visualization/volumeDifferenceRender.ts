@@ -1,6 +1,5 @@
 import { INSTANCE_STRIDE, type VolumeVoxel } from "./affordanceVolume";
 import type {
-  VolumeDifference,
   VolumeDifferenceCell,
   VolumeDifferenceSupport,
 } from "./volumeDifference";
@@ -159,7 +158,7 @@ function appendRightOnlyGlyph(instances: number[], voxel: VolumeVoxel) {
 }
 
 export function buildVolumeDifferenceRenderPayload(
-  difference: VolumeDifference,
+  cellsToRender: readonly VolumeDifferenceCell[],
 ): VolumeDifferenceRenderPayload {
   const instances: number[] = [];
   const cells: VolumeDifferenceRenderCell[] = [];
@@ -168,7 +167,7 @@ export function buildVolumeDifferenceRenderPayload(
   let rightOnlyCells = 0;
   let maxAbsoluteDelta = 0;
 
-  for (const cell of difference.cells) {
+  for (const cell of cellsToRender) {
     assertCellSupportContract(cell);
     const voxel = representativeVoxel(cell);
     const instanceStart = instances.length / INSTANCE_STRIDE;
