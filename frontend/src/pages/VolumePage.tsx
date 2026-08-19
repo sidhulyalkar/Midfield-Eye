@@ -90,7 +90,7 @@ export default function VolumePage() {
   const [publishedScene, setPublishedScene] = useState<PublishedScene | null>(
     null,
   );
-  const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(
+  const [rawInspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(
     null,
   );
 
@@ -156,6 +156,7 @@ export default function VolumePage() {
     temporalFiltersEqual(publishedScene.state.temporalFilter, temporalFilter)
       ? publishedScene.state
       : null;
+  const inspectedVoxel = syncedScene ? rawInspectedVoxel : null;
   const sliceSeconds =
     temporalFilter.mode === "slice"
       ? horizonSecondsForLayer(
