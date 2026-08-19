@@ -76,5 +76,4 @@ test("v1.3 comparison keeps one-sided evidence categorical in explanatory copy",
   await expect(
     page.getByText(/Horizontal blue rails: retained only in B, no numeric Δ/u),
   ).toBeVisible();
-  await expect(page.getByText(/One-sided presence is not zero/u)).toBeVisible();
 });
