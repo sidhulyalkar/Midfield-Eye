@@ -26,9 +26,10 @@ function velocity(player: PlayerState): readonly [number, number] | null {
 }
 
 function clonePlayer(player: PlayerState): PlayerState {
+  const cloned = { ...player, metadata: { ...player.metadata } };
+  if (player.position_covariance === undefined) return cloned;
   return {
-    ...player,
-    metadata: { ...player.metadata },
+    ...cloned,
     position_covariance: player.position_covariance
       ? player.position_covariance.map((row) => [...row])
       : player.position_covariance,
