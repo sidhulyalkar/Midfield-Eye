@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from "react";
 import type { VolumeDifferenceRenderCell } from "./volumeDifferenceRender";
 
 export type LinkedDifferenceSliceProps = {
@@ -98,7 +99,7 @@ export function LinkedDifferenceSlice({
                 height={voxel.sizeZ * 0.82}
                 opacity={0.24 + 0.68 * Math.sqrt(Math.min(1, magnitude))}
                 onClick={() => onSelectKey(cell.key)}
-                onKeyDown={(event) => {
+                onKeyDown={(event: KeyboardEvent<SVGRectElement>) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     onSelectKey(cell.key);
@@ -122,7 +123,7 @@ export function LinkedDifferenceSlice({
               data-support={cell.support}
               className={`difference-slice-one-sided ${cell.support === "left_only" ? "is-left-only" : "is-right-only"} ${selected ? "is-selected" : ""}`}
               onClick={() => onSelectKey(cell.key)}
-              onKeyDown={(event) => {
+              onKeyDown={(event: KeyboardEvent<SVGGElement>) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
                   onSelectKey(cell.key);
