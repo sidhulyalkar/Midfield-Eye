@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type {
-  VolumeChannel,
-  VolumeScene,
-  VolumeVoxel,
+import {
+  INSTANCE_STRIDE,
+  type VolumeChannel,
+  type VolumeScene,
+  type VolumeVoxel,
 } from "./affordanceVolume";
 import {
   buildVolumeDifference,
@@ -103,7 +104,7 @@ function scene(
     : 0;
   const channel = overrides.channel ?? "menu";
   return {
-    field: new Float32Array(),
+    field: new Float32Array(voxels.length * INSTANCE_STRIDE),
     solids: new Float32Array(),
     voxels,
     timeScaleMetres: TIME_SCALE_METRES,
@@ -130,6 +131,7 @@ function condition(
 ): VolumeDifferenceCondition {
   return {
     id,
+    retentionScope: "full_retained_scene",
     scene: scene(voxels, sceneOverrides),
     horizonSeconds: HORIZON_SECONDS,
     pitchLength: PITCH_LENGTH,
@@ -202,6 +204,9 @@ describe("v1.3 evidence-aware difference support", () => {
       "2:1:0",
     ]);
     expect(comparisonCellKey(2, 1, 0)).toBe("2:1:0");
+    expect(() => comparisonCellKey(0.5, 1, 0)).toThrow(
+      /non-negative integers/u,
+    );
   });
 
   it("fails closed on duplicate canonical cells rather than choosing one silently", () => {
@@ -298,7 +303,21 @@ describe("v1.3 evidence-aware difference support", () => {
     ).toThrow(/incompatible pitchX/u);
   });
 
-  it("rejects malformed condition metadata and out-of-range retained cells", () => {
+  it("rejects malformed retained scene metadata and GPU/forensic misalignment", () => {
+    const badCount = condition("a", [voxel("a", 0, 0, 0, 0.4)]);
+    badCount.scene.stats.renderedVoxels = 0;
+    expect(() => buildVolumeDifference(badCount, condition("b", []))).toThrow(
+      /does not match retained voxel count/u,
+    );
+
+    const badBuffer = condition("a", [voxel("a", 0, 0, 0, 0.4)]);
+    badBuffer.scene.field = new Float32Array(INSTANCE_STRIDE - 1);
+    expect(() => buildVolumeDifference(badBuffer, condition("b", []))).toThrow(
+      /field buffer is not index-aligned/u,
+    );
+  });
+
+  it("rejects malformed condition metadata and malformed retained voxels", () => {
     expect(() =>
       buildVolumeDifference(condition("", []), condition("b", [])),
     ).toThrow(/non-empty id/u);
@@ -316,5 +335,21 @@ describe("v1.3 evidence-aware difference support", () => {
         condition("b", []),
       ),
     ).toThrow(/out-of-range voxel/u);
+
+    expect(() =>
+      buildVolumeDifference(
+        condition("a", [voxel("below-threshold", 1, 1, 1, 0.1)]),
+        condition("b", []),
+      ),
+    ).toThrow(/below retention threshold/u);
+
+    expect(() =>
+      buildVolumeDifference(
+        condition("a", [
+          voxel("outside-pitch", 1, 1, 1, 0.4, { pitchX: 106 }),
+        ]),
+        condition("b", []),
+      ),
+    ).toThrow(/outside the declared pitch/u);
   });
 });
