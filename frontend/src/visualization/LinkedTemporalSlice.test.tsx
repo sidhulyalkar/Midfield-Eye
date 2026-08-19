@@ -68,9 +68,35 @@ describe("linked temporal slice", () => {
     expect(firstCell).toHaveAttribute("data-voxel-value", "0.812345");
     expect(secondCell).toHaveAttribute("data-voxel-value", "0.612345");
     expect(secondCell).toHaveClass("is-selected");
+    expect(firstCell).toHaveAttribute("tabindex", "-1");
+    expect(secondCell).toHaveAttribute("tabindex", "0");
 
     fireEvent.click(firstCell!);
     expect(onSelectVoxel).toHaveBeenCalledWith(first.id);
     expect(screen.getByText(/not a separately computed heatmap/u)).toBeVisible();
+  });
+
+  it("uses the strongest retained voxel as the sole keyboard anchor without a selection", () => {
+    const strongest = voxel("frame:menu:2:3:4", 0.912345, 3);
+    const weaker = voxel("frame:menu:2:5:4", 0.412345, 5);
+    const { container } = render(
+      <LinkedTemporalSlice
+        voxels={[strongest, weaker]}
+        pitchLength={105}
+        pitchWidth={68}
+        layerIndex={2}
+        forecastSeconds={0.5}
+        selectedVoxelId={null}
+        onSelectVoxel={vi.fn()}
+      />,
+    );
+
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+    expect(
+      container.querySelector(`[data-voxel-id="${strongest.id}"]`),
+    ).toHaveAttribute("tabindex", "0");
+    expect(
+      container.querySelector(`[data-voxel-id="${weaker.id}"]`),
+    ).toHaveAttribute("tabindex", "-1");
   });
 });
