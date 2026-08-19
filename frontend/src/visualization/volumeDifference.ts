@@ -9,6 +9,12 @@ export type VolumeDifferenceSupport =
   | "left_only"
   | "right_only";
 
+export type VolumeDifferenceCondition = {
+  id: string;
+  scene: VolumeScene;
+  horizonSeconds: number;
+};
+
 export type VolumeDifferenceCell = {
   key: string;
   layerIndex: number;
@@ -30,6 +36,8 @@ export type VolumeDifferenceSummary = {
 };
 
 export type VolumeDifference = {
+  conditionAId: string;
+  conditionBId: string;
   channel: VolumeChannel;
   signConvention: "condition_b_minus_condition_a";
   cells: VolumeDifferenceCell[];
@@ -38,7 +46,6 @@ export type VolumeDifference = {
 
 type IndexedScene = {
   byKey: Map<string, VolumeVoxel>;
-  layerForecastSeconds: Map<number, number>;
 };
 
 const GEOMETRY_EPSILON = 1e-6;
@@ -52,52 +59,118 @@ export function comparisonCellKey(
   return `${layerIndex}:${gridXIndex}:${gridYIndex}`;
 }
 
+function parseComparisonCellKey(key: string): [number, number, number] {
+  const parts = key.split(":");
+  const layerText = parts[0];
+  const xText = parts[1];
+  const yText = parts[2];
+  if (
+    parts.length !== 3 ||
+    layerText === undefined ||
+    xText === undefined ||
+    yText === undefined
+  ) {
+    throw new Error(`Invalid canonical comparison cell key ${key}`);
+  }
+  const layerIndex = Number(layerText);
+  const gridXIndex = Number(xText);
+  const gridYIndex = Number(yText);
+  if (
+    !Number.isInteger(layerIndex) ||
+    !Number.isInteger(gridXIndex) ||
+    !Number.isInteger(gridYIndex)
+  ) {
+    throw new Error(`Invalid canonical comparison cell key ${key}`);
+  }
+  return [layerIndex, gridXIndex, gridYIndex];
+}
+
 function approximatelyEqual(left: number, right: number, epsilon: number) {
   return Math.abs(left - right) <= epsilon;
 }
 
-function assertSceneCompatibility(left: VolumeScene, right: VolumeScene) {
-  if (left.stats.channel !== right.stats.channel) {
-    throw new Error(
-      `Difference scenes must use the same channel: ${left.stats.channel} != ${right.stats.channel}`,
-    );
+function expectedLayerForecastSeconds(
+  layerIndex: number,
+  horizonSteps: number,
+  horizonSeconds: number,
+) {
+  if (horizonSteps <= 1) return 0;
+  return (layerIndex / (horizonSteps - 1)) * horizonSeconds;
+}
+
+function assertConditionContract(
+  condition: VolumeDifferenceCondition,
+  side: "left" | "right",
+) {
+  if (!condition.id.trim()) {
+    throw new Error(`${side} comparison condition must have a non-empty id`);
   }
-  if (left.stats.gridX !== right.stats.gridX) {
+  if (!Number.isFinite(condition.horizonSeconds) || condition.horizonSeconds < 0) {
     throw new Error(
-      `Difference scenes must use the same gridX: ${left.stats.gridX} != ${right.stats.gridX}`,
-    );
-  }
-  if (left.stats.gridY !== right.stats.gridY) {
-    throw new Error(
-      `Difference scenes must use the same gridY: ${left.stats.gridY} != ${right.stats.gridY}`,
-    );
-  }
-  if (left.stats.horizonSteps !== right.stats.horizonSteps) {
-    throw new Error(
-      `Difference scenes must use the same horizonSteps: ${left.stats.horizonSteps} != ${right.stats.horizonSteps}`,
-    );
-  }
-  if (left.stats.maxVoxels !== right.stats.maxVoxels) {
-    throw new Error(
-      `Difference scenes must use the same voxel budget: ${left.stats.maxVoxels} != ${right.stats.maxVoxels}`,
-    );
-  }
-  if (
-    !approximatelyEqual(
-      left.timeScaleMetres,
-      right.timeScaleMetres,
-      GEOMETRY_EPSILON,
-    )
-  ) {
-    throw new Error(
-      `Difference scenes must use the same temporal render scale: ${left.timeScaleMetres} != ${right.timeScaleMetres}`,
+      `${side} comparison condition has invalid horizonSeconds ${condition.horizonSeconds}`,
     );
   }
 }
 
-function indexScene(scene: VolumeScene, side: "left" | "right"): IndexedScene {
+function assertSceneCompatibility(
+  left: VolumeDifferenceCondition,
+  right: VolumeDifferenceCondition,
+) {
+  assertConditionContract(left, "left");
+  assertConditionContract(right, "right");
+
+  if (!approximatelyEqual(left.horizonSeconds, right.horizonSeconds, TIME_EPSILON)) {
+    throw new Error(
+      `Difference conditions must use the same horizonSeconds: ${left.horizonSeconds} != ${right.horizonSeconds}`,
+    );
+  }
+
+  const leftScene = left.scene;
+  const rightScene = right.scene;
+  if (leftScene.stats.channel !== rightScene.stats.channel) {
+    throw new Error(
+      `Difference scenes must use the same channel: ${leftScene.stats.channel} != ${rightScene.stats.channel}`,
+    );
+  }
+  if (leftScene.stats.gridX !== rightScene.stats.gridX) {
+    throw new Error(
+      `Difference scenes must use the same gridX: ${leftScene.stats.gridX} != ${rightScene.stats.gridX}`,
+    );
+  }
+  if (leftScene.stats.gridY !== rightScene.stats.gridY) {
+    throw new Error(
+      `Difference scenes must use the same gridY: ${leftScene.stats.gridY} != ${rightScene.stats.gridY}`,
+    );
+  }
+  if (leftScene.stats.horizonSteps !== rightScene.stats.horizonSteps) {
+    throw new Error(
+      `Difference scenes must use the same horizonSteps: ${leftScene.stats.horizonSteps} != ${rightScene.stats.horizonSteps}`,
+    );
+  }
+  if (leftScene.stats.maxVoxels !== rightScene.stats.maxVoxels) {
+    throw new Error(
+      `Difference scenes must use the same voxel budget: ${leftScene.stats.maxVoxels} != ${rightScene.stats.maxVoxels}`,
+    );
+  }
+  if (
+    !approximatelyEqual(
+      leftScene.timeScaleMetres,
+      rightScene.timeScaleMetres,
+      GEOMETRY_EPSILON,
+    )
+  ) {
+    throw new Error(
+      `Difference scenes must use the same temporal render scale: ${leftScene.timeScaleMetres} != ${rightScene.timeScaleMetres}`,
+    );
+  }
+}
+
+function indexScene(
+  condition: VolumeDifferenceCondition,
+  side: "left" | "right",
+): IndexedScene {
+  const scene = condition.scene;
   const byKey = new Map<string, VolumeVoxel>();
-  const layerForecastSeconds = new Map<number, number>();
 
   for (const voxel of scene.voxels) {
     if (voxel.channel !== scene.stats.channel) {
@@ -118,6 +191,23 @@ function indexScene(scene: VolumeScene, side: "left" | "right"): IndexedScene {
       );
     }
 
+    const expectedForecastSeconds = expectedLayerForecastSeconds(
+      voxel.layerIndex,
+      scene.stats.horizonSteps,
+      condition.horizonSeconds,
+    );
+    if (
+      !approximatelyEqual(
+        voxel.forecastSeconds,
+        expectedForecastSeconds,
+        TIME_EPSILON,
+      )
+    ) {
+      throw new Error(
+        `${side} scene voxel ${voxel.id} has forecastSeconds ${voxel.forecastSeconds}, expected ${expectedForecastSeconds} for layer ${voxel.layerIndex}`,
+      );
+    }
+
     const key = comparisonCellKey(
       voxel.layerIndex,
       voxel.gridXIndex,
@@ -129,38 +219,9 @@ function indexScene(scene: VolumeScene, side: "left" | "right"): IndexedScene {
       );
     }
     byKey.set(key, voxel);
-
-    const knownLayerTime = layerForecastSeconds.get(voxel.layerIndex);
-    if (
-      knownLayerTime !== undefined &&
-      !approximatelyEqual(
-        knownLayerTime,
-        voxel.forecastSeconds,
-        TIME_EPSILON,
-      )
-    ) {
-      throw new Error(
-        `${side} scene contains inconsistent forecast timestamps for layer ${voxel.layerIndex}`,
-      );
-    }
-    layerForecastSeconds.set(voxel.layerIndex, voxel.forecastSeconds);
   }
 
-  return { byKey, layerForecastSeconds };
-}
-
-function assertLayerTimesCompatible(left: IndexedScene, right: IndexedScene) {
-  for (const [layerIndex, leftSeconds] of left.layerForecastSeconds) {
-    const rightSeconds = right.layerForecastSeconds.get(layerIndex);
-    if (
-      rightSeconds !== undefined &&
-      !approximatelyEqual(leftSeconds, rightSeconds, TIME_EPSILON)
-    ) {
-      throw new Error(
-        `Difference scenes disagree on forecast time for layer ${layerIndex}: ${leftSeconds} != ${rightSeconds}`,
-      );
-    }
-  }
+  return { byKey };
 }
 
 function assertIntersectionGeometryCompatible(
@@ -191,23 +252,18 @@ function assertIntersectionGeometryCompatible(
 }
 
 function compareCellKeys(left: string, right: string) {
-  const [leftLayer, leftX, leftY] = left.split(":").map(Number);
-  const [rightLayer, rightX, rightY] = right.split(":").map(Number);
-  return (
-    leftLayer - rightLayer ||
-    leftX - rightX ||
-    leftY - rightY
-  );
+  const [leftLayer, leftX, leftY] = parseComparisonCellKey(left);
+  const [rightLayer, rightX, rightY] = parseComparisonCellKey(right);
+  return leftLayer - rightLayer || leftX - rightX || leftY - rightY;
 }
 
 export function buildVolumeDifference(
-  conditionA: VolumeScene,
-  conditionB: VolumeScene,
+  conditionA: VolumeDifferenceCondition,
+  conditionB: VolumeDifferenceCondition,
 ): VolumeDifference {
   assertSceneCompatibility(conditionA, conditionB);
   const left = indexScene(conditionA, "left");
   const right = indexScene(conditionB, "right");
-  assertLayerTimesCompatible(left, right);
 
   const keys = new Set<string>([...left.byKey.keys(), ...right.byKey.keys()]);
   const sortedKeys = [...keys].sort(compareCellKeys);
@@ -219,7 +275,7 @@ export function buildVolumeDifference(
   for (const key of sortedKeys) {
     const leftVoxel = left.byKey.get(key) ?? null;
     const rightVoxel = right.byKey.get(key) ?? null;
-    const [layerIndex, gridXIndex, gridYIndex] = key.split(":").map(Number);
+    const [layerIndex, gridXIndex, gridYIndex] = parseComparisonCellKey(key);
 
     if (leftVoxel && rightVoxel) {
       assertIntersectionGeometryCompatible(leftVoxel, rightVoxel, key);
@@ -268,13 +324,15 @@ export function buildVolumeDifference(
   }
 
   const totalCanonicalCells =
-    conditionA.stats.gridX *
-    conditionA.stats.gridY *
-    conditionA.stats.horizonSteps;
+    conditionA.scene.stats.gridX *
+    conditionA.scene.stats.gridY *
+    conditionA.scene.stats.horizonSteps;
   const retainedUnion = cells.length;
 
   return {
-    channel: conditionA.stats.channel,
+    conditionAId: conditionA.id,
+    conditionBId: conditionB.id,
+    channel: conditionA.scene.stats.channel,
     signConvention: "condition_b_minus_condition_a",
     cells,
     summary: {
