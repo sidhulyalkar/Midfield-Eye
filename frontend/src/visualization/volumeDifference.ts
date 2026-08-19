@@ -13,6 +13,9 @@ export type VolumeDifferenceCondition = {
   id: string;
   scene: VolumeScene;
   horizonSeconds: number;
+  pitchLength: number;
+  pitchWidth: number;
+  threshold: number;
 };
 
 export type VolumeDifferenceCell = {
@@ -110,6 +113,25 @@ function assertConditionContract(
       `${side} comparison condition has invalid horizonSeconds ${condition.horizonSeconds}`,
     );
   }
+  if (!Number.isFinite(condition.pitchLength) || condition.pitchLength <= 0) {
+    throw new Error(
+      `${side} comparison condition has invalid pitchLength ${condition.pitchLength}`,
+    );
+  }
+  if (!Number.isFinite(condition.pitchWidth) || condition.pitchWidth <= 0) {
+    throw new Error(
+      `${side} comparison condition has invalid pitchWidth ${condition.pitchWidth}`,
+    );
+  }
+  if (
+    !Number.isFinite(condition.threshold) ||
+    condition.threshold < 0 ||
+    condition.threshold > 1
+  ) {
+    throw new Error(
+      `${side} comparison condition has invalid threshold ${condition.threshold}`,
+    );
+  }
 }
 
 function assertSceneCompatibility(
@@ -122,6 +144,21 @@ function assertSceneCompatibility(
   if (!approximatelyEqual(left.horizonSeconds, right.horizonSeconds, TIME_EPSILON)) {
     throw new Error(
       `Difference conditions must use the same horizonSeconds: ${left.horizonSeconds} != ${right.horizonSeconds}`,
+    );
+  }
+  if (!approximatelyEqual(left.pitchLength, right.pitchLength, GEOMETRY_EPSILON)) {
+    throw new Error(
+      `Difference conditions must use the same pitchLength: ${left.pitchLength} != ${right.pitchLength}`,
+    );
+  }
+  if (!approximatelyEqual(left.pitchWidth, right.pitchWidth, GEOMETRY_EPSILON)) {
+    throw new Error(
+      `Difference conditions must use the same pitchWidth: ${left.pitchWidth} != ${right.pitchWidth}`,
+    );
+  }
+  if (!approximatelyEqual(left.threshold, right.threshold, GEOMETRY_EPSILON)) {
+    throw new Error(
+      `Difference conditions must use the same retention threshold: ${left.threshold} != ${right.threshold}`,
     );
   }
 
