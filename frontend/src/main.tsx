@@ -10,6 +10,7 @@ import "./styles/pilot.css";
 import "./styles/volume.css";
 import "./styles/volumeInspector.css";
 import "./styles/volumeV12.css";
+import "./styles/volumeDifference.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");
