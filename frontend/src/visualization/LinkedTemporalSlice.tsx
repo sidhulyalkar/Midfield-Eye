@@ -19,6 +19,13 @@ export function LinkedTemporalSlice({
   selectedVoxelId,
   onSelectVoxel,
 }: LinkedTemporalSliceProps) {
+  const selectedIsVisible =
+    selectedVoxelId !== null &&
+    voxels.some((voxel) => voxel.id === selectedVoxelId);
+  const keyboardAnchorId = selectedIsVisible
+    ? selectedVoxelId
+    : (voxels[0]?.id ?? null);
+
   return (
     <section
       className="linked-temporal-slice"
@@ -73,7 +80,7 @@ export function LinkedTemporalSlice({
             height={Math.max(0.25, voxel.sizeZ)}
             opacity={Math.max(0.2, Math.min(0.92, voxel.value))}
             role="button"
-            tabIndex={0}
+            tabIndex={voxel.id === keyboardAnchorId ? 0 : -1}
             aria-label={`Inspect voxel ${voxel.id}, value ${voxel.value.toFixed(3)}`}
             onClick={() => onSelectVoxel(voxel.id)}
             onKeyDown={(event) => {
