@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { INSTANCE_STRIDE, type VolumeVoxel } from "./affordanceVolume";
-import type {
-  VolumeDifference,
-  VolumeDifferenceCell,
-} from "./volumeDifference";
+import type { VolumeDifferenceCell } from "./volumeDifference";
 import { buildVolumeDifferenceRenderPayload } from "./volumeDifferenceRender";
 
 function voxel(id: string, value: number, x = 12, z = -8): VolumeVoxel {
@@ -43,25 +40,6 @@ function voxel(id: string, value: number, x = 12, z = -8): VolumeVoxel {
       visibility: "unknown",
       uncertainty: "tracking_status_only",
       futureObservedFramesUsed: false,
-    },
-  };
-}
-
-function difference(cells: VolumeDifferenceCell[]): VolumeDifference {
-  return {
-    conditionAId: "A",
-    conditionBId: "B",
-    channel: "menu",
-    signConvention: "condition_b_minus_condition_a",
-    cells,
-    summary: {
-      intersection: cells.filter((cell) => cell.support === "intersection")
-        .length,
-      leftOnly: cells.filter((cell) => cell.support === "left_only").length,
-      rightOnly: cells.filter((cell) => cell.support === "right_only").length,
-      neither: 0,
-      retainedUnion: cells.length,
-      totalCanonicalCells: cells.length,
     },
   };
 }
@@ -108,9 +86,11 @@ describe("v1.3 difference render payload", () => {
       delta: null,
     };
 
-    const payload = buildVolumeDifferenceRenderPayload(
-      difference([intersection, leftOnly, rightOnly]),
-    );
+    const payload = buildVolumeDifferenceRenderPayload([
+      intersection,
+      leftOnly,
+      rightOnly,
+    ]);
 
     expect(payload.stats).toEqual({
       comparisonCells: 3,
@@ -178,7 +158,7 @@ describe("v1.3 difference render payload", () => {
       right,
       delta: 0,
     };
-    const payload = buildVolumeDifferenceRenderPayload(difference([cell]));
+    const payload = buildVolumeDifferenceRenderPayload([cell]);
     expect(payload.cells[0]?.signedDelta).toBe(0);
     expect(payload.cells[0]?.absoluteDelta).toBe(0);
     expect(payload.stats.maxAbsoluteDelta).toBe(0);
@@ -197,8 +177,8 @@ describe("v1.3 difference render payload", () => {
       right: null,
       delta: 0,
     };
-    expect(() =>
-      buildVolumeDifferenceRenderPayload(difference([malformed])),
-    ).toThrow(/delta=null/u);
+    expect(() => buildVolumeDifferenceRenderPayload([malformed])).toThrow(
+      /delta=null/u,
+    );
   });
 });
