@@ -72,6 +72,11 @@ const inspectorActionStyle = {
   textTransform: "uppercase" as const,
 };
 
+type PublishedScene = {
+  key: string;
+  state: AffordanceVolumeSceneState;
+};
+
 export default function VolumePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const scenarioId = searchParams.get("scenario") ?? "aitana-overload";
@@ -82,8 +87,9 @@ export default function VolumePage() {
   const [quality, setQuality] = useState<VolumeQuality>("auto");
   const [threshold, setThreshold] = useState(0.2);
   const [runtime, setRuntime] = useState<AffordanceVolumeRuntime | null>(null);
-  const [sceneState, setSceneState] =
-    useState<AffordanceVolumeSceneState | null>(null);
+  const [publishedScene, setPublishedScene] = useState<PublishedScene | null>(
+    null,
+  );
   const [inspectedVoxel, setInspectedVoxel] = useState<VolumeVoxel | null>(
     null,
   );
@@ -132,9 +138,23 @@ export default function VolumePage() {
   }
 
   const channelCopy = volumeChannelCopy[channel];
+  const maxVoxels =
+    quality === "high" ? 4200 : quality === "low" ? 1200 : 2800;
+  const sceneKey = [
+    scenarioId,
+    frame.frame_id,
+    channel,
+    quality,
+    threshold.toFixed(3),
+    horizonSeconds.toFixed(3),
+    horizonSteps,
+    maxVoxels,
+  ].join("|");
   const syncedScene =
-    sceneState && temporalFiltersEqual(sceneState.temporalFilter, temporalFilter)
-      ? sceneState
+    publishedScene &&
+    publishedScene.key === sceneKey &&
+    temporalFiltersEqual(publishedScene.state.temporalFilter, temporalFilter)
+      ? publishedScene.state
       : null;
   const sliceSeconds =
     temporalFilter.mode === "slice"
@@ -221,13 +241,11 @@ export default function VolumePage() {
             quality={quality}
             threshold={threshold}
             horizonSeconds={horizonSeconds}
-            maxVoxels={
-              quality === "high" ? 4200 : quality === "low" ? 1200 : 2800
-            }
+            maxVoxels={maxVoxels}
             temporalFilter={temporalFilter}
             onTemporalFilterChange={setTemporalFilter}
             onRuntime={setRuntime}
-            onScene={setSceneState}
+            onScene={(state) => setPublishedScene({ key: sceneKey, state })}
             onInspect={setInspectedVoxel}
           />
           {temporalFilter.mode === "slice" &&
