@@ -8,6 +8,7 @@ const navItems = [
   ["/", "Eye", "Overview"],
   ["/scenario/aitana-overload", "Menu", "Action menu"],
   ["/volume", "3D", "Affordance volume"],
+  ["/volume/compare", "Δ", "Difference volume"],
   ["/pilot", "R1", "Real pilot"],
   ["/empirical", "Data", "Evidence"],
   ["/atlas", "100", "Atlas"],
