@@ -77,20 +77,8 @@ export function LinkedDifferenceSlice({
           const x = voxel.pitchX - voxel.sizeX / 2;
           const y = voxel.pitchY - voxel.sizeZ / 2;
           const selected = cell.key === selectedKey;
-          const common = {
-            role: "button" as const,
-            tabIndex: cell.key === keyboardAnchor ? 0 : -1,
-            "aria-label": cellLabel(cell),
-            "data-comparison-key": cell.key,
-            "data-support": cell.support,
-            onClick: () => onSelectKey(cell.key),
-            onKeyDown: (event: React.KeyboardEvent<SVGGElement>) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onSelectKey(cell.key);
-              }
-            },
-          };
+          const tabIndex = cell.key === keyboardAnchor ? 0 : -1;
+          const label = cellLabel(cell);
 
           if (cell.support === "intersection") {
             const delta = cell.signedDelta ?? 0;
@@ -98,34 +86,67 @@ export function LinkedDifferenceSlice({
             return (
               <rect
                 key={cell.key}
-                {...common}
+                role="button"
+                tabIndex={tabIndex}
+                aria-label={label}
+                data-comparison-key={cell.key}
+                data-support={cell.support}
                 className={`difference-slice-intersection ${delta > 0 ? "is-positive" : delta < 0 ? "is-negative" : "is-neutral"} ${selected ? "is-selected" : ""}`}
                 x={x + voxel.sizeX * 0.09}
                 y={y + voxel.sizeZ * 0.09}
                 width={voxel.sizeX * 0.82}
                 height={voxel.sizeZ * 0.82}
                 opacity={0.24 + 0.68 * Math.sqrt(Math.min(1, magnitude))}
+                onClick={() => onSelectKey(cell.key)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    onSelectKey(cell.key);
+                  }
+                }}
               />
             );
           }
 
-          const railThickness = Math.max(0.16, Math.min(voxel.sizeX, voxel.sizeZ) * 0.13);
+          const railThickness = Math.max(
+            0.16,
+            Math.min(voxel.sizeX, voxel.sizeZ) * 0.13,
+          );
           return (
             <g
               key={cell.key}
-              {...common}
+              role="button"
+              tabIndex={tabIndex}
+              aria-label={label}
+              data-comparison-key={cell.key}
+              data-support={cell.support}
               className={`difference-slice-one-sided ${cell.support === "left_only" ? "is-left-only" : "is-right-only"} ${selected ? "is-selected" : ""}`}
+              onClick={() => onSelectKey(cell.key)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelectKey(cell.key);
+                }
+              }}
             >
               {cell.support === "left_only" ? (
                 <>
                   <rect
-                    x={voxel.pitchX - voxel.sizeX * 0.28 - railThickness / 2}
+                    x={
+                      voxel.pitchX -
+                      voxel.sizeX * 0.28 -
+                      railThickness / 2
+                    }
                     y={y + voxel.sizeZ * 0.08}
                     width={railThickness}
                     height={voxel.sizeZ * 0.84}
                   />
                   <rect
-                    x={voxel.pitchX + voxel.sizeX * 0.28 - railThickness / 2}
+                    x={
+                      voxel.pitchX +
+                      voxel.sizeX * 0.28 -
+                      railThickness / 2
+                    }
                     y={y + voxel.sizeZ * 0.08}
                     width={railThickness}
                     height={voxel.sizeZ * 0.84}
@@ -135,13 +156,21 @@ export function LinkedDifferenceSlice({
                 <>
                   <rect
                     x={x + voxel.sizeX * 0.08}
-                    y={voxel.pitchY - voxel.sizeZ * 0.28 - railThickness / 2}
+                    y={
+                      voxel.pitchY -
+                      voxel.sizeZ * 0.28 -
+                      railThickness / 2
+                    }
                     width={voxel.sizeX * 0.84}
                     height={railThickness}
                   />
                   <rect
                     x={x + voxel.sizeX * 0.08}
-                    y={voxel.pitchY + voxel.sizeZ * 0.28 - railThickness / 2}
+                    y={
+                      voxel.pitchY +
+                      voxel.sizeZ * 0.28 -
+                      railThickness / 2
+                    }
                     width={voxel.sizeX * 0.84}
                     height={railThickness}
                   />
