@@ -113,3 +113,47 @@ test("v1.2 dissects retained voxels by integer temporal layer without losing ide
   );
   await expect(page.getByText("2-pass instancing")).toBeVisible();
 });
+
+test("v1.2 linked 2D slice shares voxel identity, restores URL state, and exports JSON", async ({
+  page,
+}) => {
+  await page.goto("/volume?scenario=aitana-overload&tm=slice&layer=2");
+
+  await expect(page.getByTestId("temporal-filter-hud")).toHaveText(
+    "Slice · +0.50 s",
+  );
+  const linked = page.getByTestId("linked-temporal-slice");
+  await expect(linked).toBeVisible();
+  await expect(linked).toContainText("identical IDs and values");
+
+  const firstCell = linked.locator("[data-voxel-id]").first();
+  const voxelId = await firstCell.getAttribute("data-voxel-id");
+  const voxelValue = await firstCell.getAttribute("data-voxel-value");
+  expect(voxelId).toBeTruthy();
+  expect(voxelValue).toMatch(/^0\.\d{6}$/u);
+  await firstCell.click();
+  await expect(firstCell).toHaveClass(/is-selected/u);
+  await expect(page.getByTestId("voxel-selection-marker")).toBeVisible();
+  await expect(page.getByTestId("voxel-inspector")).toContainText(
+    "Forecast horizon",
+  );
+
+  const exportButton = page.getByTestId("export-voxel-json");
+  await expect(exportButton).toBeEnabled();
+  const downloadPromise = page.waitForEvent("download");
+  await exportButton.click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(
+    /^midfielders-eye-frame-\d+-menu-layer-2\.json$/u,
+  );
+
+  const surgery = page.getByTestId("temporal-surgery");
+  await surgery.getByRole("button", { name: "+1.00 s" }).click();
+  await expect(page).toHaveURL(/tm=slice/u);
+  await expect(page).toHaveURL(/layer=4/u);
+  await page.reload();
+  await expect(page.getByTestId("temporal-filter-hud")).toHaveText(
+    "Slice · +1.00 s",
+  );
+  await expect(page.getByTestId("linked-temporal-slice")).toBeVisible();
+});
