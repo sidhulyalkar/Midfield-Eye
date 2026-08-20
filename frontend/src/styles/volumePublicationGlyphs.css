@@ -1,0 +1,34 @@
+#publication-positive-hatch line,
+#publication-negative-hatch line {
+  stroke: #111;
+  stroke-width: 0.38;
+}
+
+.publication-intersection.is-positive rect {
+  fill: url(#publication-positive-hatch);
+  stroke: #111;
+  stroke-width: 0.5;
+}
+
+.publication-intersection.is-negative rect {
+  fill: url(#publication-negative-hatch);
+  stroke: #111;
+  stroke-width: 0.5;
+  stroke-dasharray: 1 0.55;
+}
+
+.publication-intersection.is-zero rect {
+  fill: #fff;
+  stroke: #111;
+  stroke-width: 0.5;
+}
+
+@media print {
+  .publication-intersection.is-positive rect {
+    fill: url(#publication-positive-hatch);
+  }
+
+  .publication-intersection.is-negative rect {
+    fill: url(#publication-negative-hatch);
+  }
+}
