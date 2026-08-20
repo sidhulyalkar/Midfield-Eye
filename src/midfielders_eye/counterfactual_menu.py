@@ -192,6 +192,13 @@ def _carry_offset(option: ActionOption) -> float:
     return 0.0 if math.isclose(offset, 0.0, abs_tol=1e-12) else float(offset)
 
 
+def _format_carry_offset(offset: float) -> str:
+    token = f"{offset:+.12f}".rstrip("0").rstrip(".")
+    if "." not in token:
+        token = f"{token}.0"
+    return token
+
+
 def ensure_comparison_identity_metadata(
     options: list[ActionOption] | tuple[ActionOption, ...],
 ) -> tuple[ActionOption, ...]:
@@ -236,7 +243,7 @@ def comparison_option_key(option: ActionOption) -> str:
             raise ValueError(
                 f"carry option {option.option_id!r} must not target a player"
             )
-        return f"carry:{_carry_offset(option):+.1f}"
+        return f"carry:{_format_carry_offset(_carry_offset(option))}"
     if option.kind == "hold":
         if option.target_player_id is not None:
             raise ValueError(
