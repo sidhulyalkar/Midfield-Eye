@@ -74,6 +74,12 @@ export function isRegeneratedMenuChannel(
   return channel === "passing_corridors" || channel === "menu";
 }
 
+function isRegeneratedMenuConfig(
+  config: VolumeComparisonConfig,
+): config is RegeneratedMenuVolumeComparisonConfig {
+  return isRegeneratedMenuChannel(config.channel);
+}
+
 export function buildVolumeComparison(
   frame: FrameState,
   config: VolumeComparisonConfig,
@@ -100,7 +106,7 @@ export function buildVolumeComparison(
     futureObservedFramesUsed: false,
   };
 
-  if (isRegeneratedMenuChannel(config.channel)) {
+  if (isRegeneratedMenuConfig(config)) {
     candidateEvidence = resolveRegeneratedCandidateEvidence(
       config.counterfactualArtifact,
       frame,
