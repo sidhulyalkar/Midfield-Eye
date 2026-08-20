@@ -35,7 +35,9 @@ def serialize_action_option(option: ActionOption) -> dict[str, Any]:
         "target_player_id": option.target_player_id,
         "target_x": float(option.target_x),
         "target_y": float(option.target_y),
-        "features": {key: float(value) for key, value in option.features.items()},
+        "features": {
+            key: float(value) for key, value in sorted(option.features.items())
+        },
         "geometric_score": float(option.geometric_score),
         "learned_score": None
         if option.learned_score is None
@@ -130,6 +132,28 @@ def _validate_frames(frames: Sequence[FrameState]) -> None:
             raise ValueError("showcase frames must be strictly ordered by frame_id")
         seen.add(frame.frame_id)
         previous = frame.frame_id
+
+
+def _validate_scenario_inputs(
+    scenario_id: str,
+    frames: Sequence[FrameState],
+    options_by_frame: Mapping[int, Sequence[ActionOption]],
+) -> None:
+    expected_frame_ids = {frame.frame_id for frame in frames}
+    actual_frame_ids = set(options_by_frame)
+    if actual_frame_ids != expected_frame_ids:
+        missing = sorted(expected_frame_ids - actual_frame_ids)
+        extra = sorted(actual_frame_ids - expected_frame_ids)
+        raise ValueError(
+            "authoritative baseline frame map does not match showcase frames: "
+            f"missing={missing}, extra={extra}"
+        )
+    for frame in frames:
+        if frame.sequence_id != scenario_id:
+            raise ValueError(
+                f"frame {frame.frame_id} sequence_id {frame.sequence_id!r} "
+                f"does not match scenario_id {scenario_id!r}"
+            )
 
 
 def _baseline_options_for_frame(
@@ -239,6 +263,7 @@ def build_counterfactual_options_artifact(
     if not scenario_id.strip():
         raise ValueError("scenario_id must be non-empty")
     _validate_frames(frames)
+    _validate_scenario_inputs(scenario_id, frames, options_by_frame)
     leads = tuple(float(value) for value in lead_presets)
     if not leads:
         raise ValueError("lead_presets must not be empty")
