@@ -23,26 +23,17 @@ from ..visualization.showcase import (
     render_tactical_lens,
 )
 from .catalog import load_player_catalog
+from .counterfactual_options import (
+    COUNTERFACTUAL_OPTIONS_SCHEMA_VERSION,
+    build_counterfactual_options_artifact,
+    serialize_action_option,
+)
 from .metrics import scenario_summary
 from .scenarios import SCENARIOS, build_scenario_frames
 
 
 def _option_payload(option: ActionOption) -> dict[str, Any]:
-    return {
-        "sequence_id": option.sequence_id,
-        "frame_id": option.frame_id,
-        "option_id": option.option_id,
-        "kind": option.kind,
-        "actor_id": option.actor_id,
-        "target_player_id": option.target_player_id,
-        "target_x": option.target_x,
-        "target_y": option.target_y,
-        "features": option.features,
-        "geometric_score": option.geometric_score,
-        "learned_score": option.learned_score,
-        "source_provider": option.source_provider,
-        "provenance": option.provenance,
-    }
+    return serialize_action_option(option)
 
 
 def _write_json(path: Path, payload: Any) -> None:
@@ -120,7 +111,14 @@ def build_showcase_bundle(
             current = engine.generate(frame)
             options.extend(current)
             options_by_frame[frame.frame_id].extend(current)
+        counterfactual_options = build_counterfactual_options_artifact(
+            scenario_id,
+            frames,
+            options_by_frame,
+            engine=engine,
+        )
         _write_json(scenario_dir / "options.json", [_option_payload(option) for option in options])
+        _write_json(scenario_dir / "counterfactual_options.json", counterfactual_options)
         summary = scenario_summary(frames, options_by_frame)
         gaze = sequence_gaze_summary(frames, options_by_frame)
         body = sequence_body_summary(frames, options_by_frame)
@@ -212,6 +210,7 @@ def build_showcase_bundle(
                     "scenario": f"scenarios/{scenario_id}/scenario.json",
                     "frames": f"scenarios/{scenario_id}/frames.jsonl",
                     "options": f"scenarios/{scenario_id}/options.json",
+                    "counterfactual_options": f"scenarios/{scenario_id}/counterfactual_options.json",
                     "timeline": f"scenarios/{scenario_id}/timeline.json",
                     "summary": f"scenarios/{scenario_id}/summary.json",
                     "gaze": f"scenarios/{scenario_id}/gaze.json",
@@ -259,6 +258,7 @@ def build_showcase_bundle(
             "real_player_analysis": "requires rights-cleared footage or licensed tracking and explicit provenance",
             "empirical_layer": "source-pinned real examples are separated from inferred proxies and synthetic demonstrations",
             "action_menu_lifecycle": "birth and extinction are retrospective visualization labels, never future-aware focal-frame features",
+            "counterfactual_action_menu": "earlier-run candidate menus are regenerated from the synthetic Condition B frame with the authoritative Python AffordanceEngine; scores remain model-derived, not observed availability or causal effects",
             "youtube": "embed-only reference lane; no downloading or pixel analysis",
         },
         "frontend_contract": {
@@ -268,6 +268,7 @@ def build_showcase_bundle(
             "vector_player_cards": 100,
             "high_resolution_visuals_per_scenario": 7,
             "signature_instrument": "Action Menu Ribbon / Decision Microscope",
+            "counterfactual_options_schema_version": COUNTERFACTUAL_OPTIONS_SCHEMA_VERSION,
         },
     }
     _write_json(output / "manifest.json", manifest)
