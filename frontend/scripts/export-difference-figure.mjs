@@ -8,22 +8,42 @@ const VIEWPORT = { width: 1600, height: 1200 };
 const LEAD_PRESETS = new Set([0.5, 0.75, 1]);
 const CHANNELS = new Set(["future_space", "option_creation"]);
 const QUALITIES = new Set(["low", "medium", "high"]);
+const PUBLICATION_KEYS = new Set([
+  "scenario",
+  "fi",
+  "cmp",
+  "lead",
+  "dc",
+  "dq",
+  "dt",
+  "tm",
+  "layer",
+  "pub",
+]);
 
 function argument(name) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] ?? null : null;
 }
 
+function uniqueParameter(url, name) {
+  const values = url.searchParams.getAll(name);
+  if (values.length !== 1) {
+    throw new Error(`Difference figure export requires exactly one ${name}=... parameter.`);
+  }
+  return values[0] ?? "";
+}
+
 function integerParameter(url, name) {
-  const value = url.searchParams.get(name);
-  if (!value || !/^\d+$/u.test(value)) {
+  const value = uniqueParameter(url, name);
+  if (!/^\d+$/u.test(value)) {
     throw new Error(`Difference figure export requires integer ${name}=...`);
   }
   return Number(value);
 }
 
 function finiteParameter(url, name) {
-  const raw = url.searchParams.get(name);
+  const raw = uniqueParameter(url, name);
   const value = Number(raw);
   if (!raw || !Number.isFinite(value)) {
     throw new Error(`Difference figure export requires finite ${name}=...`);
@@ -42,20 +62,27 @@ function publicationUrl(raw) {
   if (url.pathname !== "/volume/compare") {
     throw new Error("Difference figure export requires the /volume/compare route.");
   }
-  if (url.searchParams.get("pub") !== "figure") {
+  for (const key of url.searchParams.keys()) {
+    if (!PUBLICATION_KEYS.has(key)) {
+      throw new Error(`Difference figure export does not support query parameter ${key}.`);
+    }
+  }
+  for (const key of PUBLICATION_KEYS) uniqueParameter(url, key);
+
+  if (uniqueParameter(url, "pub") !== "figure") {
     throw new Error("Difference figure export requires pub=figure.");
   }
-  if (url.searchParams.get("cmp") !== "earlier-run") {
+  if (uniqueParameter(url, "cmp") !== "earlier-run") {
     throw new Error("Difference figure export requires cmp=earlier-run.");
   }
-  if (url.searchParams.get("tm") !== "slice") {
+  if (uniqueParameter(url, "tm") !== "slice") {
     throw new Error("Difference figure export requires tm=slice.");
   }
   integerParameter(url, "layer");
   integerParameter(url, "fi");
 
-  const scenario = url.searchParams.get("scenario");
-  if (!scenario?.trim()) {
+  const scenario = uniqueParameter(url, "scenario");
+  if (!scenario.trim()) {
     throw new Error("Difference figure export requires a non-empty scenario parameter.");
   }
 
@@ -63,12 +90,12 @@ function publicationUrl(raw) {
   if (!LEAD_PRESETS.has(lead)) {
     throw new Error("Difference figure export lead must be 0.50, 0.75, or 1.00 seconds.");
   }
-  const channel = url.searchParams.get("dc");
-  if (!channel || !CHANNELS.has(channel)) {
+  const channel = uniqueParameter(url, "dc");
+  if (!CHANNELS.has(channel)) {
     throw new Error("Difference figure export dc must be future_space or option_creation.");
   }
-  const quality = url.searchParams.get("dq");
-  if (!quality || !QUALITIES.has(quality)) {
+  const quality = uniqueParameter(url, "dq");
+  if (!QUALITIES.has(quality)) {
     throw new Error("Difference figure export dq must be low, medium, or high.");
   }
   const threshold = finiteParameter(url, "dt");
