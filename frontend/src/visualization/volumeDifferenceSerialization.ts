@@ -1,10 +1,14 @@
 import type { VolumeChannel } from "./affordanceVolume";
+import type {
+  VolumeComparisonCandidateEvidence,
+  VolumeComparisonChannel,
+} from "./volumeComparison";
 import type { VolumeDifferenceInspection } from "./volumeDifferenceInspector";
 import type { VolumeTemporalFilter } from "./volumeTemporal";
 import type { EarlierRunIntervention } from "./volumeIntervention";
 
 export type SerializedDifferenceInspection = {
-  schemaVersion: "1.3.0";
+  schemaVersion: "1.4.0-d";
   instrument: "Temporal Affordance Difference Volume";
   scenarioId: string;
   frameId: number;
@@ -30,10 +34,36 @@ export type SerializedDifferenceInspection = {
     to: readonly [number, number];
     status: "synthetic_teaching_intervention_not_observed_or_causal";
   };
+  candidateEvidence:
+    | {
+        mode: "state_only";
+        generator: null;
+        supportSummary: null;
+      }
+    | {
+        mode: "regenerated_counterfactual_candidates";
+        generator: {
+          name: "AffordanceEngine";
+          module: "midfielders_eye.affordance";
+          packageVersion: string;
+          configSha256: string;
+          candidateIdentityContract: "semantic_action_candidate_v1";
+          interventionContract: "earlier_run_focal_velocity_v1";
+          schemaVersion: "1.4.0-b";
+        };
+        supportSummary: {
+          intersection: number;
+          leftOnly: number;
+          rightOnly: number;
+          union: number;
+        };
+      };
   claimBoundary: VolumeDifferenceInspection["claimBoundary"] & {
-    activeChannels: "state_derived_future_space_or_option_creation_only";
-    candidateOptionsIncluded: false;
-    candidateOptionsRegenerated: false;
+    activeChannels:
+      | "state_derived_future_space_or_option_creation_only"
+      | "regenerated_passing_corridors_or_action_menu";
+    candidateOptionsIncluded: boolean;
+    candidateOptionsRegenerated: boolean;
   };
 };
 
@@ -42,16 +72,40 @@ function baselineEvidenceStatus(intervention: EarlierRunIntervention) {
   return typeof status === "string" && status.length > 0 ? status : "unknown";
 }
 
+function serializedCandidateEvidence(
+  evidence: VolumeComparisonCandidateEvidence,
+): SerializedDifferenceInspection["candidateEvidence"] {
+  if (evidence.mode === "state_only") {
+    return { mode: "state_only", generator: null, supportSummary: null };
+  }
+  return {
+    mode: evidence.mode,
+    generator: {
+      name: evidence.provenance.generatorName,
+      module: evidence.provenance.generatorModule,
+      packageVersion: evidence.provenance.packageVersion,
+      configSha256: evidence.provenance.configSha256,
+      candidateIdentityContract: evidence.provenance.candidateIdentityContract,
+      interventionContract: evidence.provenance.interventionContract,
+      schemaVersion: evidence.provenance.schemaVersion,
+    },
+    supportSummary: evidence.supportSummary,
+  };
+}
+
 export function serializeDifferenceInspection(
   scenarioId: string,
   frameId: number,
-  channel: VolumeChannel,
+  channel: VolumeComparisonChannel,
   temporalFilter: VolumeTemporalFilter,
   inspection: VolumeDifferenceInspection,
   intervention: EarlierRunIntervention,
+  candidateEvidence: VolumeComparisonCandidateEvidence,
 ): SerializedDifferenceInspection {
+  const regenerated =
+    candidateEvidence.mode === "regenerated_counterfactual_candidates";
   return {
-    schemaVersion: "1.3.0",
+    schemaVersion: "1.4.0-d",
     instrument: "Temporal Affordance Difference Volume",
     scenarioId,
     frameId,
@@ -77,11 +131,14 @@ export function serializeDifferenceInspection(
       to: intervention.to,
       status: "synthetic_teaching_intervention_not_observed_or_causal",
     },
+    candidateEvidence: serializedCandidateEvidence(candidateEvidence),
     claimBoundary: {
       ...inspection.claimBoundary,
-      activeChannels: "state_derived_future_space_or_option_creation_only",
-      candidateOptionsIncluded: false,
-      candidateOptionsRegenerated: false,
+      activeChannels: regenerated
+        ? "regenerated_passing_corridors_or_action_menu"
+        : "state_derived_future_space_or_option_creation_only",
+      candidateOptionsIncluded: candidateEvidence.candidateOptionsIncluded,
+      candidateOptionsRegenerated: candidateEvidence.candidateOptionsRegenerated,
     },
   };
 }
