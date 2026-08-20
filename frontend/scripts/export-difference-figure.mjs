@@ -98,6 +98,11 @@ try {
   const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 1 });
   await page.emulateMedia({ reducedMotion: "reduce", media: "screen" });
   await page.goto(url.toString(), { waitUntil: "networkidle" });
+  if (page.url() !== url.toString()) {
+    throw new Error(
+      `Publication route changed the requested scientific URL. Requested ${url.toString()} but loaded ${page.url()}.`,
+    );
+  }
 
   const plate = page.getByTestId("difference-publication-plate");
   await plate.waitFor({ state: "visible" });
