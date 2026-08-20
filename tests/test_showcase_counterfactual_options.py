@@ -137,6 +137,7 @@ def test_artifact_reuses_authoritative_baseline_and_regenerates_b():
     assert artifact["schema_version"] == COUNTERFACTUAL_OPTIONS_SCHEMA_VERSION
     assert artifact["lead_presets"] == [0.5, 0.75, 1.0]
     assert artifact["generator"]["future_observed_frames_used"] is False
+    assert artifact["generator"]["package_version"]
     assert len(artifact["generator"]["config_sha256"]) == 64
 
     frame_payload = artifact["frames"][0]
@@ -279,18 +280,36 @@ def test_artifact_fails_closed_on_frame_and_baseline_contract_errors():
             options,
             engine=engine,
         )
-    with pytest.raises(ValueError, match="missing authoritative baseline options"):
+    with pytest.raises(ValueError, match="baseline frame map"):
         build_counterfactual_options_artifact(
             "scenario-test",
             [current],
             {},
             engine=engine,
         )
-    with pytest.raises(ValueError, match="strictly ascending"):
+    with pytest.raises(ValueError, match="baseline frame map"):
         build_counterfactual_options_artifact(
             "scenario-test",
-            [frame(5), frame(4)],
-            baseline_options([frame(5), frame(4)], engine),
+            [current],
+            {**options, 99: options[4]},
+            engine=engine,
+        )
+    wrong_scenario = deepcopy(current)
+    wrong_scenario.sequence_id = "other-scenario"
+    wrong_options = baseline_options([wrong_scenario], engine)
+    with pytest.raises(ValueError, match="does not match scenario_id"):
+        build_counterfactual_options_artifact(
+            "scenario-test",
+            [wrong_scenario],
+            wrong_options,
+            engine=engine,
+        )
+    with pytest.raises(ValueError, match="strictly ascending"):
+        misordered = [frame(5), frame(4)]
+        build_counterfactual_options_artifact(
+            "scenario-test",
+            misordered,
+            baseline_options(misordered, engine),
             engine=engine,
         )
 
