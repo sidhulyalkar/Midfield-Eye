@@ -8,6 +8,7 @@ export type SerializedDifferenceInspection = {
   instrument: "Temporal Affordance Difference Volume";
   scenarioId: string;
   frameId: number;
+  sourceEvidenceStatus: string;
   channel: VolumeChannel;
   temporalFilter: VolumeTemporalFilter;
   comparison: {
@@ -36,6 +37,11 @@ export type SerializedDifferenceInspection = {
   };
 };
 
+function baselineEvidenceStatus(intervention: EarlierRunIntervention) {
+  const status = intervention.baselineFrame.metadata.evidence_status;
+  return typeof status === "string" && status.length > 0 ? status : "unknown";
+}
+
 export function serializeDifferenceInspection(
   scenarioId: string,
   frameId: number,
@@ -49,6 +55,7 @@ export function serializeDifferenceInspection(
     instrument: "Temporal Affordance Difference Volume",
     scenarioId,
     frameId,
+    sourceEvidenceStatus: baselineEvidenceStatus(intervention),
     channel,
     temporalFilter,
     comparison: {
