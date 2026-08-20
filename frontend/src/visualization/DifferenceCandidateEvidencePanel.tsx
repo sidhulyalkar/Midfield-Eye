@@ -1,3 +1,4 @@
+import type { VolumeOptionContribution } from "./affordanceVolume";
 import type { VolumeComparisonCandidateEvidence } from "./volumeComparison";
 import type { VolumeDifferenceInspection } from "./volumeDifferenceInspector";
 
@@ -11,9 +12,7 @@ function OptionContributions({
   contributions,
 }: {
   title: string;
-  contributions:
-    | VolumeDifferenceInspection["conditionA"]["voxel"]["optionContributions"]
-    | undefined;
+  contributions: readonly VolumeOptionContribution[] | undefined;
 }) {
   return (
     <div className="difference-candidate-side">
