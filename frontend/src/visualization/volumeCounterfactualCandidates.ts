@@ -26,6 +26,8 @@ export type RegeneratedCandidateProvenance = {
 
 export type RegeneratedCandidateEvidence = {
   mode: "regenerated_counterfactual_candidates";
+  candidateOptionsIncluded: true;
+  candidateOptionsRegenerated: true;
   conditionAOptions: ActionOption[];
   conditionBOptions: ActionOption[];
   comparisons: CounterfactualCandidateComparison[];
@@ -185,6 +187,8 @@ export function resolveRegeneratedCandidateEvidence(
 
   return {
     mode: "regenerated_counterfactual_candidates",
+    candidateOptionsIncluded: true,
+    candidateOptionsRegenerated: true,
     conditionAOptions,
     conditionBOptions,
     comparisons: condition.candidate_comparisons,
