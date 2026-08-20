@@ -1,5 +1,6 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useDataSource } from "../app/providers";
+import { loadCounterfactualOptionsArtifact } from "./counterfactualOptionsLoader";
 import { queryKeys } from "./queryKeys";
 
 export function useScenarioBundle(scenarioId: string) {
@@ -51,6 +52,14 @@ export function useScenarioBundle(scenarioId: string) {
       for (const result of results) void result.refetch();
     },
   };
+}
+
+export function useScenarioCounterfactualOptions(scenarioId: string) {
+  const source = useDataSource();
+  return useQuery({
+    queryKey: queryKeys.scenarioCounterfactualOptions(scenarioId),
+    queryFn: () => loadCounterfactualOptionsArtifact(source, scenarioId),
+  });
 }
 
 export function useScenarios() {
