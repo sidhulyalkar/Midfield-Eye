@@ -23,6 +23,12 @@
   stroke-width: 0.5;
 }
 
+.publication-screen-actions {
+  width: min(1480px, calc(100vw - 2rem));
+  margin: -1rem auto 2rem;
+  text-align: right;
+}
+
 @media print {
   .publication-intersection.is-positive rect {
     fill: url(#publication-positive-hatch);
