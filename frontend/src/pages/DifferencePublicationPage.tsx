@@ -15,7 +15,11 @@ import {
   horizonSecondsForLayer,
   type VolumeTemporalFilter,
 } from "../visualization/volumeTemporal";
-import { requirePublicationSlice } from "../visualization/volumePublication";
+import {
+  assertCanonicalDifferencePublicationParams,
+  interactiveComparisonParams,
+  requirePublicationSlice,
+} from "../visualization/volumePublication";
 import { parseTemporalFilterFromSearchParams } from "../visualization/volumeUrlState";
 
 const HORIZON_SECONDS = 1.5;
@@ -51,6 +55,21 @@ function publicationLayer(
   }
 }
 
+function canonicalPublicationError(
+  params: URLSearchParams,
+  frameCount: number,
+  horizonSteps: number,
+): Error | null {
+  try {
+    assertCanonicalDifferencePublicationParams(params, frameCount, horizonSteps);
+    return null;
+  } catch (reason: unknown) {
+    return reason instanceof Error
+      ? reason
+      : new Error("Publication URL state is not canonical.");
+  }
+}
+
 export default function DifferencePublicationPage() {
   const [searchParams] = useSearchParams();
   const searchKey = searchParams.toString();
@@ -61,6 +80,16 @@ export default function DifferencePublicationPage() {
     [searchKey],
   );
   const horizonSteps = defaultVolumeConfig(comparisonUrl.channel).horizonSteps;
+  const frameCount = data.frames?.length ?? 0;
+  const canonicalError = useMemo(
+    () =>
+      canonicalPublicationError(
+        new URLSearchParams(searchKey),
+        frameCount,
+        horizonSteps,
+      ),
+    [frameCount, horizonSteps, searchKey],
+  );
   const temporalFilter = useMemo(
     () =>
       parseTemporalFilterFromSearchParams(
@@ -70,7 +99,6 @@ export default function DifferencePublicationPage() {
     [horizonSteps, searchKey],
   );
   const layer = publicationLayer(temporalFilter);
-  const frameCount = data.frames?.length ?? 0;
   const frameIndex = parseComparisonFrameIndex(
     new URLSearchParams(searchKey),
     frameCount,
@@ -79,7 +107,9 @@ export default function DifferencePublicationPage() {
   const frame = data.frames?.[frameIndex];
 
   const comparisonResult = useMemo(() => {
-    if (!frame) return { bundle: null, error: null as Error | null };
+    if (!frame || canonicalError || layer.error) {
+      return { bundle: null, error: null as Error | null };
+    }
     try {
       return {
         bundle: buildVolumeComparison(frame, {
@@ -101,19 +131,21 @@ export default function DifferencePublicationPage() {
             : new Error("The publication comparison could not be evaluated."),
       };
     }
-  }, [comparisonUrl, frame]);
+  }, [canonicalError, comparisonUrl, frame, layer.error]);
 
   const cells = useMemo(
     () =>
-      comparisonResult.bundle && !layer.error
+      comparisonResult.bundle
         ? filterVolumeDifferenceCells(
             comparisonResult.bundle.difference.cells,
             temporalFilter,
             horizonSteps,
           )
         : [],
-    [comparisonResult.bundle, horizonSteps, layer.error, temporalFilter],
+    [comparisonResult.bundle, horizonSteps, temporalFilter],
   );
+  const interactiveParams = interactiveComparisonParams(searchParams);
+  const interactiveUrl = `/volume/compare?${interactiveParams.toString()}`;
 
   if (data.isPending) {
     return (
@@ -134,6 +166,20 @@ export default function DifferencePublicationPage() {
       />
     );
   }
+  if (canonicalError) {
+    return (
+      <div className="page-pad">
+        <FeedbackState
+          kind="unsupported_comparison"
+          title="Publication URL is not canonical"
+          message={`${canonicalError.message} Publication mode does not apply interactive fallback defaults.`}
+        />
+        <Link className="text-link" to={interactiveUrl}>
+          Return to the interactive comparison workbench →
+        </Link>
+      </div>
+    );
+  }
   if (layer.error) {
     return (
       <div className="page-pad">
@@ -142,7 +188,7 @@ export default function DifferencePublicationPage() {
           title="Publication figure mode requires an exact temporal slice"
           message={`${layer.error.message} Use tm=slice&layer=<integer> so the paper figure has one unambiguous forecast time.`}
         />
-        <Link className="text-link" to={`/volume/compare?${searchKey}`}>
+        <Link className="text-link" to={interactiveUrl}>
           Return to the interactive comparison workbench →
         </Link>
       </div>
@@ -198,7 +244,7 @@ export default function DifferencePublicationPage() {
         cells={cells}
       />
       <div className="publication-screen-actions">
-        <Link className="text-link" to={`/volume/compare?${new URLSearchParams([...searchParams].filter(([key]) => key !== "pub")).toString()}`}>
+        <Link className="text-link" to={interactiveUrl}>
           Return to interactive workbench →
         </Link>
       </div>
