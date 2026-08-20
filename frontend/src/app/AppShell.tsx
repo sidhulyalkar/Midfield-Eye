@@ -15,6 +15,10 @@ const navItems = [
   ["/gaze-lab", "Lab", "Laboratories"],
 ] as const;
 
+function exactNavMatch(path: string) {
+  return path === "/" || path === "/volume";
+}
+
 export function AppShell() {
   const source = useDataSource();
   const manifest = useQuery({
@@ -54,7 +58,7 @@ export function AppShell() {
         </NavLink>
         <nav>
           {navItems.map(([to, short, label]) => (
-            <NavLink key={to} to={to} end={to === "/"} title={label}>
+            <NavLink key={to} to={to} end={exactNavMatch(to)} title={label}>
               <span aria-hidden="true">{short}</span>
               <span className="sr-only">{label}</span>
             </NavLink>
@@ -90,7 +94,7 @@ export function AppShell() {
         </main>
         <nav className="bottom-nav" aria-label="Mobile navigation">
           {navItems.slice(0, 4).map(([to, short, label]) => (
-            <NavLink key={to} to={to} end={to === "/"}>
+            <NavLink key={to} to={to} end={exactNavMatch(to)}>
               <span aria-hidden="true">{short}</span>
               <small>{label}</small>
             </NavLink>
