@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
 import { useDataSource } from "./providers";
 import { queryKeys } from "../data/queryKeys";
 import { FeedbackState } from "../components/FeedbackState";
@@ -8,14 +8,21 @@ const navItems = [
   ["/", "Eye", "Overview"],
   ["/scenario/aitana-overload", "Menu", "Action menu"],
   ["/volume", "3D", "Affordance volume"],
+  ["/volume/compare", "Δ", "Difference volume"],
   ["/pilot", "R1", "Real pilot"],
   ["/empirical", "Data", "Evidence"],
   ["/atlas", "100", "Atlas"],
   ["/gaze-lab", "Lab", "Laboratories"],
 ] as const;
 
+function exactNavMatch(path: string) {
+  return path === "/" || path === "/volume";
+}
+
 export function AppShell() {
   const source = useDataSource();
+  const location = useLocation();
+  const comparisonUsesShowcaseSource = location.pathname === "/volume/compare";
   const manifest = useQuery({
     queryKey: queryKeys.manifest,
     queryFn: () => source.getManifest(),
@@ -53,7 +60,7 @@ export function AppShell() {
         </NavLink>
         <nav>
           {navItems.map(([to, short, label]) => (
-            <NavLink key={to} to={to} end={to === "/"} title={label}>
+            <NavLink key={to} to={to} end={exactNavMatch(to)} title={label}>
               <span aria-hidden="true">{short}</span>
               <span className="sr-only">{label}</span>
             </NavLink>
@@ -66,6 +73,11 @@ export function AppShell() {
             The Midfielder&apos;s Eye
           </NavLink>
           <div className="context-actions">
+            {comparisonUsesShowcaseSource ? (
+              <span className="contract-state" title="Illustrative synthetic reconstruction, not measured player performance">
+                <i aria-hidden="true" /> Synthetic showcase source
+              </span>
+            ) : null}
             <span className="contract-state">
               <i aria-hidden="true" /> Evidence-aware
             </span>
@@ -89,7 +101,7 @@ export function AppShell() {
         </main>
         <nav className="bottom-nav" aria-label="Mobile navigation">
           {navItems.slice(0, 4).map(([to, short, label]) => (
-            <NavLink key={to} to={to} end={to === "/"}>
+            <NavLink key={to} to={to} end={exactNavMatch(to)}>
               <span aria-hidden="true">{short}</span>
               <small>{label}</small>
             </NavLink>
