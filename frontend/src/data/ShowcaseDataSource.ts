@@ -1,4 +1,3 @@
-import type { CounterfactualOptionsArtifact } from "./counterfactualOptionsSchemas";
 import type {
   ActionOption,
   BodyPayload,
@@ -32,7 +31,6 @@ export interface ShowcaseDataSource {
   getScenario(scenarioId: string): Promise<Scenario>;
   getScenarioFrames(scenarioId: string): Promise<FrameState[]>;
   getScenarioOptions(scenarioId: string): Promise<ActionOption[]>;
-  getCounterfactualOptions(scenarioId: string): Promise<CounterfactualOptionsArtifact>;
   getScenarioTimeline(scenarioId: string): Promise<TimelinePoint[]>;
   getScenarioGaze(scenarioId: string): Promise<GazePayload>;
   getScenarioBody(scenarioId: string): Promise<BodyPayload>;
