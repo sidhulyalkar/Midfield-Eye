@@ -73,47 +73,40 @@ export function useVolumeComparisonBundle({
         requiresRegeneratedCandidates,
       };
     }
-    if (requiresRegeneratedCandidates && !counterfactual.data) {
-      return {
-        bundle: null,
-        error: new Error(
-          "Regenerated candidate comparison requires a validated counterfactual-options artifact.",
-        ),
-        isPending: false,
-        requiresRegeneratedCandidates,
-      };
-    }
-    if (requiresRegeneratedCandidates && !scenarioOptions) {
-      return {
-        bundle: null,
-        error: new Error(
-          "Regenerated candidate comparison requires the current authoritative showcase baseline options.",
-        ),
-        isPending: false,
-        requiresRegeneratedCandidates,
-      };
-    }
 
     try {
-      const bundle = requiresRegeneratedCandidates
-        ? buildVolumeComparison(frame, {
-            channel,
-            quality,
-            threshold,
-            horizonSeconds,
-            maxVoxels,
-            leadSeconds,
-            currentScenarioOptions: scenarioOptions ?? [],
-            counterfactualArtifact: counterfactual.data!,
-          })
-        : buildVolumeComparison(frame, {
-            channel,
-            quality,
-            threshold,
-            horizonSeconds,
-            maxVoxels,
-            leadSeconds,
-          });
+      let bundle: VolumeComparisonBundle | null;
+      if (isRegeneratedMenuChannel(channel)) {
+        if (!counterfactual.data) {
+          throw new Error(
+            "Regenerated candidate comparison requires a validated counterfactual-options artifact.",
+          );
+        }
+        if (!scenarioOptions) {
+          throw new Error(
+            "Regenerated candidate comparison requires the current authoritative showcase baseline options.",
+          );
+        }
+        bundle = buildVolumeComparison(frame, {
+          channel,
+          quality,
+          threshold,
+          horizonSeconds,
+          maxVoxels,
+          leadSeconds,
+          currentScenarioOptions: scenarioOptions,
+          counterfactualArtifact: counterfactual.data,
+        });
+      } else {
+        bundle = buildVolumeComparison(frame, {
+          channel,
+          quality,
+          threshold,
+          horizonSeconds,
+          maxVoxels,
+          leadSeconds,
+        });
+      }
       return {
         bundle,
         error: null,
