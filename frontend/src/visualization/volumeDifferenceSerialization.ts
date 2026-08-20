@@ -31,6 +31,7 @@ export type SerializedDifferenceInspection = {
   };
   claimBoundary: VolumeDifferenceInspection["claimBoundary"] & {
     activeChannels: "state_derived_future_space_or_option_creation_only";
+    candidateOptionsIncluded: false;
     candidateOptionsRegenerated: false;
   };
 };
@@ -72,6 +73,7 @@ export function serializeDifferenceInspection(
     claimBoundary: {
       ...inspection.claimBoundary,
       activeChannels: "state_derived_future_space_or_option_creation_only",
+      candidateOptionsIncluded: false,
       candidateOptionsRegenerated: false,
     },
   };
