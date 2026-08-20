@@ -18,14 +18,18 @@ Condition B is produced deterministically:
 
 1. restrict candidates to possession-team players other than the current ball carrier;
 2. require finite focal-state velocity and at least `0.25 m/s` speed;
-3. choose the fastest eligible teammate;
-4. break equal-speed ties by stable player ID;
-5. advance only that teammate's current X/Y position by `velocity × leadSeconds`;
-6. clip the arrival to the declared pitch;
-7. preserve the player's velocity and every other player state;
-8. if no eligible moving teammate exists, fail closed rather than inventing a direction.
+3. calculate each candidate arrival as current position plus `velocity × leadSeconds`;
+4. clip each candidate arrival to the declared pitch;
+5. discard candidates whose clipped arrival produces no meaningful positional displacement;
+6. choose the fastest remaining feasible teammate;
+7. break equal-speed ties by stable player ID;
+8. move only that teammate's current X/Y position to the clipped arrival;
+9. preserve the player's velocity and every other player state;
+10. if no feasible moving teammate exists, fail closed rather than inventing a direction.
 
 Supported lead presets are `0.50`, `0.75`, and `1.00 s`.
+
+The feasibility check matters at pitch boundaries. A faster runner already pinned to a touchline and moving outward must not block a slower teammate whose earlier-arrival intervention is still geometrically valid.
 
 ## Why the first comparison excludes Action Menu / Passing Corridors
 
@@ -76,6 +80,8 @@ The existing renderer's public `update()` signature currently names `VolumeScene
 `updateDifferenceRenderer(renderer, { solids, field })`
 
 No fake voxel list, stats object, or comparison metadata is manufactured. The adapter is covered by a focused unit-test contract and should be removed if/when the renderer API is later narrowed to an explicit array-only scene type.
+
+The 3D actor/pitch solids remain the Condition A focal-state context. The Condition B player displacement is shown explicitly in the intervention mini-pitch and forensic metadata. v1.3.0-c does not render a second ghost actor state inside the 3D field, avoiding an ambiguous dual-player encoding before that grammar is designed explicitly.
 
 ## 3D / 2D synchronization
 
@@ -133,20 +139,29 @@ The JSON comparison artifact uses schema `1.3.0` and records:
 - explicit one-sided-not-zero and no-interpolation boundaries;
 - `futureObservedFramesUsed = false`;
 - active-channel boundary: state-derived Future Space / Option Creation only;
-- candidate options are not regenerated or compared in this release.
+- `candidateOptionsIncluded = false`;
+- `candidateOptionsRegenerated = false`.
+
+The last two fields are intentionally separate. This release neither feeds candidate options into the compared volumes nor regenerates a counterfactual option table.
+
+## Navigation boundary
+
+`/volume` and `/volume/compare` are separate instruments. Navigation uses exact matching for `/volume` so the single-condition and difference-volume tabs cannot both appear active on the comparison route.
 
 ## Validation status
 
-GitHub Actions quota remains exhausted. The normal repository matrix has not run for v1.3.0-c and no document or PR should claim otherwise.
+GitHub Actions quota is exhausted, so the normal repository matrix is not being used as the v1.3.0-c release gate and no document or PR should imply a green matrix.
 
-Available substitute evidence so far:
+Available substitute evidence:
 
 - standalone strict TypeScript compilation passed for the c-layer non-React modules;
-- standalone execution verified deterministic earlier-run player selection, 1.5 m displacement for a 0.75 s lead in the harness case, and fail-closed URL defaults;
+- standalone execution verified deterministic earlier-run player selection, 1.5 m displacement for a 0.75 s lead in the original harness case, and fail-closed URL defaults;
 - the harness exposed and led to a fix for `exactOptionalPropertyTypes` handling of absent `position_covariance`;
+- a second strict TypeScript + execution harness verified that a faster boundary-blocked runner is skipped in favor of a slower feasible runner;
 - standalone JSX compilation passed for `LinkedDifferenceSlice` after element-local keyboard event typing;
 - standalone JSX compilation passed for `DifferenceVolume3D` with DOM-aware pointer-capture stubs;
-- manual page audit caught and fixed an incorrect `addTemporalGuideRails` import before merge;
-- Playwright and Vitest coverage are authored but are not claimed as executed.
+- manual page audit caught and fixed an incorrect `addTemporalGuideRails` import;
+- final PR audit caught and fixed the missing `candidateOptionsIncluded=false` export boundary and the nested `/volume` navigation-active collision;
+- Playwright and Vitest coverage are authored but are not claimed as executed under the normal repository runner.
 
-Before merge under the quota exception, the branch still requires a final changed-file audit and PR review of the page/route/styles boundary.
+The v1.3.0-c promotion decision is therefore based on the scoped PR diff, direct standalone execution of the new pure logic, strict-TypeScript/JSX checks on the new seams, and documented fail-closed scientific boundaries rather than GitHub Actions status.
