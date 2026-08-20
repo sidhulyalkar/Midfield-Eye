@@ -54,11 +54,15 @@ export function useScenarioBundle(scenarioId: string) {
   };
 }
 
-export function useScenarioCounterfactualOptions(scenarioId: string) {
+export function useScenarioCounterfactualOptions(
+  scenarioId: string,
+  enabled = true,
+) {
   const source = useDataSource();
   return useQuery({
     queryKey: queryKeys.scenarioCounterfactualOptions(scenarioId),
     queryFn: () => loadCounterfactualOptionsArtifact(source, scenarioId),
+    enabled,
   });
 }
 
