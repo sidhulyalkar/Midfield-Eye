@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { VolumeDifference, VolumeDifferenceCell } from "./volumeDifference";
 import {
+  assertCanonicalDifferencePublicationParams,
   assertPublicationDifferenceMatches,
   differencePublicationFigureId,
+  interactiveComparisonParams,
   requirePublicationSlice,
   selectDifferenceFailureGallery,
   summarizeDifferencePublication,
@@ -46,7 +48,48 @@ function sourceDifference(cells: VolumeDifferenceCell[]): VolumeDifference {
   };
 }
 
+const canonicalQuery =
+  "scenario=aitana-overload&fi=10&cmp=earlier-run&lead=0.75&dc=future_space&dq=low&dt=0.200&tm=slice&layer=2&pub=figure";
+
 describe("v1.3 publication helpers", () => {
+  it("accepts only a fully specified canonical publication URL", () => {
+    expect(() =>
+      assertCanonicalDifferencePublicationParams(
+        new URLSearchParams(canonicalQuery),
+        18,
+        7,
+      ),
+    ).not.toThrow();
+
+    for (const invalid of [
+      canonicalQuery.replace("dq=low", "dq=auto"),
+      canonicalQuery.replace("cmp=earlier-run", "cmp=unknown"),
+      canonicalQuery.replace("dt=0.200", "dt=0.213"),
+      canonicalQuery.replace("tm=slice&layer=2", "tm=full&layer=2"),
+      canonicalQuery.replace("fi=10", "fi=99"),
+      `${canonicalQuery}&from=1`,
+      `${canonicalQuery}&lead=1.00`,
+    ]) {
+      expect(() =>
+        assertCanonicalDifferencePublicationParams(
+          new URLSearchParams(invalid),
+          18,
+          7,
+        ),
+      ).toThrow();
+    }
+  });
+
+  it("removes only publication mode when returning to the interactive workbench", () => {
+    const interactive = interactiveComparisonParams(
+      new URLSearchParams(canonicalQuery),
+    );
+    expect(interactive.has("pub")).toBe(false);
+    expect(interactive.get("scenario")).toBe("aitana-overload");
+    expect(interactive.get("layer")).toBe("2");
+    expect(interactive.get("lead")).toBe("0.75");
+  });
+
   it("builds a stable readable figure id from scientific state only", () => {
     expect(
       differencePublicationFigureId({
