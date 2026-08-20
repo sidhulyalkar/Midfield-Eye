@@ -5,10 +5,30 @@ import { chromium } from "@playwright/test";
 const DEFAULT_BASE_URL = "http://127.0.0.1:4173";
 const DEFAULT_OUTPUT_DIR = "artifacts/publication";
 const VIEWPORT = { width: 1600, height: 1200 };
+const LEAD_PRESETS = new Set([0.5, 0.75, 1]);
+const CHANNELS = new Set(["future_space", "option_creation"]);
+const QUALITIES = new Set(["low", "medium", "high"]);
 
 function argument(name) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] ?? null : null;
+}
+
+function integerParameter(url, name) {
+  const value = url.searchParams.get(name);
+  if (!value || !/^\d+$/u.test(value)) {
+    throw new Error(`Difference figure export requires integer ${name}=...`);
+  }
+  return Number(value);
+}
+
+function finiteParameter(url, name) {
+  const raw = url.searchParams.get(name);
+  const value = Number(raw);
+  if (!raw || !Number.isFinite(value)) {
+    throw new Error(`Difference figure export requires finite ${name}=...`);
+  }
+  return value;
 }
 
 function publicationUrl(raw) {
@@ -25,17 +45,39 @@ function publicationUrl(raw) {
   if (url.searchParams.get("pub") !== "figure") {
     throw new Error("Difference figure export requires pub=figure.");
   }
+  if (url.searchParams.get("cmp") !== "earlier-run") {
+    throw new Error("Difference figure export requires cmp=earlier-run.");
+  }
   if (url.searchParams.get("tm") !== "slice") {
     throw new Error("Difference figure export requires tm=slice.");
   }
-  const layer = url.searchParams.get("layer");
-  if (!layer || !/^\d+$/u.test(layer)) {
-    throw new Error("Difference figure export requires an integer layer parameter.");
+  integerParameter(url, "layer");
+  integerParameter(url, "fi");
+
+  const scenario = url.searchParams.get("scenario");
+  if (!scenario?.trim()) {
+    throw new Error("Difference figure export requires a non-empty scenario parameter.");
   }
-  for (const required of ["scenario", "fi", "lead", "dc", "dq", "dt"]) {
-    if (!url.searchParams.has(required)) {
-      throw new Error(`Difference figure export requires ${required}=... in the URL.`);
-    }
+
+  const lead = finiteParameter(url, "lead");
+  if (!LEAD_PRESETS.has(lead)) {
+    throw new Error("Difference figure export lead must be 0.50, 0.75, or 1.00 seconds.");
+  }
+  const channel = url.searchParams.get("dc");
+  if (!channel || !CHANNELS.has(channel)) {
+    throw new Error("Difference figure export dc must be future_space or option_creation.");
+  }
+  const quality = url.searchParams.get("dq");
+  if (!quality || !QUALITIES.has(quality)) {
+    throw new Error("Difference figure export dq must be low, medium, or high.");
+  }
+  const threshold = finiteParameter(url, "dt");
+  if (threshold < 0.05 || threshold > 0.65) {
+    throw new Error("Difference figure export dt must be within [0.05, 0.65].");
+  }
+  const snappedThreshold = Math.round(threshold / 0.025) * 0.025;
+  if (Math.abs(snappedThreshold - threshold) > 1e-9) {
+    throw new Error("Difference figure export dt must lie on the 0.025 retention grid.");
   }
   return url;
 }
@@ -82,7 +124,8 @@ try {
     pdf: pdfPath,
     generatedAt: new Date().toISOString(),
     claimBoundary: {
-      publicationOnlyRecomputedScientificField: false,
+      publicationSpecificScientificFormulaUsed: false,
+      sameComparisonBuilderAsWorkbench: true,
       publicationRequiresExactSlice: true,
       notRetainedIsNumericalZero: false,
     },
