@@ -13,6 +13,7 @@ export type EarlierRunIntervention = {
 };
 
 const MIN_SPEED_MPS = 0.25;
+const MIN_DISPLACEMENT_M = 1e-6;
 export const DEFAULT_EARLIER_RUN_SECONDS = 0.75;
 
 function velocity(player: PlayerState): readonly [number, number] | null {
@@ -58,9 +59,17 @@ export function buildEarlierRunIntervention(
       const currentVelocity = velocity(player);
       if (!currentVelocity) return [];
       const speedMps = Math.hypot(currentVelocity[0], currentVelocity[1]);
-      return speedMps >= MIN_SPEED_MPS
-        ? [{ player, currentVelocity, speedMps }]
-        : [];
+      if (speedMps < MIN_SPEED_MPS) return [];
+
+      const from: readonly [number, number] = [player.x, player.y];
+      const to: readonly [number, number] = [
+        clip(from[0] + currentVelocity[0] * leadSeconds, frame.pitch_length),
+        clip(from[1] + currentVelocity[1] * leadSeconds, frame.pitch_width),
+      ];
+      const displacementM = Math.hypot(to[0] - from[0], to[1] - from[1]);
+      if (displacementM < MIN_DISPLACEMENT_M) return [];
+
+      return [{ player, currentVelocity, speedMps, from, to, displacementM }];
     })
     .sort(
       (left, right) =>
@@ -71,27 +80,10 @@ export function buildEarlierRunIntervention(
   const candidate = candidates[0];
   if (!candidate) return null;
 
-  const from: readonly [number, number] = [
-    candidate.player.x,
-    candidate.player.y,
-  ];
-  const to: readonly [number, number] = [
-    clip(
-      from[0] + candidate.currentVelocity[0] * leadSeconds,
-      frame.pitch_length,
-    ),
-    clip(
-      from[1] + candidate.currentVelocity[1] * leadSeconds,
-      frame.pitch_width,
-    ),
-  ];
-  const displacementM = Math.hypot(to[0] - from[0], to[1] - from[1]);
-  if (displacementM < 1e-6) return null;
-
   const players = frame.players.map((player) => {
     const cloned = clonePlayer(player);
     return player.player_id === candidate.player.player_id
-      ? { ...cloned, x: to[0], y: to[1] }
+      ? { ...cloned, x: candidate.to[0], y: candidate.to[1] }
       : cloned;
   });
   const alternativeFrame: FrameState = {
@@ -111,9 +103,9 @@ export function buildEarlierRunIntervention(
     playerId: candidate.player.player_id,
     leadSeconds,
     speedMps: candidate.speedMps,
-    displacementM,
-    from,
-    to,
+    displacementM: candidate.displacementM,
+    from: candidate.from,
+    to: candidate.to,
     baselineFrame: frame,
     alternativeFrame,
   };
