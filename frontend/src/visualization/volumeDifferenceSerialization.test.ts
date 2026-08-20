@@ -151,6 +151,34 @@ describe("v1.4 difference export", () => {
     });
   });
 
+  it("fails closed when a regenerated channel is paired with state-only evidence", () => {
+    expect(() =>
+      serializeDifferenceInspection(
+        "aitana-overload",
+        10,
+        "menu",
+        { mode: "full" },
+        inspection,
+        intervention,
+        stateOnly,
+      ),
+    ).toThrow("Channel menu requires regenerated counterfactual candidate evidence.");
+  });
+
+  it("fails closed when a state-derived channel is paired with regenerated evidence", () => {
+    expect(() =>
+      serializeDifferenceInspection(
+        "aitana-overload",
+        10,
+        "future_space",
+        { mode: "full" },
+        inspection,
+        intervention,
+        regenerated,
+      ),
+    ).toThrow("Channel future_space requires state-only candidate evidence.");
+  });
+
   it("creates a stable filename from the comparison key", () => {
     expect(
       differenceInspectionFilename(
