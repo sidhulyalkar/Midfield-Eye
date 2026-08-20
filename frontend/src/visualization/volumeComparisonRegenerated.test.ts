@@ -2,43 +2,47 @@ import { describe, expect, it, vi } from "vitest";
 import type { CounterfactualOptionsArtifact } from "../data/counterfactualOptionsSchemas";
 import type { ActionOption, FrameState, PlayerState } from "../data/schemas";
 
-const conditionAOption: ActionOption = {
-  sequence_id: "compare",
-  frame_id: 9,
-  option_id: "a-pass",
-  kind: "pass",
-  actor_id: "carrier",
-  target_player_id: "runner",
-  target_x: 48,
-  target_y: 30,
-  features: { distance: 13.15 },
-  geometric_score: 0.55,
-  learned_score: null,
-  source_provider: "synthetic",
-  provenance: "test",
-  label_available: null,
-  label_visible: null,
-  label_selected: null,
-  label_value: null,
-  failure_reason: null,
-};
-
-const conditionBOption: ActionOption = {
-  ...conditionAOption,
-  option_id: "b-pass",
-  target_x: 49.5,
-  target_y: 30.3,
-  features: { distance: 14.68 },
-  geometric_score: 0.72,
-};
+const fixtures = vi.hoisted(() => {
+  const conditionAOption = {
+    sequence_id: "compare",
+    frame_id: 9,
+    option_id: "a-pass",
+    kind: "pass" as const,
+    actor_id: "carrier",
+    target_player_id: "runner",
+    target_x: 48,
+    target_y: 30,
+    features: { distance: 13.15 },
+    geometric_score: 0.55,
+    learned_score: null,
+    source_provider: "synthetic",
+    provenance: "test",
+    label_available: null,
+    label_visible: null,
+    label_selected: null,
+    label_value: null,
+    failure_reason: null,
+  };
+  return {
+    conditionAOption,
+    conditionBOption: {
+      ...conditionAOption,
+      option_id: "b-pass",
+      target_x: 49.5,
+      target_y: 30.3,
+      features: { distance: 14.68 },
+      geometric_score: 0.72,
+    },
+  };
+});
 
 vi.mock("./volumeCounterfactualCandidates", () => ({
   resolveRegeneratedCandidateEvidence: () => ({
     mode: "regenerated_counterfactual_candidates",
     candidateOptionsIncluded: true,
     candidateOptionsRegenerated: true,
-    conditionAOptions: [conditionAOption],
-    conditionBOptions: [conditionBOption],
+    conditionAOptions: [fixtures.conditionAOption],
+    conditionBOptions: [fixtures.conditionBOption],
     comparisons: [
       {
         comparison_option_key: "pass:runner",
@@ -63,6 +67,8 @@ vi.mock("./volumeCounterfactualCandidates", () => ({
 }));
 
 import { buildVolumeComparison } from "./volumeComparison";
+
+const conditionAOption = fixtures.conditionAOption as ActionOption;
 
 function player(
   playerId: string,
