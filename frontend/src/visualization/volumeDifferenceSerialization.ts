@@ -93,6 +93,24 @@ function serializedCandidateEvidence(
   };
 }
 
+function assertCandidateEvidenceMatchesChannel(
+  channel: VolumeComparisonChannel,
+  candidateEvidence: VolumeComparisonCandidateEvidence,
+) {
+  const regeneratedChannel =
+    channel === "passing_corridors" || channel === "menu";
+  const regeneratedEvidence =
+    candidateEvidence.mode === "regenerated_counterfactual_candidates";
+
+  if (regeneratedChannel !== regeneratedEvidence) {
+    throw new Error(
+      regeneratedChannel
+        ? `Channel ${channel} requires regenerated counterfactual candidate evidence.`
+        : `Channel ${channel} requires state-only candidate evidence.`,
+    );
+  }
+}
+
 export function serializeDifferenceInspection(
   scenarioId: string,
   frameId: number,
@@ -102,6 +120,7 @@ export function serializeDifferenceInspection(
   intervention: EarlierRunIntervention,
   candidateEvidence: VolumeComparisonCandidateEvidence,
 ): SerializedDifferenceInspection {
+  assertCandidateEvidenceMatchesChannel(channel, candidateEvidence);
   const regenerated =
     candidateEvidence.mode === "regenerated_counterfactual_candidates";
   return {
