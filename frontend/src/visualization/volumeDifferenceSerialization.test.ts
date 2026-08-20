@@ -70,6 +70,7 @@ describe("v1.3 difference export", () => {
       missingSupportInterpolated: false,
       futureObservedFramesUsed: false,
       activeChannels: "state_derived_future_space_or_option_creation_only",
+      candidateOptionsIncluded: false,
       candidateOptionsRegenerated: false,
     });
   });
