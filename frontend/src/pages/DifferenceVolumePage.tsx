@@ -3,15 +3,13 @@ import { Link, useSearchParams } from "react-router";
 import { FeedbackState } from "../components/FeedbackState";
 import { useScenarioBundle } from "../data/hooks";
 import { defaultVolumeConfig } from "../visualization/affordanceVolume";
+import { DifferenceCandidateEvidencePanel } from "../visualization/DifferenceCandidateEvidencePanel";
 import {
   DifferenceVolume3D,
   type DifferenceVolumeRuntime,
 } from "../visualization/DifferenceVolume3D";
 import { LinkedDifferenceSlice } from "../visualization/LinkedDifferenceSlice";
-import {
-  buildVolumeComparison,
-  type VolumeComparisonChannel,
-} from "../visualization/volumeComparison";
+import type { VolumeComparisonChannel } from "../visualization/volumeComparison";
 import {
   EARLIER_RUN_LEAD_PRESETS,
   parseComparisonFrameIndex,
@@ -38,11 +36,14 @@ import {
   parseTemporalFilterFromSearchParams,
   writeTemporalFilterToSearchParams,
 } from "../visualization/volumeUrlState";
+import { useVolumeComparisonBundle } from "../visualization/useVolumeComparisonBundle";
 
 const HORIZON_SECONDS = 1.5;
 const comparisonChannels: readonly VolumeComparisonChannel[] = [
   "future_space",
   "option_creation",
+  "passing_corridors",
+  "menu",
 ];
 const deterministicQualities: readonly DeterministicComparisonQuality[] = [
   "low",
@@ -52,19 +53,40 @@ const deterministicQualities: readonly DeterministicComparisonQuality[] = [
 
 const channelCopy: Record<
   VolumeComparisonChannel,
-  { label: string; short: string; explanation: string }
+  {
+    label: string;
+    short: string;
+    explanation: string;
+    evidence: "STATE" | "REGENERATED";
+  }
 > = {
   future_space: {
     label: "Future space",
     short: "SPACE",
+    evidence: "STATE",
     explanation:
       "How openness changes under focal-state motion when one off-ball teammate is placed farther along the run they are already making.",
   },
   option_creation: {
     label: "Option creation",
     short: "CREATE",
+    evidence: "STATE",
     explanation:
       "Where future openness improves relative to the focal slice after the same earlier-run teaching intervention.",
+  },
+  passing_corridors: {
+    label: "Passing corridors",
+    short: "CORRIDORS",
+    evidence: "REGENERATED",
+    explanation:
+      "How candidate-aligned pass/carry tubes change when Condition B uses a Python AffordanceEngine menu regenerated from the alternative frame.",
+  },
+  menu: {
+    label: "Action menu composite",
+    short: "MENU",
+    evidence: "REGENERATED",
+    explanation:
+      "How the composite tactical field changes when A uses the frozen authoritative menu and B uses independently regenerated counterfactual candidates.",
   },
 };
 
@@ -112,6 +134,17 @@ export default function DifferenceVolumePage() {
   const frame = data.frames?.[frameIndex];
   const [selection, setSelection] = useState<ComparisonSelection | null>(null);
   const [runtime, setRuntime] = useState<DifferenceVolumeRuntime | null>(null);
+  const comparisonResult = useVolumeComparisonBundle({
+    scenarioId,
+    frame,
+    scenarioOptions: data.options,
+    channel: comparisonUrl.channel,
+    quality: comparisonUrl.quality,
+    threshold: comparisonUrl.threshold,
+    horizonSeconds: HORIZON_SECONDS,
+    maxVoxels: maxVoxelsForQuality(comparisonUrl.quality),
+    leadSeconds: comparisonUrl.leadSeconds,
+  });
 
   useEffect(() => {
     if (!frameCount) return;
@@ -135,31 +168,6 @@ export default function DifferenceVolumePage() {
     temporalFilter,
   ]);
 
-  const comparisonResult = useMemo(() => {
-    if (!frame) return { bundle: null, error: null as Error | null };
-    try {
-      return {
-        bundle: buildVolumeComparison(frame, {
-          channel: comparisonUrl.channel,
-          quality: comparisonUrl.quality,
-          threshold: comparisonUrl.threshold,
-          horizonSeconds: HORIZON_SECONDS,
-          maxVoxels: maxVoxelsForQuality(comparisonUrl.quality),
-          leadSeconds: comparisonUrl.leadSeconds,
-        }),
-        error: null as Error | null,
-      };
-    } catch (reason: unknown) {
-      return {
-        bundle: null,
-        error:
-          reason instanceof Error
-            ? reason
-            : new Error("The comparison contract could not be evaluated."),
-      };
-    }
-  }, [comparisonUrl, frame]);
-
   const visibleCells = useMemo(
     () =>
       comparisonResult.bundle
@@ -175,6 +183,11 @@ export default function DifferenceVolumePage() {
     () => buildVolumeDifferenceRenderPayload(visibleCells),
     [visibleCells],
   );
+  const candidateFingerprint =
+    comparisonResult.bundle?.candidateEvidence.mode ===
+    "regenerated_counterfactual_candidates"
+      ? comparisonResult.bundle.candidateEvidence.provenance.configSha256
+      : "state-only";
   const comparisonFingerprint = [
     scenarioId,
     frame?.frame_id ?? "no-frame",
@@ -185,6 +198,7 @@ export default function DifferenceVolumePage() {
     HORIZON_SECONDS.toFixed(2),
     horizonSteps,
     maxVoxelsForQuality(comparisonUrl.quality),
+    candidateFingerprint,
   ].join("|");
   const activeSelectedKey =
     selection?.fingerprint === comparisonFingerprint &&
@@ -273,6 +287,7 @@ export default function DifferenceVolumePage() {
       temporalFilter,
       inspection,
       comparisonResult.bundle.intervention,
+      comparisonResult.bundle.candidateEvidence,
     );
     const blob = new Blob([`${JSON.stringify(record, null, 2)}\n`], {
       type: "application/json",
@@ -292,12 +307,20 @@ export default function DifferenceVolumePage() {
     window.setTimeout(() => URL.revokeObjectURL(href), 0);
   };
 
-  if (data.isPending) {
+  if (data.isPending || comparisonResult.isPending) {
     return (
       <FeedbackState
         kind="loading"
-        title="Building the evidence-aware comparison"
-        message="Constructing two matched retained scenes from the same focal state."
+        title={
+          comparisonResult.requiresRegeneratedCandidates
+            ? "Validating regenerated candidate evidence"
+            : "Building the evidence-aware comparison"
+        }
+        message={
+          comparisonResult.requiresRegeneratedCandidates
+            ? "Loading the frozen Python A/B candidate artifact, validating semantic identity and intervention parity, then constructing matched retained scenes."
+            : "Constructing two matched retained scenes from the same focal state."
+        }
       />
     );
   }
@@ -315,7 +338,11 @@ export default function DifferenceVolumePage() {
     return (
       <FeedbackState
         kind="recoverable_error"
-        title="The two retained scenes are not comparable"
+        title={
+          comparisonResult.requiresRegeneratedCandidates
+            ? "Regenerated candidate comparison failed closed"
+            : "The two retained scenes are not comparable"
+        }
         message={comparisonResult.error.message}
       />
     );
@@ -330,15 +357,17 @@ export default function DifferenceVolumePage() {
     );
   }
 
-  const { intervention, difference } = comparisonResult.bundle;
+  const { intervention, difference, candidateEvidence } = comparisonResult.bundle;
   const layerIndices = Array.from({ length: horizonSteps }, (_, index) => index);
   const copy = channelCopy[comparisonUrl.channel];
+  const regenerated =
+    candidateEvidence.mode === "regenerated_counterfactual_candidates";
 
   return (
     <div className="difference-page page-pad">
       <header className="difference-page-heading">
         <div>
-          <p className="eyebrow">V1.3 · EVIDENCE-AWARE DIFFERENCE VOLUME</p>
+          <p className="eyebrow">V1.4 · EVIDENCE-AWARE DIFFERENCE VOLUME</p>
           <h1>Compare what changed without turning missing evidence into zero.</h1>
           <p>
             Condition A is the focal frame. Condition B places one off-ball
@@ -349,11 +378,15 @@ export default function DifferenceVolumePage() {
           </p>
         </div>
         <div className="difference-claim-card">
-          <strong>Teaching intervention, not causal evidence</strong>
+          <strong>
+            {regenerated
+              ? "Regenerated candidates, not causal evidence"
+              : "Teaching intervention, not causal evidence"}
+          </strong>
           <span>
-            B is synthetic. No later observed frame is used. This release compares
-            state-derived Future Space and Option Creation only; candidate pass
-            scores are intentionally omitted on both sides.
+            {regenerated
+              ? "A uses the frozen authoritative showcase candidates. B uses Python AffordanceEngine candidates regenerated from the matched alternative frame. No later observed frame is used; these remain model-derived geometric option scores, not observed availability or causal effects."
+              : "B is synthetic. No later observed frame is used. Future Space and Option Creation remain state-derived and omit candidate pass scores on both sides."}
           </span>
         </div>
       </header>
@@ -459,7 +492,7 @@ export default function DifferenceVolumePage() {
 
         <aside className="difference-controls">
           <section className="difference-control-card">
-            <p className="eyebrow">STATE-DERIVED FIELD</p>
+            <p className="eyebrow">COMPARISON FIELD</p>
             <div className="difference-button-grid">
               {comparisonChannels.map((channel) => (
                 <button
@@ -470,10 +503,16 @@ export default function DifferenceVolumePage() {
                 >
                   <strong>{channelCopy[channel].short}</strong>
                   <span>{channelCopy[channel].label}</span>
+                  <small>{channelCopy[channel].evidence}</small>
                 </button>
               ))}
             </div>
             <p>{copy.explanation}</p>
+            <p className="difference-evidence-mode">
+              {regenerated
+                ? "Validated regenerated A/B candidate tables are active."
+                : "State-only comparison: candidate options are absent from both sides."}
+            </p>
           </section>
 
           <section className="difference-control-card">
@@ -687,6 +726,18 @@ export default function DifferenceVolumePage() {
                 <dt>Draw calls</dt>
                 <dd>{runtime?.renderer.drawCalls ?? 0}</dd>
               </div>
+              {regenerated ? (
+                <>
+                  <div>
+                    <dt>Candidate union</dt>
+                    <dd>{candidateEvidence.supportSummary.union}</dd>
+                  </div>
+                  <div>
+                    <dt>Generator config</dt>
+                    <dd>{candidateEvidence.provenance.configSha256.slice(0, 12)}…</dd>
+                  </div>
+                </>
+              ) : null}
             </dl>
           </section>
         </aside>
@@ -785,6 +836,11 @@ export default function DifferenceVolumePage() {
         </article>
       </section>
 
+      <DifferenceCandidateEvidencePanel
+        evidence={candidateEvidence}
+        inspection={inspection}
+      />
+
       <section className="difference-publication-strip">
         <div>
           <p className="eyebrow">REPRODUCIBLE STATE</p>
@@ -799,6 +855,13 @@ export default function DifferenceVolumePage() {
           {difference.summary.leftOnly} A-only, {difference.summary.rightOnly}{" "}
           B-only, {difference.summary.neither} retained in neither condition.
         </p>
+        {regenerated ? (
+          <p>
+            Regenerated candidate provenance: {candidateEvidence.provenance.generatorName}{" "}
+            {candidateEvidence.provenance.packageVersion} · config {" "}
+            {candidateEvidence.provenance.configSha256}.
+          </p>
+        ) : null}
         <Link className="text-link" to={`/volume?scenario=${scenarioId}`}>
           Return to the single-condition Temporal Affordance Volume →
         </Link>

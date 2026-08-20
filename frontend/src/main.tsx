@@ -11,6 +11,7 @@ import "./styles/volume.css";
 import "./styles/volumeInspector.css";
 import "./styles/volumeV12.css";
 import "./styles/volumeDifference.css";
+import "./styles/volumeMenuComparison.css";
 import "./styles/volumePublication.css";
 import "./styles/volumePublicationGlyphs.css";
 import "./styles/print.css";

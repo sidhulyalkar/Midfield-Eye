@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import type {
+  StateOnlyCandidateEvidence,
+  VolumeComparisonCandidateEvidence,
+} from "./volumeComparison";
 import type { VolumeDifferenceInspection } from "./volumeDifferenceInspector";
 import {
   differenceInspectionFilename,
@@ -50,7 +54,39 @@ const intervention = {
   },
 } as unknown as EarlierRunIntervention;
 
-describe("v1.3 difference export", () => {
+const stateOnly: StateOnlyCandidateEvidence = {
+  mode: "state_only",
+  candidateOptionsIncluded: false,
+  candidateOptionsRegenerated: false,
+  futureObservedFramesUsed: false,
+};
+
+const regenerated: VolumeComparisonCandidateEvidence = {
+  mode: "regenerated_counterfactual_candidates",
+  candidateOptionsIncluded: true,
+  candidateOptionsRegenerated: true,
+  conditionAOptions: [],
+  conditionBOptions: [],
+  comparisons: [],
+  supportSummary: {
+    intersection: 7,
+    leftOnly: 1,
+    rightOnly: 2,
+    union: 10,
+  },
+  provenance: {
+    schemaVersion: "1.4.0-b",
+    generatorName: "AffordanceEngine",
+    generatorModule: "midfielders_eye.affordance",
+    packageVersion: "1.4.0",
+    configSha256: "a".repeat(64),
+    candidateIdentityContract: "semantic_action_candidate_v1",
+    interventionContract: "earlier_run_focal_velocity_v1",
+    futureObservedFramesUsed: false,
+  },
+};
+
+describe("v1.4 difference export", () => {
   it("keeps one-sided support null and labels the state-derived comparison scope", () => {
     const record = serializeDifferenceInspection(
       "aitana-overload",
@@ -59,19 +95,19 @@ describe("v1.3 difference export", () => {
       { mode: "slice", layerIndex: 2 },
       inspection,
       intervention,
+      stateOnly,
     );
-    expect(record.schemaVersion).toBe("1.3.0");
+    expect(record.schemaVersion).toBe("1.4.0-d");
     expect(record.sourceEvidenceStatus).toBe(
       "illustrative_synthetic_reconstruction",
     );
     expect(record.comparison.support).toBe("left_only");
     expect(record.comparison.delta).toBeNull();
     expect(record.comparison.conditionB.retained).toBe(false);
-    expect(record.intervention).toMatchObject({
-      id: "earlier-run:p:0.75",
-      playerId: "p",
-      leadSeconds: 0.75,
-      status: "synthetic_teaching_intervention_not_observed_or_causal",
+    expect(record.candidateEvidence).toEqual({
+      mode: "state_only",
+      generator: null,
+      supportSummary: null,
     });
     expect(record.claimBoundary).toMatchObject({
       oneSidedPresenceIsNumericalZero: false,
@@ -81,6 +117,66 @@ describe("v1.3 difference export", () => {
       candidateOptionsIncluded: false,
       candidateOptionsRegenerated: false,
     });
+  });
+
+  it("records generator provenance only after regenerated candidate evidence is supplied", () => {
+    const record = serializeDifferenceInspection(
+      "aitana-overload",
+      10,
+      "menu",
+      { mode: "slice", layerIndex: 2 },
+      inspection,
+      intervention,
+      regenerated,
+    );
+    expect(record.claimBoundary).toMatchObject({
+      activeChannels: "regenerated_passing_corridors_or_action_menu",
+      candidateOptionsIncluded: true,
+      candidateOptionsRegenerated: true,
+      futureObservedFramesUsed: false,
+    });
+    expect(record.candidateEvidence).toMatchObject({
+      mode: "regenerated_counterfactual_candidates",
+      generator: {
+        name: "AffordanceEngine",
+        packageVersion: "1.4.0",
+        configSha256: "a".repeat(64),
+      },
+      supportSummary: {
+        intersection: 7,
+        leftOnly: 1,
+        rightOnly: 2,
+        union: 10,
+      },
+    });
+  });
+
+  it("fails closed when a regenerated channel is paired with state-only evidence", () => {
+    expect(() =>
+      serializeDifferenceInspection(
+        "aitana-overload",
+        10,
+        "menu",
+        { mode: "full" },
+        inspection,
+        intervention,
+        stateOnly,
+      ),
+    ).toThrow("Channel menu requires regenerated counterfactual candidate evidence.");
+  });
+
+  it("fails closed when a state-derived channel is paired with regenerated evidence", () => {
+    expect(() =>
+      serializeDifferenceInspection(
+        "aitana-overload",
+        10,
+        "future_space",
+        { mode: "full" },
+        inspection,
+        intervention,
+        regenerated,
+      ),
+    ).toThrow("Channel future_space requires state-only candidate evidence.");
   });
 
   it("creates a stable filename from the comparison key", () => {

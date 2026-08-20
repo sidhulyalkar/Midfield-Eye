@@ -6,7 +6,7 @@ import {
   writeVolumeComparisonUrl,
 } from "./volumeComparisonUrl";
 
-describe("v1.3 comparison URL state", () => {
+describe("v1.4 comparison URL state", () => {
   it("parses and writes deterministic comparison state while preserving unrelated params", () => {
     const original = new URLSearchParams(
       "scenario=aitana-overload&cmp=earlier-run&dc=option_creation&lead=1.00&dq=high&dt=0.275&tm=slice&layer=3",
@@ -22,7 +22,7 @@ describe("v1.3 comparison URL state", () => {
 
     const written = writeVolumeComparisonUrl(original, {
       ...state,
-      channel: "future_space",
+      channel: "menu",
       leadSeconds: 0.5,
       quality: "low",
       threshold: 0.2,
@@ -30,15 +30,24 @@ describe("v1.3 comparison URL state", () => {
     expect(written.get("scenario")).toBe("aitana-overload");
     expect(written.get("tm")).toBe("slice");
     expect(written.get("layer")).toBe("3");
-    expect(written.get("dc")).toBe("future_space");
+    expect(written.get("dc")).toBe("menu");
     expect(written.get("lead")).toBe("0.50");
     expect(written.get("dq")).toBe("low");
     expect(written.get("dt")).toBe("0.200");
   });
 
+  it("recognizes both regenerated candidate comparison channels", () => {
+    expect(
+      parseVolumeComparisonUrl(new URLSearchParams("dc=passing_corridors")).channel,
+    ).toBe("passing_corridors");
+    expect(parseVolumeComparisonUrl(new URLSearchParams("dc=menu")).channel).toBe(
+      "menu",
+    );
+  });
+
   it("fails closed to deterministic defaults for malformed comparison state", () => {
     const state = parseVolumeComparisonUrl(
-      new URLSearchParams("cmp=unknown&dc=menu&lead=0.73&dq=auto&dt=NaN"),
+      new URLSearchParams("cmp=unknown&dc=pressure&lead=0.73&dq=auto&dt=NaN"),
     );
     expect(state).toEqual({
       comparisonId: "earlier-run",

@@ -1,10 +1,15 @@
-import type { FrameState } from "../data/schemas";
+import type { CounterfactualOptionsArtifact } from "../data/counterfactualOptionsSchemas";
+import type { ActionOption, FrameState } from "../data/schemas";
 import {
   buildAffordanceVolume,
   defaultVolumeConfig,
   type VolumeQuality,
   type VolumeScene,
 } from "./affordanceVolume";
+import {
+  resolveRegeneratedCandidateEvidence,
+  type RegeneratedCandidateEvidence,
+} from "./volumeCounterfactualCandidates";
 import {
   buildVolumeDifference,
   type VolumeDifference,
@@ -14,10 +19,24 @@ import {
   type EarlierRunIntervention,
 } from "./volumeIntervention";
 
-export type VolumeComparisonChannel = "future_space" | "option_creation";
+export type StateDerivedComparisonChannel = "future_space" | "option_creation";
+export type RegeneratedMenuComparisonChannel = "passing_corridors" | "menu";
+export type VolumeComparisonChannel =
+  | StateDerivedComparisonChannel
+  | RegeneratedMenuComparisonChannel;
 
-export type VolumeComparisonConfig = {
-  channel: VolumeComparisonChannel;
+export type StateOnlyCandidateEvidence = {
+  mode: "state_only";
+  candidateOptionsIncluded: false;
+  candidateOptionsRegenerated: false;
+  futureObservedFramesUsed: false;
+};
+
+export type VolumeComparisonCandidateEvidence =
+  | StateOnlyCandidateEvidence
+  | RegeneratedCandidateEvidence;
+
+type SharedVolumeComparisonConfig = {
   quality: VolumeQuality;
   threshold: number;
   horizonSeconds: number;
@@ -25,12 +44,41 @@ export type VolumeComparisonConfig = {
   leadSeconds: number;
 };
 
+export type StateDerivedVolumeComparisonConfig = SharedVolumeComparisonConfig & {
+  channel: StateDerivedComparisonChannel;
+  currentScenarioOptions?: never;
+  counterfactualArtifact?: never;
+};
+
+export type RegeneratedMenuVolumeComparisonConfig = SharedVolumeComparisonConfig & {
+  channel: RegeneratedMenuComparisonChannel;
+  currentScenarioOptions: readonly ActionOption[];
+  counterfactualArtifact: CounterfactualOptionsArtifact;
+};
+
+export type VolumeComparisonConfig =
+  | StateDerivedVolumeComparisonConfig
+  | RegeneratedMenuVolumeComparisonConfig;
+
 export type VolumeComparisonBundle = {
   intervention: EarlierRunIntervention;
   baselineScene: VolumeScene;
   alternativeScene: VolumeScene;
   difference: VolumeDifference;
+  candidateEvidence: VolumeComparisonCandidateEvidence;
 };
+
+export function isRegeneratedMenuChannel(
+  channel: VolumeComparisonChannel,
+): channel is RegeneratedMenuComparisonChannel {
+  return channel === "passing_corridors" || channel === "menu";
+}
+
+function isRegeneratedMenuConfig(
+  config: VolumeComparisonConfig,
+): config is RegeneratedMenuVolumeComparisonConfig {
+  return isRegeneratedMenuChannel(config.channel);
+}
 
 export function buildVolumeComparison(
   frame: FrameState,
@@ -49,13 +97,34 @@ export function buildVolumeComparison(
     maxVoxels: config.maxVoxels,
   };
 
-  // Comparison v1.3.0-c is intentionally state-derived only. Candidate options
-  // are omitted on both sides so no baseline pass score is reused after the
-  // positional intervention.
-  const baselineScene = buildAffordanceVolume(frame, [], volumeConfig);
+  let conditionAOptions: readonly ActionOption[] = [];
+  let conditionBOptions: readonly ActionOption[] = [];
+  let candidateEvidence: VolumeComparisonCandidateEvidence = {
+    mode: "state_only",
+    candidateOptionsIncluded: false,
+    candidateOptionsRegenerated: false,
+    futureObservedFramesUsed: false,
+  };
+
+  if (isRegeneratedMenuConfig(config)) {
+    candidateEvidence = resolveRegeneratedCandidateEvidence(
+      config.counterfactualArtifact,
+      frame,
+      config.currentScenarioOptions,
+      intervention,
+    );
+    conditionAOptions = candidateEvidence.conditionAOptions;
+    conditionBOptions = candidateEvidence.conditionBOptions;
+  }
+
+  const baselineScene = buildAffordanceVolume(
+    frame,
+    [...conditionAOptions],
+    volumeConfig,
+  );
   const alternativeScene = buildAffordanceVolume(
     intervention.alternativeFrame,
-    [],
+    [...conditionBOptions],
     volumeConfig,
   );
   const sharedContract = {
@@ -78,5 +147,11 @@ export function buildVolumeComparison(
     },
   );
 
-  return { intervention, baselineScene, alternativeScene, difference };
+  return {
+    intervention,
+    baselineScene,
+    alternativeScene,
+    difference,
+    candidateEvidence,
+  };
 }
