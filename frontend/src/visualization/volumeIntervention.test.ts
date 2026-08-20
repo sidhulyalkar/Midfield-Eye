@@ -92,12 +92,27 @@ describe("earlier-run teaching intervention", () => {
     expect(result?.displacementM).toBeCloseTo(Math.sqrt(0.5));
   });
 
-  it("fails closed when no off-ball teammate has meaningful finite motion", () => {
+  it("skips a faster boundary-blocked runner when a slower feasible run exists", () => {
+    const result = buildEarlierRunIntervention(
+      frame([
+        player("carrier", "home", 30, 20, 0, 0),
+        player("blocked", "home", 105, 40, 4, 0),
+        player("feasible", "home", 70, 30, 1.5, 0),
+      ]),
+      0.75,
+    );
+    expect(result?.playerId).toBe("feasible");
+    expect(result?.from).toEqual([70, 30]);
+    expect(result?.to).toEqual([71.125, 30]);
+  });
+
+  it("fails closed when no off-ball teammate has meaningful feasible motion", () => {
     expect(
       buildEarlierRunIntervention(
         frame([
           player("carrier", "home", 30, 20, 1, 0),
           player("still", "home", 42, 28, 0.1, 0.1),
+          player("blocked", "home", 105, 35, 2, 0),
           player("opponent", "away", 48, 28, 5, 0),
         ]),
       ),
