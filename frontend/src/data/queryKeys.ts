@@ -8,6 +8,8 @@ export const queryKeys = {
     ["showcase", "scenarios", id, "frames"] as const,
   scenarioOptions: (id: string) =>
     ["showcase", "scenarios", id, "options"] as const,
+  scenarioCounterfactualOptions: (id: string) =>
+    ["showcase", "scenarios", id, "counterfactual-options"] as const,
   scenarioTimeline: (id: string) =>
     ["showcase", "scenarios", id, "timeline"] as const,
   scenarioGaze: (id: string) => ["showcase", "scenarios", id, "gaze"] as const,
