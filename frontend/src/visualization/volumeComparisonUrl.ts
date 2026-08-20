@@ -33,16 +33,24 @@ function parseThreshold(value: string | null) {
   return Math.min(0.65, Math.max(0.05, Number(snapped.toFixed(3))));
 }
 
+function parseChannel(value: string | null): VolumeComparisonChannel {
+  if (
+    value === "future_space" ||
+    value === "option_creation" ||
+    value === "passing_corridors" ||
+    value === "menu"
+  ) {
+    return value;
+  }
+  return DEFAULT_COMPARISON_CHANNEL;
+}
+
 export function parseVolumeComparisonUrl(
   params: URLSearchParams,
 ): VolumeComparisonUrlState {
-  const channel = params.get("dc");
   return {
     comparisonId: EARLIER_RUN_COMPARISON_ID,
-    channel:
-      channel === "option_creation" || channel === "future_space"
-        ? channel
-        : DEFAULT_COMPARISON_CHANNEL,
+    channel: parseChannel(params.get("dc")),
     leadSeconds: parseLead(params.get("lead")),
     quality: parseQuality(params.get("dq")),
     threshold: parseThreshold(params.get("dt")),
