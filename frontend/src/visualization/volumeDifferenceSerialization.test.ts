@@ -43,6 +43,11 @@ const intervention = {
   displacementM: 1.5,
   from: [40, 20],
   to: [41.5, 20],
+  baselineFrame: {
+    metadata: {
+      evidence_status: "illustrative_synthetic_reconstruction",
+    },
+  },
 } as unknown as EarlierRunIntervention;
 
 describe("v1.3 difference export", () => {
@@ -56,6 +61,9 @@ describe("v1.3 difference export", () => {
       intervention,
     );
     expect(record.schemaVersion).toBe("1.3.0");
+    expect(record.sourceEvidenceStatus).toBe(
+      "illustrative_synthetic_reconstruction",
+    );
     expect(record.comparison.support).toBe("left_only");
     expect(record.comparison.delta).toBeNull();
     expect(record.comparison.conditionB.retained).toBe(false);
