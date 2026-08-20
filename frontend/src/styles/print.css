@@ -13,18 +13,21 @@
   .bottom-nav,
   .playback-controls,
   .layer-controls,
-  .comparison-tray {
+  .comparison-tray,
+  .publication-screen-actions {
     display: none !important;
   }
 
   .app-shell,
-  .app-column {
+  .app-column,
+  .difference-publication-page {
     display: block;
   }
 
   .page-pad,
   .scenario-page,
-  .landing-page {
+  .landing-page,
+  .difference-publication-page {
     padding: 0;
   }
 
