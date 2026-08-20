@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
 import { useDataSource } from "./providers";
 import { queryKeys } from "../data/queryKeys";
 import { FeedbackState } from "../components/FeedbackState";
@@ -21,6 +21,8 @@ function exactNavMatch(path: string) {
 
 export function AppShell() {
   const source = useDataSource();
+  const location = useLocation();
+  const comparisonUsesShowcaseSource = location.pathname === "/volume/compare";
   const manifest = useQuery({
     queryKey: queryKeys.manifest,
     queryFn: () => source.getManifest(),
@@ -71,6 +73,11 @@ export function AppShell() {
             The Midfielder&apos;s Eye
           </NavLink>
           <div className="context-actions">
+            {comparisonUsesShowcaseSource ? (
+              <span className="contract-state" title="Illustrative synthetic reconstruction, not measured player performance">
+                <i aria-hidden="true" /> Synthetic showcase source
+              </span>
+            ) : null}
             <span className="contract-state">
               <i aria-hidden="true" /> Evidence-aware
             </span>
