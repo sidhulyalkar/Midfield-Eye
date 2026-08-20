@@ -91,14 +91,16 @@ def build_earlier_run_intervention(
         tuple[
             float,
             str,
-            PlayerState,
             tuple[float, float],
             tuple[float, float],
             float,
         ]
     ] = []
     for player in frame.players:
-        if player.team != frame.possession_team or player.player_id == frame.ball_carrier_id:
+        if (
+            player.team != frame.possession_team
+            or player.player_id == frame.ball_carrier_id
+        ):
             continue
         velocity = _finite_velocity(player)
         if velocity is None:
@@ -112,24 +114,19 @@ def build_earlier_run_intervention(
             _clip(origin[0] + vx * lead_seconds, frame.pitch_length),
             _clip(origin[1] + vy * lead_seconds, frame.pitch_width),
         )
-        displacement_m = math.hypot(target[0] - origin[0], target[1] - origin[1])
+        displacement_m = math.hypot(
+            target[0] - origin[0], target[1] - origin[1]
+        )
         if displacement_m < MIN_EARLIER_RUN_DISPLACEMENT_M:
             continue
         candidates.append(
-            (
-                -speed_mps,
-                player.player_id,
-                player,
-                origin,
-                target,
-                displacement_m,
-            )
+            (-speed_mps, player.player_id, origin, target, displacement_m)
         )
 
     if not candidates:
         return None
     candidates.sort(key=lambda candidate: (candidate[0], candidate[1]))
-    negative_speed, player_id, _, origin, target, displacement_m = candidates[0]
+    negative_speed, player_id, origin, target, displacement_m = candidates[0]
     speed_mps = -negative_speed
 
     alternative = deepcopy(frame)
@@ -161,6 +158,11 @@ def build_earlier_run_intervention(
     )
 
 
+def _legacy_carry_offset(option: ActionOption) -> float | None:
+    match = _CARRY_ID_PATTERN.search(option.option_id)
+    return float(match.group(1)) if match else None
+
+
 def _carry_offset(option: ActionOption) -> float:
     feature_value = option.features.get("carry_angle_offset_deg")
     feature_offset: float | None = None
@@ -168,11 +170,11 @@ def _carry_offset(option: ActionOption) -> float:
         feature_offset = float(feature_value)
         if not math.isfinite(feature_offset):
             raise ValueError(
-                f"carry option {option.option_id!r} has non-finite carry_angle_offset_deg"
+                f"carry option {option.option_id!r} has non-finite "
+                "carry_angle_offset_deg"
             )
 
-    match = _CARRY_ID_PATTERN.search(option.option_id)
-    id_offset = float(match.group(1)) if match else None
+    id_offset = _legacy_carry_offset(option)
     if feature_offset is None and id_offset is None:
         raise ValueError(
             f"carry option {option.option_id!r} lacks explicit semantic angle identity"
@@ -190,20 +192,56 @@ def _carry_offset(option: ActionOption) -> float:
     return 0.0 if math.isclose(offset, 0.0, abs_tol=1e-12) else float(offset)
 
 
+def ensure_comparison_identity_metadata(
+    options: list[ActionOption] | tuple[ActionOption, ...],
+) -> tuple[ActionOption, ...]:
+    """Stamp explicit semantic identity metadata onto generated carry options.
+
+    Existing v1.3 bundles encode carry angle in the authoritative generated
+    option ID. v1.4 artifacts migrate that legacy suffix into an explicit,
+    non-scoring feature so downstream cross-condition identity does not depend
+    on target coordinates or future string parsing.
+    """
+
+    result = tuple(options)
+    for option in result:
+        if option.kind == "carry" and "carry_angle_offset_deg" not in option.features:
+            offset = _legacy_carry_offset(option)
+            if offset is None:
+                raise ValueError(
+                    f"carry option {option.option_id!r} cannot be migrated to "
+                    "explicit semantic identity"
+                )
+            option.features = {
+                **option.features,
+                "carry_angle_offset_deg": 0.0
+                if math.isclose(offset, 0.0, abs_tol=1e-12)
+                else float(offset),
+            }
+        comparison_option_key(option)
+    return result
+
+
 def comparison_option_key(option: ActionOption) -> str:
     """Return semantic cross-condition identity independent of target coordinates."""
 
     if option.kind == "pass":
         if not option.target_player_id:
-            raise ValueError(f"pass option {option.option_id!r} is missing target_player_id")
+            raise ValueError(
+                f"pass option {option.option_id!r} is missing target_player_id"
+            )
         return f"pass:{option.target_player_id}"
     if option.kind == "carry":
         if option.target_player_id is not None:
-            raise ValueError(f"carry option {option.option_id!r} must not target a player")
+            raise ValueError(
+                f"carry option {option.option_id!r} must not target a player"
+            )
         return f"carry:{_carry_offset(option):+.1f}"
     if option.kind == "hold":
         if option.target_player_id is not None:
-            raise ValueError(f"hold option {option.option_id!r} must not target a player")
+            raise ValueError(
+                f"hold option {option.option_id!r} must not target a player"
+            )
         return "hold"
     raise ValueError(f"unsupported action kind {option.kind!r}")
 
@@ -216,6 +254,23 @@ def _candidate_sort_key(key: str) -> tuple[int, object]:
     if key == "hold":
         return (2, "")
     raise ValueError(f"unsupported comparison option key {key!r}")
+
+
+def _condition_context(
+    options: list[ActionOption] | tuple[ActionOption, ...],
+    *,
+    condition_id: str,
+) -> tuple[str, int, str] | None:
+    context: tuple[str, int, str] | None = None
+    for option in options:
+        current = (option.sequence_id, option.frame_id, option.actor_id)
+        if context is None:
+            context = current
+        elif current != context:
+            raise ValueError(
+                f"condition {condition_id!r} mixes candidate sequence/frame/actor contexts"
+            )
+    return context
 
 
 def _index_options(
@@ -232,7 +287,8 @@ def _index_options(
             )
         if not math.isfinite(float(option.geometric_score)):
             raise ValueError(
-                f"condition {condition_id!r} candidate {key!r} has non-finite geometric score"
+                f"condition {condition_id!r} candidate {key!r} has non-finite "
+                "geometric score"
             )
         indexed[key] = option
     return indexed
@@ -247,6 +303,17 @@ def compare_candidate_options(
 ) -> tuple[tuple[CandidateComparison, ...], CandidateComparisonSummary]:
     if not left_condition_id or not right_condition_id:
         raise ValueError("candidate comparison condition IDs must be non-empty")
+    left_context = _condition_context(left_options, condition_id=left_condition_id)
+    right_context = _condition_context(right_options, condition_id=right_condition_id)
+    if (
+        left_context is not None
+        and right_context is not None
+        and left_context != right_context
+    ):
+        raise ValueError(
+            "candidate conditions must share sequence_id, frame_id, and actor_id"
+        )
+
     left = _index_options(left_options, condition_id=left_condition_id)
     right = _index_options(right_options, condition_id=right_condition_id)
     keys = sorted(set(left) | set(right), key=_candidate_sort_key)
@@ -259,8 +326,14 @@ def compare_candidate_options(
         left_option = left.get(key)
         right_option = right.get(key)
         if left_option is not None and right_option is not None:
+            if left_option is right_option:
+                raise ValueError(
+                    f"candidate {key!r} reuses the same ActionOption object in A and B"
+                )
             support: CandidateSupport = "intersection"
-            delta = float(right_option.geometric_score - left_option.geometric_score)
+            delta = float(
+                right_option.geometric_score - left_option.geometric_score
+            )
             intersection += 1
         elif left_option is not None:
             support = "left_only"
@@ -303,8 +376,12 @@ def generate_counterfactual_menu_comparison(
     if intervention is None:
         return None
     engine = engine or AffordanceEngine()
-    left_options = tuple(engine.generate(intervention.baseline_frame))
-    right_options = tuple(engine.generate(intervention.alternative_frame))
+    left_options = ensure_comparison_identity_metadata(
+        engine.generate(intervention.baseline_frame)
+    )
+    right_options = ensure_comparison_identity_metadata(
+        engine.generate(intervention.alternative_frame)
+    )
     comparisons, summary = compare_candidate_options(
         left_options,
         right_options,
