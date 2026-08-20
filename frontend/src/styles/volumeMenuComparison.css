@@ -1,0 +1,122 @@
+.difference-button-grid button small {
+  color: var(--color-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.difference-evidence-mode {
+  padding: 0.5rem 0.6rem;
+  border: 1px dashed rgba(154, 183, 172, 0.2);
+  border-radius: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
+.difference-candidate-evidence {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: rgba(7, 22, 18, 0.88);
+}
+
+.difference-candidate-evidence h2,
+.difference-candidate-evidence p {
+  margin: 0;
+}
+
+.difference-candidate-evidence > p:not(.eyebrow),
+.difference-candidate-side p {
+  color: var(--color-muted);
+}
+
+.difference-candidate-evidence.is-regenerated {
+  border-color: rgba(115, 191, 252, 0.34);
+  background:
+    linear-gradient(135deg, rgba(115, 191, 252, 0.045), transparent 42%),
+    rgba(7, 22, 18, 0.9);
+}
+
+.difference-candidate-provenance {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.difference-candidate-provenance > div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px solid rgba(154, 183, 172, 0.14);
+  border-radius: 10px;
+  background: rgba(3, 13, 11, 0.46);
+}
+
+.difference-candidate-provenance span {
+  color: var(--color-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+}
+
+.difference-candidate-provenance code,
+.difference-candidate-evidence > code {
+  overflow-wrap: anywhere;
+  color: var(--color-gold);
+  font-size: 0.62rem;
+}
+
+.difference-candidate-contributions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.difference-candidate-side {
+  min-width: 0;
+  padding: 0.7rem;
+  border: 1px solid rgba(154, 183, 172, 0.14);
+  border-radius: 11px;
+  background: rgba(3, 13, 11, 0.48);
+}
+
+.difference-candidate-side > strong {
+  font-size: 0.76rem;
+}
+
+.difference-candidate-side ol {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.difference-candidate-side li {
+  display: grid;
+  gap: 0.12rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(154, 183, 172, 0.1);
+}
+
+.difference-candidate-side li code {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 0.62rem;
+}
+
+.difference-candidate-side li span {
+  color: var(--color-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+}
+
+@media (max-width: 680px) {
+  .difference-candidate-provenance,
+  .difference-candidate-contributions {
+    grid-template-columns: 1fr;
+  }
+}
