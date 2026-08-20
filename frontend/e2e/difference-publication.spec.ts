@@ -36,15 +36,18 @@ test("v1.3 rc publication mode renders a stable evidence-aware figure plate", as
   );
 });
 
-test("publication mode fails closed outside exact Slice mode", async ({ page }) => {
+test("publication mode rejects fallback-dependent URL state", async ({ page }) => {
   await page.goto(
-    "/volume/compare?scenario=aitana-overload&fi=10&cmp=earlier-run&lead=0.75&dc=future_space&dq=low&dt=0.200&tm=full&pub=figure",
+    "/volume/compare?scenario=aitana-overload&fi=10&cmp=earlier-run&lead=0.75&dc=future_space&dq=low&dt=0.200&tm=full&layer=2&pub=figure",
   );
   await expect(
-    page.getByRole("heading", {
-      name: "Publication figure mode requires an exact temporal slice",
-    }),
+    page.getByRole("heading", { name: "Publication URL is not canonical" }),
   ).toBeVisible();
+  await expect(page.getByText(/does not apply interactive fallback defaults/u)).toBeVisible();
   await expect(page.getByTestId("difference-publication-plate")).toHaveCount(0);
+  await expect(page).toHaveURL(/tm=full/u);
+
+  await page.getByRole("link", { name: /Return to the interactive comparison workbench/u }).click();
+  await expect(page).not.toHaveURL(/pub=figure/u);
   await expect(page).toHaveURL(/tm=full/u);
 });
