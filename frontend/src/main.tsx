@@ -12,6 +12,7 @@ import "./styles/volumeInspector.css";
 import "./styles/volumeV12.css";
 import "./styles/volumeDifference.css";
 import "./styles/volumePublication.css";
+import "./styles/volumePublicationGlyphs.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");
