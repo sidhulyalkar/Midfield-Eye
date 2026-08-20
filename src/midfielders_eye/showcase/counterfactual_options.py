@@ -5,6 +5,7 @@ import json
 import math
 from typing import Any, Mapping, Sequence
 
+from .. import __version__
 from ..affordance import AffordanceEngine
 from ..counterfactual_menu import (
     EARLIER_RUN_LEAD_PRESETS,
@@ -77,7 +78,9 @@ def engine_config_sha256(engine: AffordanceEngine) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
-def _serialize_intervention(comparison: CounterfactualMenuComparison) -> dict[str, Any]:
+def _serialize_intervention(
+    comparison: CounterfactualMenuComparison,
+) -> dict[str, Any]:
     intervention = comparison.intervention
     return {
         "id": intervention.id,
@@ -120,7 +123,9 @@ def _validate_frames(frames: Sequence[FrameState]) -> None:
     for frame in frames:
         frame.validate()
         if frame.frame_id in seen:
-            raise ValueError(f"duplicate frame_id {frame.frame_id} in showcase sequence")
+            raise ValueError(
+                f"duplicate frame_id {frame.frame_id} in showcase sequence"
+            )
         if previous is not None and frame.frame_id <= previous:
             raise ValueError("showcase frames must be strictly ordered by frame_id")
         seen.add(frame.frame_id)
@@ -142,6 +147,7 @@ def _baseline_options_for_frame(
         raise ValueError(
             f"authoritative baseline options are empty for frame {frame.frame_id}"
         )
+    semantic_keys: set[str] = set()
     for option in baseline:
         if option.frame_id != frame.frame_id:
             raise ValueError(
@@ -155,6 +161,12 @@ def _baseline_options_for_frame(
             raise ValueError(
                 f"baseline option {option.option_id!r} has wrong actor_id"
             )
+        key = comparison_option_key(option)
+        if key in semantic_keys:
+            raise ValueError(
+                f"baseline frame {frame.frame_id} has duplicate semantic candidate {key!r}"
+            )
+        semantic_keys.add(key)
     return baseline
 
 
@@ -232,8 +244,10 @@ def build_counterfactual_options_artifact(
         raise ValueError("lead_presets must not be empty")
     if len(set(leads)) != len(leads):
         raise ValueError("lead_presets must be unique")
-    if any(not math.isfinite(value) or value <= 0.0 for value in leads):
-        raise ValueError("lead_presets must be finite and positive")
+    if any(
+        not math.isfinite(value) or not 0.0 < value <= 2.0 for value in leads
+    ):
+        raise ValueError("lead_presets must be finite and within (0, 2]")
     if tuple(sorted(leads)) != leads:
         raise ValueError("lead_presets must be strictly ascending")
 
@@ -260,6 +274,7 @@ def build_counterfactual_options_artifact(
         "generator": {
             "name": "AffordanceEngine",
             "module": "midfielders_eye.affordance",
+            "package_version": __version__,
             "config": effective_engine_config(engine),
             "config_sha256": engine_config_sha256(engine),
             "candidate_identity_contract": CANDIDATE_IDENTITY_CONTRACT,
