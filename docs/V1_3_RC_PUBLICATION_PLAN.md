@@ -4,19 +4,27 @@
 
 Turn the evidence-aware difference workbench into a deterministic publication artifact without introducing a second scientific implementation.
 
-The publication layer may **re-layout** already-computed comparison records. It may not rebuild, smooth, interpolate, rescore, or otherwise reinterpret the A/B volume.
+The publication layer may re-layout comparison records. It may not smooth, interpolate, rescore, zero-fill, or introduce publication-specific field formulas.
 
 ## Source-of-truth rule
 
-The interactive comparison route remains the scientific source of truth:
+The comparison URL and the existing scientific builder stack remain the source of truth:
 
 ```text
 /volume/compare
+        ↓
+parseVolumeComparisonUrl()
+        ↓
+buildVolumeComparison()
+        ↓
+VolumeDifference
+        ↓
+exact temporal filter
 ```
 
-Publication mode is an alternate presentation of the same URL state and the same `VolumeDifferenceRenderCell` records.
+`pub=figure` selects a different presentation of that same deterministic state. The publication route reconstructs the comparison from the URL using the **same `buildVolumeComparison()` path as the interactive workbench**. It does not implement a publication-specific call path or formula for Future Space / Option Creation.
 
-No publication-only call to `buildAffordanceVolume()` is permitted.
+Within a publication render, the plate receives the exact `VolumeDifferenceCell` object references produced by that source `VolumeDifference`. `assertPublicationDifferenceMatches()` rejects copied or publication-only records.
 
 ## Publication URL
 
@@ -34,15 +42,17 @@ tm=slice&layer=<integer>
 
 The full reproducible state therefore includes:
 
-- scenario
-- focal frame index
-- comparison intervention ID
-- lead duration
-- state-derived comparison channel
-- deterministic LOD
-- retention threshold
-- exact integer temporal layer
-- publication mode
+- scenario;
+- focal frame index;
+- `cmp=earlier-run`;
+- lead duration;
+- state-derived comparison channel;
+- deterministic LOD;
+- retention threshold;
+- exact integer temporal layer;
+- publication mode.
+
+The export CLI rejects under-specified or noncanonical URLs rather than relying on application fallbacks.
 
 ## Figure identity
 
@@ -79,9 +89,9 @@ Color is supplemental only.
 
 Structural semantics are frozen as:
 
-- positive shared support: filled cell + `+` marker + forward diagonal hatch;
-- negative shared support: filled cell + `−` marker + backward diagonal hatch;
-- zero shared support: filled cell + `0` marker;
+- positive shared support: `+` marker + forward diagonal hatch + solid outline;
+- negative shared support: `−` marker + backward diagonal hatch + dashed outline;
+- zero shared support: `0` marker + unhatched filled cell;
 - A-only support: two vertical rails;
 - B-only support: two horizontal rails.
 
@@ -93,13 +103,15 @@ The gallery exists to explain why sparse one-sided support cannot be treated as 
 
 Representative cells are chosen deterministically by integer `(layerIndex, gridXIndex, gridYIndex)` order.
 
-The gallery must never rank A-only or B-only cells by a fabricated magnitude.
+The gallery never ranks A-only or B-only cells by a fabricated magnitude.
 
-Each card states:
+Each populated card states:
 
 ```text
 No numerical delta. This condition retained evidence here while the other did not.
 ```
+
+If a slice has no example for one support side, the plate says so instead of borrowing a cell from another time.
 
 ## Claim footer
 
@@ -117,27 +129,40 @@ Every publication plate visibly states:
 
 ## Export path
 
-A Playwright-based export script may capture the publication plate at a fixed viewport and save PNG/PDF.
+`npm run export:difference-figure` uses Playwright to capture the publication plate at a fixed viewport and save PNG/PDF plus a manifest.
 
-The script must:
+The script:
 
-- navigate to an explicit comparison URL;
-- require `pub=figure` and exact Slice mode;
-- use reduced motion;
-- use a fixed viewport;
-- capture only `[data-testid="difference-publication-plate"]` for PNG;
-- use print CSS for PDF;
-- never alter URL state after load;
-- never trigger a publication-only recomputation.
+- requires `/volume/compare`;
+- requires `pub=figure`;
+- requires `cmp=earlier-run`;
+- requires exact `tm=slice&layer=<integer>`;
+- validates scenario, frame index, lead preset, channel, deterministic quality, and threshold grid;
+- uses reduced motion;
+- uses a fixed `1600 × 1200` viewport;
+- captures only `[data-testid="difference-publication-plate"]` for PNG;
+- uses print CSS for PDF;
+- never alters URL state after load;
+- records the exact source URL and figure ID in a JSON manifest.
+
+The manifest claim boundary says:
+
+```text
+publicationSpecificScientificFormulaUsed = false
+sameComparisonBuilderAsWorkbench = true
+publicationRequiresExactSlice = true
+notRetainedIsNumericalZero = false
+```
 
 ## Validation under Actions quota exception
 
 GitHub Actions is not the release gate while quota is unavailable.
 
-RC verification should use:
+RC verification uses:
 
 - pure helper strict-TypeScript compilation;
 - deterministic helper harnesses;
+- standalone page/JSX strict-TypeScript checks;
 - manual full-PR audit;
 - authored Vitest/Playwright contracts without claiming they ran under CI;
 - explicit documentation of any unexecuted browser/export checks.
