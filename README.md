@@ -1,10 +1,9 @@
-# The Midfielder's Eye v0.7 ⚽👁️🔬
+# The Midfielder's Eye ⚽👁️🔬
 
-**An evidence-aware research system for studying the changing action menu of midfield play, not only the action eventually selected.**
+**Watch an option appear, persist, and get selected (or not) — without treating the selected action as the whole decision.**
 
-Version 0.7 turns the project into a sharper publication-oriented benchmark while preserving the v0.6 empirical Evidence Studio. It adds a frozen action-menu annotation contract, stable cross-frame option identities, lifecycle analytics, a reproducible report builder, and the interactive **Action Menu Ribbon / Decision Microscope**.
-
-The central research object is deliberately decomposed into five questions that must not collapse into one another:
+Most analytics ask: *which pass was chosen?*  
+This project asks a harder question: *what was the changing action menu a midfielder could actually use?*
 
 ```text
                     ┌ physical availability
@@ -16,89 +15,103 @@ state → ACTION MENU ├ tactical value
 
 The selected action is one observed outcome. It is not treated as the full action set.
 
-## What v0.7 adds
+<p align="center">
+  <img src="docs/assets/affordance_demo.png" alt="Affordance / action-menu demo" width="720"/>
+</p>
 
-### Action Menu Benchmark
+<p align="center">
+  <img src="docs/assets/counterfactual_demo.png" alt="Counterfactual option creation demo" width="720"/>
+</p>
 
-- frozen `configs/action_menu_annotation_v1.yaml` contract;
-- separate availability, visibility, value, creation, selection, and confidence labels;
-- explicit outcome blinding for expert judgments before selection is joined from events;
-- sequence-level sampling and no adjacent-frame random splits;
-- 10–20-sequence pilot gate with at least 25% double-rating;
-- a preferred main Paper 1 target of at least 150 independent possession windows, subject to data access and annotation capacity;
-- stable option identities across frames for pass, carry, and hold candidates;
-- retrospective birth, persistence, extinction, selected-frame, and top-k stability analytics;
-- causal guardrails that forbid using future lifecycle information as focal-frame model features;
-- a standalone action-menu report builder and unit tests for annotation/lifecycle invariants.
+**Core instruments (v0.7)**
+- **Action Menu Ribbon** — each row is a stable candidate identity across synchronized frames; click a cell to seek the pitch and candidate.
+- **Decision Microscope** — distinguishes absent vs low-scoring, model score vs observed selection, retrospective lifecycle vs causal inputs, and evidence provenance (synthetic / proxy / reconstructed / provider-observed / measured).
+- **Frozen Action Menu Benchmark** — separate labels for availability, visibility, value, creation, selection, and confidence, with outcome blinding and sequence-held-out evaluation.
 
-### Decision Microscope
+> **Current claim boundary**  
+> v0.7 ships the *benchmark contract, software, and visual instrument*. It does **not** claim empirical superiority of dynamic geometry or viewpoint conditioning. Real expert-annotated pilot results (R1) are the publication gate.
 
-The React Evidence Studio now includes an **Action Menu Ribbon** inside every scenario laboratory. Each row follows one stable candidate across synchronized frames. Clicking a ribbon cell seeks the pitch to that exact frame and candidate.
+---
 
-The visual instrument distinguishes:
+## 20-second understanding
 
-- candidate absent from candidate low-scoring;
-- model score from observed selected action;
-- current frame from option history;
-- retrospective lifecycle labels from causal model inputs;
-- synthetic, proxy, reconstructed, provider-observed, and directly measured evidence.
+1. A possession unfolds on a synchronized pitch.
+2. Candidate actions (pass / carry / hold) are tracked with *stable identities* across frames.
+3. You see options **born**, **persist**, **re-order**, and **extinguish** — independent of which one was eventually selected.
+4. You can inspect what the model scored, what was selected, and how confident the evidence is.
 
-### Release robustness
+That is the Decision Microscope.
 
-- one package version authority now drives the FastAPI version, API health payload, OpenAPI contract, and generated showcase manifest;
-- checked-in integration and component contracts are versioned to v0.7 and explicitly require the new Decision Microscope semantics;
-- `CITATION.cff` now uses the valid CFF 1.2.0 schema;
-- backend, frontend, contract, build, and browser gates remain part of CI.
+---
 
-## What remains intentionally unclaimed
-
-v0.7 ships the **benchmark contract and software**, not fabricated empirical superiority. The real expert-annotated pilot and main benchmark still need to be run before claiming that dynamic geometry, viewpoint conditioning, or any learned model better reflects real football decisions.
-
-No restricted gaze or pose dataset is mirrored. No named elite player's gaze, force, or body weight is fabricated. The included Pedri study contains real event and 360 geometry but no eye tracking or biomechanics. The included Metrica study contains real continuous tracking but anonymous identities.
-
-## Action-menu quick start
+## Quick start (software verification)
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -e ".[dev,showcase]"
-
-# Existing synthetic/software verification
+pytest
 midfielders-eye demo
-midfielders-eye demo-v2
-
-# Build the Evidence Studio
 midfielders-eye showcase-build
 midfielders-eye showcase-serve
 ```
 
-For a candidate CSV produced by the engine, build the v0.7 lifecycle report with:
+- API docs: http://127.0.0.1:8000/docs  
+- Frontend (after `cd frontend && npm install && npm run dev`): http://127.0.0.1:5173
+
+**One-command paths (via Makefile)**
 
 ```bash
-python scripts/build_action_menu_report.py candidates.csv artifacts/action-menu
+make install
+make verify          # tests + demos
+make showcase        # build Evidence Studio bundle
+make showcase-serve
+make frontend-dev    # build showcase then start Vite
 ```
 
-This writes:
+> **Showcase friction note**  
+> Generated `artifacts/` are intentionally *not* tracked in Git (large, regenerable). After a clean clone you must run `midfielders-eye showcase-build` (or `make showcase`) before the full interactive studio has data. This keeps the repository lean and reproducible.
 
-```text
-artifacts/action-menu/
-├── option_lifecycles.csv
-├── action_menu_timeline.csv
-└── summary.json
-```
+---
 
-See `docs/ACTION_MENU_BENCHMARK.md` for the frozen Paper 1 scope, annotation protocol, causal boundaries, and publication gates.
+## R1 Real Action Menu Pilot (status)
 
-## Empirical quick start
+The immediate scientific path is the **R1 real-action-menu pilot**:
 
-```bash
-pip install -e ".[dev,showcase]"
-midfielders-eye empirical-sources
-midfielders-eye empirical-plan ego_exo4d
-midfielders-eye empirical-build
-midfielders-eye capture-protocol --participant-id study-001
-midfielders-eye showcase-serve
-```
+- Deterministic 10-sequence sampler with diversity mix and causal context
+- Score-free, outcome-blind double-rating packs
+- Full reliability → adjudication → consensus → causal-feature contract → immutable freeze → benchmark
+- Research cockpit at `/pilot` that refuses to invent metrics before evidence files exist
 
-Open `/api/empirical`, `/api/empirical/sources`, and `/api/empirical/experiments` in the API documentation.
+See `docs/R1_REAL_ACTION_MENU_PILOT.md` and `docs/ACTION_MENU_BENCHMARK.md`.
+
+**Status surface (keep this honest):**
+- Annotation ontology and software: **ready**
+- Real expert-annotated pilot results: **not yet published** (this is the gate)
+- Synthetic + compact real excerpts (Metrica, StatsBomb Pedri 360): **included for software & visualization tests**
+
+---
+
+## What v0.7 adds
+
+### Action Menu Benchmark
+- Frozen `configs/action_menu_annotation_v1.yaml` contract
+- Separate availability, visibility, value, creation, selection, confidence labels
+- Explicit outcome blinding before selection is joined from events
+- Sequence-level sampling; no adjacent-frame random splits
+- Stable option identities (`pass:<receiver>`, `carry:<angle_bucket>`, `hold`)
+- Retrospective lifecycle analytics (birth / persistence / extinction / top-k stability)
+- Causal guardrails: future lifecycle labels are *never* model features at the focal frame
+
+### Decision Microscope
+The React Evidence Studio includes an **Action Menu Ribbon** in every scenario laboratory. Clicking a ribbon cell seeks the pitch to that exact frame and candidate while preserving evidence provenance and URL state.
+
+### Release robustness
+- Single package version authority drives FastAPI, OpenAPI, health, and showcase manifest
+- Versioned integration + component contracts require Decision Microscope semantics
+- CI covers backend, frontend, contracts, build, and browser gates
+
+---
 
 ## Core system
 
@@ -127,9 +140,7 @@ rights-cleared video / provider tracking / manual annotation
               / Decision Microscope
 ```
 
-## Benchmark ladder
-
-The existing fail-closed benchmark remains the modeling authority:
+## Benchmark ladder (fail-closed)
 
 ```text
 B0 naive
@@ -143,109 +154,13 @@ B2-V viewpoint / visibility conditioned
 B3 learned nonlinear tabular ranker
 ```
 
-B4 temporal graphs and B5 representation fusion remain blocked until the expert-label reliability and transfer gates are satisfied.
+B4 temporal graphs and B5 representation fusion remain **blocked** until expert-label reliability and transfer gates are satisfied.
 
-Primary metrics include NDCG@3, Recall@3, pairwise ranking accuracy, adjacent-frame top-k stability, sequence-bootstrap confidence intervals, and provider/match-held-out evaluation where supported.
+Primary metrics: NDCG@3, Recall@3, pairwise ranking accuracy, adjacent-frame top-k stability, sequence-bootstrap CIs, provider/match-held-out evaluation where supported.
 
-## Quick start
-
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# macOS / Linux
-source .venv/bin/activate
-
-pip install -e ".[dev,showcase]"
-pytest
-midfielders-eye showcase-build
-midfielders-eye showcase-serve
-```
-
-Open the API at `http://127.0.0.1:8000/docs`.
-
-For a frontend on another origin, set a comma-separated allowlist before serving:
-
-```bash
-MIDFIELDERS_EYE_CORS_ORIGINS=https://your-frontend.example midfielders-eye showcase-serve
-```
-
-`MIDFIELDERS_EYE_CORS_ORIGIN_REGEX` is also supported for controlled preview-domain patterns. Do not use an unrestricted production regex.
-
-## Run the frontend
-
-Node.js 22.22 or newer is required. The generated static bundle stays outside Git and is copied into the frontend automatically before development, builds, and browser tests.
-
-```bash
-midfielders-eye showcase-build
-cd frontend
-npm install
-npm run dev
-```
-
-Open `http://127.0.0.1:5173`. Static mode is the default. To use the FastAPI source instead:
-
-```bash
-VITE_MIDFIELDERS_EYE_API_URL=http://127.0.0.1:8000 npm run dev
-```
-
-The configured API never silently falls back to static data. Run the complete frontend gate with:
-
-```bash
-npm run format:check
-npm run typecheck
-npm run lint
-npm test
-npm run build
-npm run test:e2e
-```
-
-See `frontend/README.md` for routes, evidence rules, and deterministic mobile through 4K captures.
-
-## Frontend handoff to Gemini AI Studio
-
-The application is implemented under `frontend/`. The following contracts remain the authoritative handoff for Gemini when extending or restyling it.
-
-Read and paste:
-
-```text
-docs/GEMINI_MASTER_PROMPT.md
-```
-
-Gemini must then inspect:
-
-```text
-docs/ACTION_MENU_BENCHMARK.md
-docs/INTEGRATED_DELIVERY_PLAN.md
-docs/GEMINI_FRONTEND_IMPLEMENTATION_BLUEPRINT.md
-docs/GEMINI_AI_STUDIO_BUILD_SPEC.md
-docs/100_PLAYER_ATLAS.md
-docs/GAZE_AND_BODY_MECHANICS.md
-docs/RELATIONAL_CONTROL.md
-docs/MEDIA_INGESTION_AND_RIGHTS.md
-frontend_contract/integration-contract.json
-frontend_contract/README.md
-frontend_contract/openapi.json
-frontend_contract/component-contract.json
-frontend_contract/design-tokens.json
-artifacts/showcase/manifest.json
-artifacts/showcase/players/index.json
-artifacts/showcase/scenarios/index.json
-```
-
-To copy the complete static bundle into a generated frontend repository:
-
-```bash
-python scripts/prepare_gemini_handoff.py ../generated-frontend --rebuild
-```
-
-The handoff command is required after a clean clone because generated `artifacts/` are intentionally not tracked.
+---
 
 ## Frontend routes
-
-The implemented application includes:
 
 ```text
 /                         narrative landing page
@@ -259,11 +174,12 @@ The implemented application includes:
 /orchestration            teammate/opponent relational control
 /scenario/:scenarioId     flagship Decision Microscope + tactical laboratory
 /perception-lab           oracle versus degraded state
-/method                    model and evidence explanation
-/data-and-rights           provenance and media policy
+/method                   model and evidence explanation
+/data-and-rights          provenance and media policy
+/pilot                    R1 research cockpit
 ```
 
-## Included featured studies
+## Featured illustrative studies
 
 - Michael Olise: pause, defender commitment, weak-side access
 - Rodri: pre-reception scanning, open-body exits, rest-defense control
@@ -274,80 +190,45 @@ The implemented application includes:
 - Alexia Putellas: vacating and reoccupying central creation lanes
 - Yui Hasegawa: micro-positioning and repeated support-angle renewal
 
-All included named-player scenarios are illustrative synthetic reconstructions, not measured player performances.
+All named-player scenarios are **illustrative synthetic reconstructions**, not measured performances. Real excerpts (Metrica tracking, StatsBomb Pedri 360) are included for software and visualization tests only.
 
-## Data outputs
+---
 
-A full build creates:
+## Demo & visualization assets (next)
 
-```text
-artifacts/showcase/
-├── manifest.json
-├── players.json
-├── players/
-│   ├── index.json
-│   ├── cohorts.json
-│   ├── comparison_axes.json
-│   └── <100 player IDs>/
-│       ├── profile.json
-│       └── profile.svg
-└── scenarios/
-    ├── index.json
-    └── <scenario ID>/
-        ├── frames.jsonl
-        ├── options.json
-        ├── timeline.json
-        ├── gaze.json
-        ├── body_mechanics.json
-        ├── relational_control.json
-        └── visuals/
-            ├── tactical-lens-4k.png
-            ├── action-menu-timeline-4k.png
-            ├── scenario-style-profile-4k.png
-            ├── counterfactual-uplift-4k.png
-            ├── gaze-lab-4k.png
-            ├── body-mechanics-4k.png
-            └── relational-control-4k.png
-```
+Short GIFs / clips of the following should live under `docs/assets/` (or a hosted demo):
 
-## Media policy
+1. Action Menu Ribbon + click-to-seek on a possession
+2. Option lifecycle (birth → persistence → selection / extinction)
+3. B1 vs B2 ranking contrast on the same sequence
 
-The repository has two lanes:
+Until those are recorded, the static 4K plates generated by `showcase-build` and the images above serve as the visual entry point.
 
-1. rights-cleared local media for frame extraction and model analysis;
-2. YouTube embed-only references discovered through the official API.
+**Hosted demo / one-click path (planned)**
+- GitHub Codespaces / devcontainer for zero-setup `make frontend-dev`
+- Optional static GitHub Pages / Cloudflare Pages deployment of a pre-built showcase bundle
 
-The code does not download YouTube footage. An embed-only reference is never eligible for pixel analysis. See `docs/MEDIA_INGESTION_AND_RIGHTS.md`.
+---
 
 ## Research goal
 
-The strongest scientific target is not "predict which pass a player chose." It is:
+The strongest scientific target is not “predict which pass a player chose.” It is:
 
 > Estimate the action menu a player could perceive, the body states from which those actions were executable, and the way movement changed the future options of teammates and opponents.
 
-Paper 1 narrows that program to a testable first question: can the action menu itself be annotated reliably and modeled better than static geometry without collapsing selected action into available action?
+Paper 1 narrows this to a testable first question: can the action menu itself be annotated reliably and modeled better than static geometry *without collapsing selected action into available action*?
 
-## Empirical bundle outputs
+See `docs/PROJECT_GOALS.md`, `docs/ACTION_MENU_BENCHMARK.md`, and `docs/R1_REAL_ACTION_MENU_PILOT.md`.
 
-```text
-artifacts/showcase/empirical/
-├── manifest.json
-├── sources.json
-├── experiments.json
-├── player_evidence_ledger.json
-├── claim_contract.json
-├── capture_protocol.json
-├── alignment_contract.json
-├── citation_index.json
-├── MANIFEST.json
-└── visuals/
-    ├── statsbomb-pedri-360-4k.png
-    ├── metrica-tracking-pass-4k.png
-    ├── empirical-source-landscape-4k.png
-    └── evidence-ladder-4k.png
-```
+---
 
-The two real-source examples are compact excerpts for reproducible software and visualization tests. Full datasets remain with their official providers.
+## Media policy
+
+Two lanes only:
+1. Rights-cleared local media for frame extraction and model analysis
+2. YouTube embed-only references via the official API (never downloaded, never eligible for pixel analysis)
+
+See `docs/MEDIA_INGESTION_AND_RIGHTS.md`.
 
 ## License
 
