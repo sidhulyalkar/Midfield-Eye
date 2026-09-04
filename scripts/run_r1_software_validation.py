@@ -2,12 +2,12 @@
 """End-to-end R1 *software* validation path.
 
 This exercises sample discovery, candidate freeze, blinded exports, status
-reporting, and the action-menu benchmark ladder on synthetic continuous
-tracking. It must never be published as an empirical R1 result.
+reporting, and optionally the action-menu benchmark ladder on synthetic
+continuous tracking. It must never be published as an empirical R1 result.
 
 Usage:
   python scripts/run_r1_software_validation.py
-  python scripts/run_r1_software_validation.py --output-dir artifacts/r1-sw --sequences 6
+  python scripts/run_r1_software_validation.py --output-dir artifacts/r1-sw --skip-benchmark
 """
 
 from __future__ import annotations
@@ -32,15 +32,18 @@ def main() -> int:
         help="Root directory for software-validation artifacts",
     )
     parser.add_argument(
-        "--sequences", type=int, default=8, help="Synthetic sequences to generate"
+        "--sequences",
+        type=int,
+        default=12,
+        help="Synthetic sequences to generate (default 12 for reliable window discovery)",
     )
     parser.add_argument(
         "--frames-per-sequence",
         type=int,
-        default=24,
+        default=16,
         help="Frames per synthetic sequence",
     )
-    parser.add_argument("--seed", type=int, default=17)
+    parser.add_argument("--seed", type=int, default=31)
     parser.add_argument(
         "--skip-benchmark",
         action="store_true",
@@ -48,11 +51,18 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    from midfielders_eye.io import write_frames_jsonl, write_options_csv
-    from midfielders_eye.r1 import load_r1_config, prepare_real_pilot, build_r1_status
-    from midfielders_eye.synthetic import generate_dataset
+    from dataclasses import replace
+
     from midfielders_eye.affordance import AffordanceEngine
-    from midfielders_eye.io import options_to_dataframe
+    from midfielders_eye.io import options_to_dataframe, write_frames_jsonl, write_options_csv
+    from midfielders_eye.r1 import (
+        R1PilotConfig,
+        build_r1_status,
+        load_r1_config,
+        prepare_real_pilot,
+    )
+    from midfielders_eye.r1_showcase import write_r1_showcase_status
+    from midfielders_eye.synthetic import generate_dataset
 
     root = args.output_dir
     root.mkdir(parents=True, exist_ok=True)
@@ -61,42 +71,35 @@ def main() -> int:
 
     print("[1/5] Generating synthetic continuous tracking (software validation only)...")
     frames = generate_dataset(
-        n_sequences=args.sequences,
-        n_frames=args.frames_per_sequence,
+        sequences=args.sequences,
+        frames=args.frames_per_sequence,
         seed=args.seed,
     )
-    # Tag provider so R1 synthetic gate is explicit
-    from dataclasses import replace
-
-    tagged = []
-    for frame in frames:
-        tagged.append(
-            replace(
-                frame,
-                source_provider="synthetic-software-validation",
-                source_match_id=frame.source_match_id or f"sw-{frame.sequence_id}",
-            )
+    tagged = [
+        replace(
+            frame,
+            source_provider="synthetic-software-validation",
+            source_match_id=frame.source_match_id or f"sw-{frame.sequence_id}",
         )
+        for frame in frames
+    ]
     write_frames_jsonl(tagged, frames_path)
     print(f"  Wrote {len(tagged)} frames → {frames_path}")
 
     print("[2/5] Preparing R1 pilot package (allow_synthetic_software_validation=True)...")
-    # Smaller composition for software validation when sequences < 10
     config_path = Path("configs/r1_real_pilot.yaml")
     config = load_r1_config(config_path if config_path.exists() else None)
-    if args.sequences < config.target_sequences:
-        # Scale composition down deterministically for smaller SW runs
-        from midfielders_eye.r1 import R1PilotConfig
 
+    # Prefer full default 10-sequence composition when enough sequences exist
+    if args.sequences < config.target_sequences:
         scaled = max(2, min(args.sequences, 6))
         composition = {
             "central_pressure": max(1, scaled // 3),
             "transition": max(1, scaled // 4),
             "settled_possession": max(1, scaled // 4),
-            "wide_overload": max(0, scaled - (scaled // 3) - 2 * (scaled // 4) - 1),
+            "wide_overload": 0,
             "negative_control": 1 if scaled >= 4 else 0,
         }
-        # Fix sum
         while sum(composition.values()) < scaled:
             composition["central_pressure"] += 1
         while sum(composition.values()) > scaled:
@@ -124,15 +127,14 @@ def main() -> int:
             frames_path,
             pilot_dir,
             rater_ids=["sw_rater_a", "sw_rater_b"],
-            reviewed_by=None,  # leave pending-review — no empirical claim
+            reviewed_by=None,  # pending review — no empirical claim
             config=config,
             allow_synthetic_software_validation=True,
         )
     except Exception as exc:
         print(f"ERROR during prepare_real_pilot: {exc}", file=sys.stderr)
         print(
-            "Hint: synthetic data may not yield enough non-overlapping control windows. "
-            "Try increasing --sequences or --frames-per-sequence.",
+            "Hint: increase --sequences (default 12) or --frames-per-sequence.",
             file=sys.stderr,
         )
         return 1
@@ -147,27 +149,23 @@ def main() -> int:
     print(f"  Stage: {status.get('stage', status.get('claim_state', 'unknown'))}")
     print(f"  Wrote {status_path}")
 
-    # Always emit an honest protocol-ready / partial showcase payload
-    from midfielders_eye.r1 import write_r1_showcase
-
     showcase_out = root / "pilot_showcase.json"
-    write_r1_showcase(showcase_out, r1_dir=pilot_dir)
+    write_r1_showcase_status(showcase_out, r1_dir=pilot_dir)
     print(f"  Showcase status → {showcase_out}")
+
+    _write_boundary(root)
 
     if args.skip_benchmark:
         print("[4/5] Skipping benchmark (--skip-benchmark)")
         print("[5/5] Software validation package ready (no empirical claim).")
-        _write_boundary(root)
+        _print_summary(root, pilot_dir, status_path)
         return 0
 
     print("[4/5] Generating candidates and running software-validation ladder...")
     candidates_csv = pilot_dir / "pilot_candidates.csv"
     if not candidates_csv.exists():
-        # Fall back: generate options from frames
         engine = AffordanceEngine()
-        options = []
-        for frame in tagged:
-            options.extend(engine.generate(frame))
+        options = [option for frame in tagged for option in engine.generate(frame)]
         df = options_to_dataframe(options)
         candidates_csv = root / "candidates.csv"
         write_options_csv(df, candidates_csv)
@@ -175,7 +173,6 @@ def main() -> int:
     benchmark_dir = root / "action-menu-benchmark"
     benchmark_dir.mkdir(parents=True, exist_ok=True)
 
-    # Prefer the dedicated action-menu runner when present
     runner = Path("scripts/run_action_menu_benchmark.py")
     if runner.exists():
         import subprocess
@@ -202,19 +199,7 @@ def main() -> int:
         print("  scripts/run_action_menu_benchmark.py not found; skipping ladder run.")
 
     print("[5/5] Software validation complete.")
-    _write_boundary(root)
-    print(
-        json.dumps(
-            {
-                "claim": "software_validation_only",
-                "empirical_claim_allowed": False,
-                "output_dir": str(root),
-                "pilot_dir": str(pilot_dir),
-                "status": str(status_path),
-            },
-            indent=2,
-        )
-    )
+    _print_summary(root, pilot_dir, status_path)
     return 0
 
 
@@ -239,6 +224,22 @@ def _write_boundary(root: Path) -> None:
     path = root / "CLAIM_BOUNDARY.json"
     path.write_text(json.dumps(boundary, indent=2), encoding="utf-8")
     print(f"  Claim boundary → {path}")
+
+
+def _print_summary(root: Path, pilot_dir: Path, status_path: Path) -> None:
+    print(
+        json.dumps(
+            {
+                "claim": "software_validation_only",
+                "empirical_claim_allowed": False,
+                "output_dir": str(root),
+                "pilot_dir": str(pilot_dir),
+                "status": str(status_path),
+                "claim_boundary": str(root / "CLAIM_BOUNDARY.json"),
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
