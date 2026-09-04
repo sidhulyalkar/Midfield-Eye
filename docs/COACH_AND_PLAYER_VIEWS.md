@@ -2,6 +2,20 @@
 
 Longer-term product layer on top of the same evidence stack. These views **must not** invent certainty the underlying pilot does not support.
 
+## Implemented stubs (frontend)
+
+Routes (illustrative scenario data only):
+
+- `/coach/:scenarioId` → `CoachViewPage`
+- `/player/:scenarioId` → `PlayerViewPage`
+
+Both:
+
+- load the same scenario bundle as the Decision Microscope
+- show explicit **synthetic / illustrative** evidence badges
+- link back to `/scenario/:scenarioId` and `/pilot`
+- never display invented benchmark metrics or player grades
+
 ## Design principles
 
 1. Same canonical state and action-menu evidence as the research cockpit
@@ -10,62 +24,28 @@ Longer-term product layer on top of the same evidence stack. These views **must 
 4. Uncertainty is shown as confidence language, not hidden scores
 5. No ordinal “player rating” from a single possession
 
-## Coach view (sketch)
+## Coach view
 
 **Primary job:** answer “what should we rehearse from this possession?”
 
-Layout:
+- Session cues drawn from scenario narrative beats (teaching language only until R1)
+- Evidence boundary card
+- Links to full Decision Microscope and player view
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│ Possession timeline (scrub) + pitch                     │
-├──────────────────────┬──────────────────────────────────┤
-│ Emerging option      │ Coaching card                    │
-│ (Ribbon highlight)   │ • Hold shape one touch longer    │
-│                      │ • Weak-side runner arrives late  │
-│                      │ • Earlier support angle +2m      │
-├──────────────────────┴──────────────────────────────────┤
-│ Counterfactual: “If support moved earlier…” uplift strip│
-└─────────────────────────────────────────────────────────┘
-```
-
-Coach card fields (from existing contracts):
-
-- Option that improved / degraded
-- Body / scan cue when evidence exists
-- Off-ball movement that created value
-- Confidence + evidence type badge
-
-## Player view (sketch)
+## Player view
 
 **Primary job:** individualized decision-menu feedback without overwhelm.
 
-```text
-┌──────────────────────────────────────────┐
-│ “Your menu” — top 3 options over time    │
-│ Simple icons: pass lane / carry / hold   │
-├──────────────────────────────────────────┤
-│ One selected teachable moment            │
-│ “This lane closed as the defender stepped│
-│  inside — the far option opened.”        │
-├──────────────────────────────────────────┤
-│ Practice cue (max one)                   │
-└──────────────────────────────────────────┘
-```
+- One teachable moment
+- Practice cue framed as a better question, not a grade
+- Explicit non-claim of internal perception without direct evidence
 
-Constraints:
+## Next implementation steps (after R1 evidence)
 
-- Prefer one teachable moment per session clip
-- Never claim internal perception without gaze/body evidence
-- Link back to full Decision Microscope for analysts
-
-## Implementation path (when R1 evidence exists)
-
-1. Reuse `ActionMenuRibbon`, `TacticalPitch`, and evidence components
-2. Add route stubs: `/coach/:scenarioId`, `/player/:scenarioId`
-3. Drive copy from structured fields already in options / timeline JSON
-4. Gate “practice cue” generation behind evidence-type checks
-5. Keep `/pilot` and `/method` as the scientific source of truth
+1. Gate practice cues on measured/reconstructed evidence types
+2. Surface top-k stable option identities from the Action Menu Ribbon
+3. Optional counterfactual uplift strip when causal features exist
+4. Keep `/pilot` and `/method` as the scientific source of truth
 
 ## Non-goals
 
