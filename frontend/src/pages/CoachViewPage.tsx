@@ -32,8 +32,7 @@ export default function CoachViewPage() {
     );
   }
 
-  const beats = bundle.scenario.narrative_beats ?? [];
-  const cues = beats.slice(0, 3);
+  const cues = (bundle.scenario.narrative_beats ?? []).slice(0, 3);
 
   return (
     <div className="simplified-view coach-view">

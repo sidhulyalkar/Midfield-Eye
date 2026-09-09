@@ -54,7 +54,7 @@ def main() -> int:
     from dataclasses import replace
 
     from midfielders_eye.affordance import AffordanceEngine
-    from midfielders_eye.io import options_to_dataframe, write_frames_jsonl, write_options_csv
+    from midfielders_eye.io import write_frames_jsonl, write_options_csv
     from midfielders_eye.r1 import (
         R1PilotConfig,
         build_r1_status,
@@ -90,7 +90,6 @@ def main() -> int:
     config_path = Path("configs/r1_real_pilot.yaml")
     config = load_r1_config(config_path if config_path.exists() else None)
 
-    # Prefer full default 10-sequence composition when enough sequences exist
     if args.sequences < config.target_sequences:
         scaled = max(2, min(args.sequences, 6))
         composition = {
@@ -127,7 +126,7 @@ def main() -> int:
             frames_path,
             pilot_dir,
             rater_ids=["sw_rater_a", "sw_rater_b"],
-            reviewed_by=None,  # pending review — no empirical claim
+            reviewed_by=None,
             config=config,
             allow_synthetic_software_validation=True,
         )
@@ -166,9 +165,8 @@ def main() -> int:
     if not candidates_csv.exists():
         engine = AffordanceEngine()
         options = [option for frame in tagged for option in engine.generate(frame)]
-        df = options_to_dataframe(options)
         candidates_csv = root / "candidates.csv"
-        write_options_csv(df, candidates_csv)
+        write_options_csv(options, candidates_csv)
 
     benchmark_dir = root / "action-menu-benchmark"
     benchmark_dir.mkdir(parents=True, exist_ok=True)
