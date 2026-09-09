@@ -164,7 +164,8 @@ export default function ScenarioPage() {
       else if (event.key === "ArrowRight") step(1);
       else if (/^[1-6]$/u.test(event.key)) {
         const layer = Object.keys(layerLabels)[Number(event.key) - 1] as
-          LayerId | undefined;
+          | LayerId
+          | undefined;
         if (layer) toggleLayer(layer);
       } else if (event.key === "Escape") selectOption(null);
     };
@@ -370,7 +371,7 @@ export default function ScenarioPage() {
             Gaze source:{" "}
             <strong>{gazePoint?.gaze_source ?? "unavailable"}</strong>. This
             dotted cone is illustrative and is never a claim about{" "}
-            {bundle.scenario.player_name}&apos;s measured gaze.
+            {bundle.scenario.player_name}'s measured gaze.
           </p>
           <span>
             {gazePoint?.gaze_confidence == null
@@ -411,7 +412,11 @@ export default function ScenarioPage() {
           <h2>Use this to ask better questions, not grade a player.</h2>
           <p>{bundle.scenario.narrative_beats.join(" ")}</p>
         </div>
-        <Link to="/empirical">Compare with source-pinned evidence →</Link>
+        <div className="coaching-note-links">
+          <Link to={`/coach/${scenarioId}`}>Coach view →</Link>
+          <Link to={`/player/${scenarioId}`}>Player view →</Link>
+          <Link to="/empirical">Compare with source-pinned evidence →</Link>
+        </div>
       </section>
     </div>
   );
