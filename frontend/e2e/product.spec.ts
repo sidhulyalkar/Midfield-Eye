@@ -116,6 +116,23 @@ test("URL state restores layers without autoplay", async ({ page }) => {
   await expect(page).toHaveURL(/frame=3/u);
 });
 
+test("coach and player views stay illustrative and link back", async ({
+  page,
+}) => {
+  await page.goto("/coach/aitana-overload");
+  await expect(page.getByText("Coach view · illustrative")).toBeVisible();
+  await expect(page.getByText("Not measured player performance")).toBeVisible();
+  await page.getByRole("link", { name: /Open full Decision Microscope/u }).click();
+  await expect(page).toHaveURL(/\/scenario\/aitana-overload/u);
+
+  await page.goto("/player/aitana-overload");
+  await expect(page.getByText("Player view · illustrative")).toBeVisible();
+  await expect(page.getByText("Not a personal performance grade")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "One teachable moment" }),
+  ).toBeVisible();
+});
+
 test("required routes have no console errors or broken visible images", async ({
   page,
 }) => {
@@ -127,6 +144,8 @@ test("required routes have no console errors or broken visible images", async ({
   for (const route of [
     "/",
     "/scenario/aitana-overload?frame=10",
+    "/coach/aitana-overload",
+    "/player/aitana-overload",
     "/empirical/experiments/statsbomb-pedri-3857263-28ff205e",
     "/atlas",
     "/gaze-lab",

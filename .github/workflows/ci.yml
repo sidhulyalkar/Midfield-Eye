@@ -30,6 +30,36 @@ jobs:
       - run: midfielders-eye demo --sequences 3 --frames-per-sequence 4 --output-dir artifacts/ci_demo
       - run: midfielders-eye demo-v2 --sequences 2 --frames-per-sequence 4 --output-dir artifacts/ci_v2_demo
 
+  r1-software-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev,showcase]"
+      - name: Run R1 software validation (no empirical claim)
+        run: |
+          python scripts/run_r1_software_validation.py \
+            --output-dir artifacts/r1-sw \
+            --sequences 12 \
+            --frames-per-sequence 16 \
+            --seed 31 \
+            --skip-benchmark
+      - name: Assert claim boundary forbids empirical publication
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          boundary = json.loads(Path("artifacts/r1-sw/CLAIM_BOUNDARY.json").read_text())
+          assert boundary["empirical_claim_allowed"] is False, boundary
+          status = json.loads(Path("artifacts/r1-sw/r1_status.json").read_text())
+          assert status.get("benchmark", {}).get("complete") is not True
+          assert "no_empirical" in str(status.get("claim_state", "")).lower() or status.get("benchmark", {}).get("metrics") in ({}, None)
+          print("R1 software validation claim boundary OK")
+          PY
+
   frontend:
     runs-on: ubuntu-latest
     steps:

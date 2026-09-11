@@ -14,6 +14,7 @@ import "./styles/volumeDifference.css";
 import "./styles/volumeMenuComparison.css";
 import "./styles/volumePublication.css";
 import "./styles/volumePublicationGlyphs.css";
+import "./styles/simplifiedViews.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");

@@ -18,6 +18,8 @@ const AtlasPage = lazy(() => import("../pages/AtlasPage"));
 const PlayerPage = lazy(() => import("../pages/PlayerPage"));
 const LabPage = lazy(() => import("../pages/LabPage"));
 const MethodPage = lazy(() => import("../pages/MethodPage"));
+const CoachViewPage = lazy(() => import("../pages/CoachViewPage"));
+const PlayerViewPage = lazy(() => import("../pages/PlayerViewPage"));
 
 function loading(element: React.ReactNode) {
   return (
@@ -51,6 +53,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: loading(<LandingPage />) },
       { path: "scenario/:scenarioId", element: loading(<ScenarioPage />) },
+      { path: "coach/:scenarioId", element: loading(<CoachViewPage />) },
+      { path: "player/:scenarioId", element: loading(<PlayerViewPage />) },
       { path: "pilot", element: loading(<PilotPage />) },
       { path: "volume", element: loading(<VolumePage />) },
       { path: "volume/compare", element: loading(<DifferenceVolumeRoute />) },

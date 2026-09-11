@@ -1,0 +1,65 @@
+.simplified-view {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 64px) clamp(16px, 3.2vw, 48px) 100px;
+}
+
+.simplified-view .page-heading {
+  margin-bottom: 36px;
+}
+
+.simplified-view .page-heading h1 {
+  font-size: clamp(2rem, 3.5vw, 3.4rem);
+}
+
+.simplified-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-panel);
+  padding: 28px;
+  margin-bottom: 16px;
+}
+
+.simplified-card h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+}
+
+.simplified-card p {
+  color: var(--color-muted);
+}
+
+.simplified-note {
+  margin-top: 16px;
+  color: var(--color-subtle) !important;
+  font-size: var(--text-caption);
+}
+
+.cue-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--color-text);
+}
+
+.cue-list li {
+  margin-bottom: 10px;
+}
+
+.highlight-card {
+  border-color: var(--color-border-strong);
+  background:
+    linear-gradient(145deg, rgba(99, 230, 190, 0.05), transparent 50%),
+    var(--color-panel);
+}
+
+.simplified-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.simplified-actions .text-link {
+  color: var(--color-mint);
+  font-weight: 700;
+}
